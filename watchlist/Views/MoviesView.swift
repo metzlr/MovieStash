@@ -50,15 +50,6 @@ struct MovieListView: View {
   ) var savedMovies: FetchedResults<SavedMovie>
 
   var body: some View {
-//    List {
-//      ForEach(app.savedMovies, id: \.self.data.id) { movie in
-//        NavigationLink(destination: SavedMovieDetailView(savedMovie: movie)) {
-//          SavedMovieRow(movie: movie)
-//        }
-//      }
-//    }.onAppear {
-//      //UITableView.appearance().separatorStyle = .none
-//    }
     List {
       ForEach(savedMovies) { movie in
         NavigationLink(destination: SavedMovieDetailView(savedMovie: movie)) {
@@ -69,12 +60,13 @@ struct MovieListView: View {
   }
   
   private func deleteItem(at offsets: IndexSet) {
-    for index in offsets {
-      let movie = savedMovies[index]
-      context.delete(movie)
-      (UIApplication.shared.delegate as! AppDelegate).saveContext()
+    withAnimation {
+      for index in offsets {
+        let movie = savedMovies[index]
+        context.delete(movie)
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+      }
     }
-    
   }
 }
 
@@ -84,8 +76,8 @@ struct SavedMovieDetailView: View {
   var body: some View {
     Group {
       MovieDetailView(movie: MovieDetailed(savedMovie: savedMovie))
-      SavedMovieButtonsView(savedMovie: savedMovie)
       Spacer()
+      SavedMovieButtonsView(savedMovie: savedMovie)
     }
   }
 }
@@ -94,7 +86,7 @@ struct SavedMovieRow: View {
   @ObservedObject var movie: SavedMovie
   var body: some View {
     HStack(alignment: .center) {
-      MovieImage(imageUrlString: movie.posterUrl, width: 80, radius: 5)
+      MovieImage(imageUrlString: movie.posterUrl, width: 90, radius: 5).shadow(radius: 10)
       VStack(alignment: .leading) {
         Text(movie.title)
           .font(.system(size: 20, weight: .semibold, design: .default))

@@ -9,7 +9,6 @@
 import SwiftUI
 
 class MovieSearchViewModel: ObservableObject {
-  //var tmdb: TMDB
   let omdb: OMDB
   @Published var movieDetails: MovieDetailed? = nil
   @Published var searchText: String = "" {
@@ -22,23 +21,6 @@ class MovieSearchViewModel: ObservableObject {
           self.searchResults = movies
         }
       }
-//      if (newValue.count > 0) {
-//        self.tmdb.movieSearch(query: newValue) { [unowned self] response in
-//          switch response {
-//          case .success(let data):
-//            DispatchQueue.main.async {
-//              self.searchResults = data.results
-//              for i in 0..<self.searchResults.count {
-//                // Assign results proper URL
-//                self.searchResults[i].posterImgUrl = self.tmdb.getPosterImageUrl(path: self.searchResults[i].posterImgUrlPath, sizeIndex: 1)
-//              }
-//              //print(self.searchResults)
-//            }
-//          case .failure(let error):
-//            print("Failed to fetch movie search results:", error.localizedDescription)
-//          }
-//        }
-//      }
     }
   }
   @Published var searchResults: [Movie] = [Movie]()
@@ -91,8 +73,7 @@ struct MovieSearchView: View {
     Group {
       MovieDetailView(movie: self.viewModel.movieDetails)
         .navigationBarItems(trailing: Button("Add") {
-          //self.app.addSavedMovie(movie: self.viewModel.movieDetails!)
-          let savedMovie = SavedMovie(context: self.context, movie: self.viewModel.movieDetails!)
+          _ = SavedMovie(context: self.context, movie: self.viewModel.movieDetails!)
           (UIApplication.shared.delegate as! AppDelegate).saveContext()
           
           self.showView.toggle()
@@ -107,12 +88,12 @@ struct MovieSearchRow: View {
   var movie: Movie
   var body: some View {
     HStack {
-      MovieImage(imageUrl: movie.posterUrl, width: 60, radius: 6).padding(3)
+      MovieImage(imageUrl: movie.posterUrl, width: 60, radius: 6).padding(3).shadow(radius: 5)
       Text(movie.title)
         .font(.headline)
       Spacer()
       Text(movie.year).foregroundColor(.gray)
-    }//.frame(height: 100)
+    }
   }
 }
 

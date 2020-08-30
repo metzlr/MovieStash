@@ -9,29 +9,7 @@
 import SwiftUI
 import URLImage
 
-//class MovieDetailViewModel: ObservableObject {
-//  let omdb: OMDB
-//  @Published var movieDetail: MovieDetailed?
-//  
-//  init(omdb: OMDB) {
-//    self.omdb = omdb
-//  }
-//  
-//  func getMovieDetail(movie: Movie?) {
-//    guard let movie = movie else { return }
-//    omdb.movieDetails(movie: movie) { response in
-//      guard let details = response else { return }
-//      DispatchQueue.main.async {
-//        self.movieDetail = details
-//      }
-//    }
-//  }
-//}
-
 struct MovieDetailView: View {
-//  @Environment(\.imageCache) var cache: ImageCache
-  //@EnvironmentObject var app: AppController
-  //@ObservedObject var viewModel: MovieDetailViewModel
   var movie: MovieDetailed?
   
   var body: some View {
@@ -43,16 +21,18 @@ struct MovieDetailView: View {
       } else {
         self.detail
       }
-    }.navigationBarTitle(Text("Details"))
+    }
+    .navigationBarTitle("Movie Details", displayMode: .inline)
   }
   
   var detail: some View {
-    VStack(alignment: .leading) {
+    VStack(alignment: .center) {
       Text(movie!.title)
         .font(.system(size: 27, weight: .bold, design: .default))
         .fixedSize(horizontal: false, vertical: true)
+        .multilineTextAlignment(.center)
       HStack(alignment: .center) {
-        MovieImage(imageUrl: movie!.posterUrl, width: 200, radius: 0)
+        MovieImage(imageUrl: movie!.posterUrl, width: 200, radius: 0).shadow(radius: 10)
         VStack(alignment: .leading, spacing: 4) {
           if (movie!.year != nil) {
             Text(movie!.year!).fontWeight(.bold)
@@ -66,10 +46,9 @@ struct MovieDetailView: View {
             Text(movie!.runtime!)
           }
           if (movie!.rated != nil) {
-            Text(movie!.rated!)//.fontWeight(.semibold)
+            Text(movie!.rated!)
           }
           if (movie!.genres != nil) {
-            //movie!.genres.reduce(Text(""), { $0 + Text($1) + Text(" ")} )
             Text(movie!.genres!)
               .font(.caption)
               .fontWeight(.semibold)
@@ -87,9 +66,8 @@ struct MovieDetailView: View {
       if (movie!.plot != nil) {
         Text(movie!.plot!)
           .fixedSize(horizontal: false, vertical: true)
-          .padding(10)
+          .padding(15)
       }
-      //Spacer()
     }.padding()
   }
 }
