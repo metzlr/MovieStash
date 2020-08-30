@@ -10,44 +10,104 @@ import SwiftUI
 import URLImage
 import CoreData
 
+enum MovieSortMode: String {
+  case notWatched = "Not watched"
+  case favorites = "Favorites"
+  case title = "Title"
+  case director = "Director"
+}
+
 struct MoviesView: View {
+  
   @Environment(\.managedObjectContext) var context
   @EnvironmentObject var app: AppController
   @State private var showSearchView: Bool = false
-
+  @State private var showSortMenu: Bool = false
+  @State private var sortMode: MovieSortMode = .title
+  
   var body: some View {
     NavigationView {
-      MovieListView()
-        .navigationBarTitle(Text("Movies"))
+      VStack {
+        HStack {
+          Spacer()
+          Button(action: {
+            self.showSortMenu.toggle()
+          }) {
+            Text("Sort By:").bold()
+            Text(sortMode.rawValue)
+            //Image(systemName: "chevron.down.circle")
+          }
+        }.padding(.trailing, 30)
+        MovieListView(sortMode: $sortMode)
+          .navigationBarTitle(Text("Movies"))
+          .navigationBarItems(
+            trailing: Button(
+              action: {
+                self.showSearchView = true
+            }
+            ) {
+              Image(systemName: "plus.circle")
+            }
+          )
+      }
         .navigationBarItems(
+//          leading: Button(action: {
+//            self.showSortMenu.toggle()
+//          }) {
+//            Text("Sort").bold()
+//            //Image(systemName: "chevron.down.circle")
+//          },
           trailing: Button(
             action: {
               self.showSearchView = true
-          }
+            }
           ) {
-            Image(systemName: "plus")
+            Image(systemName: "plus.circle")
           }
-      )
-      MovieDetailView(movie: nil)
+        )
+        //.navigationViewStyle(DoubleColumnNavigationViewStyle())
+        .sheet(isPresented: self.$showSearchView) {
+          MovieSearchView(viewModel: MovieSearchViewModel(omdb: self.app.omdb), showView: self.$showSearchView)
+            .environmentObject(self.app)
+            .environment(\.managedObjectContext, self.context)
+        }
+        .actionSheet(isPresented: $showSortMenu) {
+          ActionSheet(title: Text("Sort movies by:"), buttons: [
+            .default(Text(MovieSortMode.title.rawValue)) { self.sortMode = .title },
+            .default(Text(MovieSortMode.director.rawValue)) { self.sortMode = .director },
+            .default(Text(MovieSortMode.notWatched.rawValue)) { self.sortMode = .notWatched },
+            .default(Text(MovieSortMode.favorites.rawValue)) { self.sortMode = .favorites },
+            //.cancel()
+          ])
+        }
     }
-      .navigationViewStyle(DoubleColumnNavigationViewStyle())
-      .sheet(isPresented: self.$showSearchView) {
-        MovieSearchView(viewModel: MovieSearchViewModel(omdb: self.app.omdb), showView: self.$showSearchView)
-          .environmentObject(self.app)
-          .environment(\.managedObjectContext, self.context)
-      }
   }
 }
 
 struct MovieListView: View {
   @Environment(\.managedObjectContext) var context
   @EnvironmentObject var app: AppController
-  @FetchRequest(
-    entity: SavedMovie.entity(),
-    sortDescriptors: [
-      NSSortDescriptor(keyPath: \SavedMovie.title, ascending: true)
-    ]
-  ) var savedMovies: FetchedResults<SavedMovie>
+  @Binding var sortMode: MovieSortMode
+  @FetchRequest var savedMovies: FetchedResults<SavedMovie>
+  
+  init(sortMode: Binding<MovieSortMode>) {
+    self._sortMode = sortMode
+    let sortDescriptor: NSSortDescriptor
+    switch sortMode.wrappedValue {
+    case .director:
+      sortDescriptor = NSSortDescriptor(keyPath: \SavedMovie.director, ascending: true)
+    case .favorites:
+      sortDescriptor = NSSortDescriptor(keyPath: \SavedMovie.favorited, ascending: false)
+    case .notWatched:
+      sortDescriptor = NSSortDescriptor(keyPath: \SavedMovie.watched, ascending: true)
+    default:
+      sortDescriptor = NSSortDescriptor(keyPath: \SavedMovie.title, ascending: true)
+    }
+    
+    self._savedMovies = FetchRequest(entity: SavedMovie.entity(), sortDescriptors: [
+      sortDescriptor
+    ])
+  }
 
   var body: some View {
     List {
@@ -68,6 +128,7 @@ struct MovieListView: View {
       }
     }
   }
+
 }
 
 struct SavedMovieDetailView: View {
@@ -86,7 +147,8 @@ struct SavedMovieRow: View {
   @ObservedObject var movie: SavedMovie
   var body: some View {
     HStack(alignment: .center) {
-      MovieImage(imageUrlString: movie.posterUrl, width: 90, radius: 5).shadow(radius: 10)
+      MovieImage(imageUrlString: movie.posterUrl, width: 90, radius: 5)
+        .shadow(radius: 6)
       VStack(alignment: .leading) {
         Text(movie.title)
           .font(.system(size: 20, weight: .semibold, design: .default))
@@ -137,10 +199,11 @@ struct SavedMovieButtonsView: View {
         Image(systemName: "heart.fill")
           .resizable()
           .aspectRatio(contentMode: .fit)
-          .frame(width: 30)
+          .frame(width: 25)
           .foregroundColor(self.savedMovie.favorited ? .pink : .gray)
         Text(self.savedMovie.favorited ? "Favorited" : "Favorite")
           .font(.system(size: 18, weight: .semibold, design: .default))
+          .fixedSize()
           .foregroundColor(self.savedMovie.favorited ? .pink : .gray)
       }
       .frame(width: 175, height: 50)
@@ -157,10 +220,11 @@ struct SavedMovieButtonsView: View {
         Image(systemName: self.savedMovie.watched ? "eye.fill" : "eye.slash.fill")
           .resizable()
           .aspectRatio(contentMode: .fit)
-          .frame(width: 30)
+          .frame(width: 28)
           .foregroundColor(self.savedMovie.watched ? .green : .gray)
         Text(self.savedMovie.watched ? "Watched" : "Not watched")
           .font(.system(size: 18, weight: .semibold, design: .default))
+          .fixedSize()
           .foregroundColor(self.savedMovie.watched ? .green : .gray)
       }
       .frame(width: 175, height: 50)
@@ -169,7 +233,7 @@ struct SavedMovieButtonsView: View {
           .stroke(self.savedMovie.watched ? Color.green : Color.gray, lineWidth: 3)
       )
       .padding(5)
-    }
+    }.padding()
   }
 }
 

@@ -70,17 +70,14 @@ struct MovieSearchView: View {
   }
 
   var detail: some View {
-    Group {
-      MovieDetailView(movie: self.viewModel.movieDetails)
-        .navigationBarItems(trailing: Button("Add") {
-          _ = SavedMovie(context: self.context, movie: self.viewModel.movieDetails!)
-          (UIApplication.shared.delegate as! AppDelegate).saveContext()
-          
-          self.showView.toggle()
-        }
-      )
-      Spacer()
-    }
+    MovieDetailView(movie: self.viewModel.movieDetails).navigationBarItems(trailing:
+      Button("Add") {
+        _ = SavedMovie(context: self.context, movie: self.viewModel.movieDetails!)
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        
+        self.showView.toggle()
+      }.disabled(viewModel.movieDetails == nil)
+    )
   }
 }
 

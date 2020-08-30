@@ -4,13 +4,13 @@
         <attribute name="director" optional="YES" attributeType="String"/>
         <attribute name="favorited" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="genres" optional="YES" attributeType="String"/>
-        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
         <attribute name="plot" optional="YES" attributeType="String"/>
         <attribute name="posterUrl" optional="YES" attributeType="String"/>
         <attribute name="rated" optional="YES" attributeType="String"/>
-        <attribute name="ratings" optional="YES" attributeType="Transformable"/>
+        <attribute name="ratings" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="."/>
         <attribute name="runtime" optional="YES" attributeType="String"/>
-        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="title" attributeType="String"/>
         <attribute name="watched" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="year" optional="YES" attributeType="String"/>
     </entity>

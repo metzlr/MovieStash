@@ -15,9 +15,12 @@ struct MovieDetailView: View {
   var body: some View {
     Group {
       if (movie == nil) {
-        Text("Movie Details")
-          .font(.system(size: 25, weight: .bold, design: .default))
-          .foregroundColor(.gray)
+        VStack {
+          
+          Text("Loading movie details...")
+//            .font(.system(size: 25, weight: .bold, design: .default))
+//            .foregroundColor(.gray)
+        }
       } else {
         self.detail
       }

@@ -170,6 +170,7 @@ class OMDB {
         }
       } catch let error {
         print(error)
+        //print(String(data: data!, encoding: .utf8))
         completion(.failure(.decodeFailure))
       }
     }.resume()
