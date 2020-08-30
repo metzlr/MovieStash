@@ -34,42 +34,48 @@ struct MovieDetailView: View {
         .font(.system(size: 27, weight: .bold, design: .default))
         .fixedSize(horizontal: false, vertical: true)
         .multilineTextAlignment(.center)
+        .padding(.vertical, 8)
+      if (movie!.director != nil) {
+        Text("Directed by "+movie!.director!)
+          .font(.system(size: 18, weight: .semibold, design: .default))
+          .fixedSize(horizontal: false, vertical: true)
+      }
       HStack(alignment: .center) {
+        Spacer()
         MovieImage(imageUrl: movie!.posterUrl, width: 200, radius: 0).shadow(radius: 10)
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 6) {
           if (movie!.year != nil) {
-            Text(movie!.year!).fontWeight(.bold)
-          }
-          if (movie!.director != nil) {
-            Text(movie!.director!)
-              .font(.headline)
-              .fixedSize(horizontal: false, vertical: true)
+            Text("Released in "+movie!.year!)
+              .font(.system(size: 16, weight: .semibold, design: .default))
+              .padding(.top, 5)
           }
           if (movie!.runtime != nil) {
             Text(movie!.runtime!)
+              .font(.system(size: 16, weight: .semibold, design: .default))
           }
           if (movie!.rated != nil) {
-            Text(movie!.rated!)
+            Text("Rated "+movie!.rated!)
+              .font(.system(size: 16, weight: .semibold, design: .default))
           }
           if (movie!.genres != nil) {
             Text(movie!.genres!)
               .font(.caption)
               .fontWeight(.semibold)
-              .padding(.top, 5)
               .fixedSize(horizontal: false, vertical: true)
           }
-          VStack(spacing: 10) {
+          VStack(alignment: .leading, spacing: 10) {
             ForEach(movie!.ratings, id: \.self.source) { rating in
               MovieRatingView(rating: rating)
             }
           }.padding(.top, 15)
-        }.padding(.leading, 5)
+        }.padding(.leading, 8)
         Spacer()
       }
       if (movie!.plot != nil) {
         Text(movie!.plot!)
           .fixedSize(horizontal: false, vertical: true)
-          .padding(15)
+          .multilineTextAlignment(.center)
+          .padding(.vertical, 15)
       }
     }.padding()
   }
@@ -102,7 +108,7 @@ struct MovieRatingView: View {
         Text(rating.source)
       }
       Text(rating.value).font(.system(size: 17, weight: .semibold, design: .default))
-      Spacer()
+      //Spacer()
     }
   }
 }

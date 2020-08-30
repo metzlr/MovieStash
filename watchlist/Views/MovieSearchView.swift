@@ -70,14 +70,17 @@ struct MovieSearchView: View {
   }
 
   var detail: some View {
-    MovieDetailView(movie: self.viewModel.movieDetails).navigationBarItems(trailing:
-      Button("Add") {
-        _ = SavedMovie(context: self.context, movie: self.viewModel.movieDetails!)
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
-        
-        self.showView.toggle()
-      }.disabled(viewModel.movieDetails == nil)
-    )
+    Group {
+      MovieDetailView(movie: self.viewModel.movieDetails).navigationBarItems(trailing:
+        Button("Add") {
+          _ = SavedMovie(context: self.context, movie: self.viewModel.movieDetails!)
+          (UIApplication.shared.delegate as! AppDelegate).saveContext()
+          
+          self.showView.toggle()
+        }.disabled(viewModel.movieDetails == nil)
+      )
+      Spacer()
+    }
   }
 }
 
@@ -86,10 +89,13 @@ struct MovieSearchRow: View {
   var body: some View {
     HStack {
       MovieImage(imageUrl: movie.posterUrl, width: 60, radius: 6).padding(3).shadow(radius: 5)
-      Text(movie.title)
-        .font(.headline)
-      Spacer()
-      Text(movie.year).foregroundColor(.gray)
+      VStack(alignment: .leading) {
+        Text(movie.title)
+          .font(.headline)
+        Text(movie.year)
+          .font(.subheadline)
+          .foregroundColor(.gray)
+      }
     }
   }
 }

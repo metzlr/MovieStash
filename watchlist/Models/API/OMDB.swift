@@ -103,7 +103,7 @@ fileprivate struct OMDBMovieLookupResource: ApiResource {
   let baseUrl = "http://www.omdbapi.com"
   let methodPath = ""
   let httpMethod = "GET"
-  var parameters = [String]()
+  var parameters = ["plot=full"]
   
   init(apiKey: String, id: String) {
     parameters.append(contentsOf: ["apikey=\(apiKey)", "i=\(id)"])
