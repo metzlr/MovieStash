@@ -54,7 +54,9 @@ struct MovieDetailView: View {
       HStack(alignment: .center) {
         MovieImage(imageUrl: movie!.posterUrl, width: 200, radius: 0)
         VStack(alignment: .leading, spacing: 4) {
-          Text(movie!.year).fontWeight(.bold)
+          if (movie!.year != nil) {
+            Text(movie!.year!).fontWeight(.bold)
+          }
           if (movie!.director != nil) {
             Text(movie!.director!)
               .font(.headline)
@@ -64,13 +66,16 @@ struct MovieDetailView: View {
             Text(movie!.runtime!)
           }
           if (movie!.rated != nil) {
-            Text(movie!.rated!).fontWeight(.semibold)
+            Text(movie!.rated!)//.fontWeight(.semibold)
           }
-          movie!.genres.reduce(Text(""), { $0 + Text($1) + Text(" ")} )
-            .font(.caption)
-            .fontWeight(.semibold)
-            .padding(.top, 5)
-            .fixedSize(horizontal: false, vertical: true)
+          if (movie!.genres != nil) {
+            //movie!.genres.reduce(Text(""), { $0 + Text($1) + Text(" ")} )
+            Text(movie!.genres!)
+              .font(.caption)
+              .fontWeight(.semibold)
+              .padding(.top, 5)
+              .fixedSize(horizontal: false, vertical: true)
+          }
           VStack(spacing: 10) {
             ForEach(movie!.ratings, id: \.self.source) { rating in
               MovieRatingView(rating: rating)

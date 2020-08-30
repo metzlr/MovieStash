@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		881D528A24FB7F66004F2C7E /* SavedMovie+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881D528824FB7F66004F2C7E /* SavedMovie+CoreDataProperties.swift */; };
 		88267D5F24F6A33000F7C76F /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88267D5E24F6A33000F7C76F /* SearchBar.swift */; };
 		88267D6124F6A70800F7C76F /* MovieDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88267D6024F6A70800F7C76F /* MovieDetailView.swift */; };
 		88267D6324F6AE6100F7C76F /* EnvironmentValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88267D6224F6AE6100F7C76F /* EnvironmentValues.swift */; };
@@ -18,6 +19,8 @@
 		88267D7424F80C1D00F7C76F /* ApiResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88267D7324F80C1D00F7C76F /* ApiResource.swift */; };
 		88267D7724F81AE500F7C76F /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88267D7624F81AE500F7C76F /* Movie.swift */; };
 		885D162B24F9C03500FDA968 /* MovieImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885D162A24F9C03500FDA968 /* MovieImage.swift */; };
+		885D165424FA8A0500FDA968 /* WatchlistData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 885D165224FA8A0500FDA968 /* WatchlistData.xcdatamodeld */; };
+		885F96CE24FADA6500FD5F74 /* SavedMovie+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885F96CC24FADA6500FD5F74 /* SavedMovie+CoreDataClass.swift */; };
 		887F51B824F5FF8700064B5A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887F51B724F5FF8700064B5A /* AppDelegate.swift */; };
 		887F51BA24F5FF8700064B5A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887F51B924F5FF8700064B5A /* SceneDelegate.swift */; };
 		887F51BC24F5FF8700064B5A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887F51BB24F5FF8700064B5A /* ContentView.swift */; };
@@ -32,6 +35,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		881D528824FB7F66004F2C7E /* SavedMovie+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SavedMovie+CoreDataProperties.swift"; path = "../../SavedMovie+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		88267D5E24F6A33000F7C76F /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		88267D6024F6A70800F7C76F /* MovieDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailView.swift; sourceTree = "<group>"; };
 		88267D6224F6AE6100F7C76F /* EnvironmentValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentValues.swift; sourceTree = "<group>"; };
@@ -42,6 +46,8 @@
 		88267D7324F80C1D00F7C76F /* ApiResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiResource.swift; sourceTree = "<group>"; };
 		88267D7624F81AE500F7C76F /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		885D162A24F9C03500FDA968 /* MovieImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieImage.swift; sourceTree = "<group>"; };
+		885D165324FA8A0500FDA968 /* WatchlistData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WatchlistData.xcdatamodel; sourceTree = "<group>"; };
+		885F96CC24FADA6500FD5F74 /* SavedMovie+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedMovie+CoreDataClass.swift"; sourceTree = "<group>"; };
 		887F51B424F5FF8700064B5A /* watchlist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = watchlist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		887F51B724F5FF8700064B5A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		887F51B924F5FF8700064B5A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -107,6 +113,7 @@
 				887F51BD24F5FF8800064B5A /* Assets.xcassets */,
 				887F51C224F5FF8800064B5A /* LaunchScreen.storyboard */,
 				887F51C524F5FF8800064B5A /* Info.plist */,
+				885D165224FA8A0500FDA968 /* WatchlistData.xcdatamodeld */,
 				887F51BF24F5FF8800064B5A /* Preview Content */,
 			);
 			path = watchlist;
@@ -139,6 +146,8 @@
 		887F51CC24F600D700064B5A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				885F96CC24FADA6500FD5F74 /* SavedMovie+CoreDataClass.swift */,
+				881D528824FB7F66004F2C7E /* SavedMovie+CoreDataProperties.swift */,
 				88267D7524F80C2F00F7C76F /* API */,
 				88267D7624F81AE500F7C76F /* Movie.swift */,
 				887F51D724F6755100064B5A /* AppController.swift */,
@@ -223,8 +232,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				885F96CE24FADA6500FD5F74 /* SavedMovie+CoreDataClass.swift in Sources */,
 				887F51B824F5FF8700064B5A /* AppDelegate.swift in Sources */,
 				88267D6C24F7D5F400F7C76F /* Colors.swift in Sources */,
+				881D528A24FB7F66004F2C7E /* SavedMovie+CoreDataProperties.swift in Sources */,
 				88267D7724F81AE500F7C76F /* Movie.swift in Sources */,
 				88267D6324F6AE6100F7C76F /* EnvironmentValues.swift in Sources */,
 				885D162B24F9C03500FDA968 /* MovieImage.swift in Sources */,
@@ -232,6 +243,7 @@
 				887F51BA24F5FF8700064B5A /* SceneDelegate.swift in Sources */,
 				887F51CE24F6016F00064B5A /* MoviesView.swift in Sources */,
 				88267D6524F7735200F7C76F /* URLImage.swift in Sources */,
+				885D165424FA8A0500FDA968 /* WatchlistData.xcdatamodeld in Sources */,
 				88267D7224F80BFB00F7C76F /* OMDB.swift in Sources */,
 				887F51BC24F5FF8700064B5A /* ContentView.swift in Sources */,
 				887F51D224F618F100064B5A /* TMDB.swift in Sources */,
@@ -453,6 +465,19 @@
 			productName = URLImage;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		885D165224FA8A0500FDA968 /* WatchlistData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				885D165324FA8A0500FDA968 /* WatchlistData.xcdatamodel */,
+			);
+			currentVersion = 885D165324FA8A0500FDA968 /* WatchlistData.xcdatamodel */;
+			path = WatchlistData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 887F51AC24F5FF8700064B5A /* Project object */;
 }

@@ -14,6 +14,22 @@ struct MovieImage: View {
   var width: CGFloat
   var radius: CGFloat
   
+  init(imageUrl: URL?, width: CGFloat, radius: CGFloat) {
+    self.imageUrl = imageUrl
+    self.width = width
+    self.radius = radius
+  }
+  
+  init(imageUrlString: String?, width: CGFloat, radius: CGFloat) {
+    if let urlString = imageUrlString {
+      self.imageUrl = URL(string: urlString)
+    } else {
+      self.imageUrl = nil
+    }
+    self.width = width
+    self.radius = radius
+  }
+  
   var body: some View {
     Group {
       if (self.imageUrl != nil) {

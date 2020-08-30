@@ -8,6 +8,7 @@
 
 import Foundation
 import URLImage
+import CoreData
 
 class AppController: ObservableObject {
   
@@ -18,7 +19,13 @@ class AppController: ObservableObject {
   private static let OMDB_API_KEY = "c28b587b"
   var omdb: OMDB
   
-  @Published var savedMovies: [SavedMovie] = [SavedMovie]()
+ // @Published var savedMovies: [SavedMovie] = [SavedMovie]()
+//  @FetchRequest(
+//    entity: SavedMovie.entity(),
+//    sortDescriptors: [
+//      NSSortDescriptor(keyPath: \SavedMovie.title, ascending: true)
+//    ]
+//  ) var savedMovies: FetchResults<Programming
   
   init() {
     
@@ -27,16 +34,16 @@ class AppController: ObservableObject {
     URLImageService.shared.cleanFileCache()
     //tmdb = TMDB(apiKey: self.API_KEY)
     omdb = OMDB(apiKey: AppController.OMDB_API_KEY)
-    self.savedMovies = self.loadSavedMovies()
+   // self.savedMovies = self.loadSavedMovies()
   }
   
-  private func loadSavedMovies() -> [SavedMovie] {
-    return [SavedMovie]()
-  }
-  
-  func addSavedMovie(movie: MovieDetailed) {
-    let savedMovie = SavedMovie(movie: movie)
-    savedMovies.append(savedMovie)
-  }
+//  private func loadSavedMovies() -> [SavedMovie] {
+//    return [SavedMovie]()
+//  }
+//
+//  func addSavedMovie(movie: MovieDetailed) {
+//    let savedMovie = SavedMovie(movie: movie)
+//    savedMovies.append(savedMovie)
+//  }
 }
 

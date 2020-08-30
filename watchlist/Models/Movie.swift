@@ -51,11 +51,11 @@ struct MovieRating: Codable {
 struct MovieDetailed: Identifiable, Codable {
   let id: String
   let title: String
-  let year: String
+  let year: String?
   let posterUrl: URL?
   let rated: String?
   let runtime: String?
-  let genres: [String]
+  let genres: String?
   let director: String?
   let plot: String?
   let ratings: [MovieRating]
@@ -78,14 +78,14 @@ extension OMDBMovieLookup {
       formattedRatings.append(MovieRating(source: "imdb", value: self.imdbRating))
     }
     
-    let genres = self.genres.components(separatedBy: ", ")
+    //let genres = self.genres.components(separatedBy: ", ")
     let director: String? = self.director == "N/A" ? nil : self.director
     let rated: String? = self.rated == "N/A" ? nil : self.rated
     let runtime: String? = self.runtime == "N/A" ? nil : self.runtime
     let posterUrl: URL? = self.posterUrl == "N/A" ? nil : URL(string: self.posterUrl)
     let plot: String? = self.plot == "N/A" ? nil : self.plot
     
-    return MovieDetailed(id: self.id, title: self.title, year: self.year, posterUrl: posterUrl, rated: rated, runtime: runtime, genres: genres, director: director, plot: plot, ratings: formattedRatings)
+    return MovieDetailed(id: self.id, title: self.title, year: self.year, posterUrl: posterUrl, rated: rated, runtime: runtime, genres: self.genres, director: director, plot: plot, ratings: formattedRatings)
   }
 }
 
@@ -103,36 +103,36 @@ extension OMDB {
   }
 }
 
-class SavedMovie: ObservableObject, Codable {
-  let data: MovieDetailed
-  @Published var watched: Bool
-  @Published var favorited: Bool
-  
-  init(movie: MovieDetailed) {
-    self.data = movie
-    watched = false
-    favorited = false
-  }
-  
-  enum CodingKeys: String, CodingKey {
-    case data
-    case watched
-    case favorited
-  }
-  
-  required init(from decoder: Decoder) throws {
-    let values = try decoder.container(keyedBy: CodingKeys.self)
-    
-    self.data = try values.decode(MovieDetailed.self, forKey: .data)
-    watched = try values.decode(Bool.self, forKey: .watched)
-    favorited = try values.decode(Bool.self, forKey: .favorited)
-  }
-  
-  func encode(to encoder: Encoder) throws {
-    var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(data, forKey: .data)
-    try container.encode(watched, forKey: .watched)
-    try container.encode(favorited, forKey: .favorited)
-  }
-}
+//class SavedMovie: ObservableObject, Codable {
+//  let data: MovieDetailed
+//  @Published var watched: Bool
+//  @Published var favorited: Bool
+//
+//  init(movie: MovieDetailed) {
+//    self.data = movie
+//    watched = false
+//    favorited = false
+//  }
+//
+//  enum CodingKeys: String, CodingKey {
+//    case data
+//    case watched
+//    case favorited
+//  }
+//
+//  required init(from decoder: Decoder) throws {
+//    let values = try decoder.container(keyedBy: CodingKeys.self)
+//
+//    self.data = try values.decode(MovieDetailed.self, forKey: .data)
+//    watched = try values.decode(Bool.self, forKey: .watched)
+//    favorited = try values.decode(Bool.self, forKey: .favorited)
+//  }
+//
+//  func encode(to encoder: Encoder) throws {
+//    var container = encoder.container(keyedBy: CodingKeys.self)
+//    try container.encode(data, forKey: .data)
+//    try container.encode(watched, forKey: .watched)
+//    try container.encode(favorited, forKey: .favorited)
+//  }
+//}
 

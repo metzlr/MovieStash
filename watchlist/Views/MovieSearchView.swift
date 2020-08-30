@@ -48,11 +48,11 @@ class MovieSearchViewModel: ObservableObject {
       self.getMovieDetail(movie: newValue)
     }
   }
-  
+
   init(omdb: OMDB) {
     self.omdb = omdb;
   }
-  
+
   func getMovieDetail(movie: Movie?) {
     guard let movie = movie else { return }
     omdb.movieDetails(movie: movie) { response in
@@ -65,10 +65,11 @@ class MovieSearchViewModel: ObservableObject {
 }
 
 struct MovieSearchView: View {
+  @Environment(\.managedObjectContext) var context
   @EnvironmentObject var app: AppController
   @ObservedObject var viewModel: MovieSearchViewModel
   @Binding var showView: Bool
-  
+
   var body: some View {
     NavigationView {
       VStack(spacing: 0) {
@@ -80,17 +81,20 @@ struct MovieSearchView: View {
             }
           }
         }
-        
+
       }
       .navigationBarTitle("Search")
     }
   }
-  
+
   var detail: some View {
     Group {
       MovieDetailView(movie: self.viewModel.movieDetails)
         .navigationBarItems(trailing: Button("Add") {
-          self.app.addSavedMovie(movie: self.viewModel.movieDetails!)
+          //self.app.addSavedMovie(movie: self.viewModel.movieDetails!)
+          let savedMovie = SavedMovie(context: self.context, movie: self.viewModel.movieDetails!)
+          (UIApplication.shared.delegate as! AppDelegate).saveContext()
+          
           self.showView.toggle()
         }
       )

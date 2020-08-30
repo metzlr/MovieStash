@@ -8,11 +8,13 @@
 
 import SwiftUI
 import URLImage
+import CoreData
 
 struct MoviesView: View {
+  @Environment(\.managedObjectContext) var context
   @EnvironmentObject var app: AppController
-  
   @State private var showSearchView: Bool = false
+
   var body: some View {
     NavigationView {
       MovieListView()
@@ -30,33 +32,58 @@ struct MoviesView: View {
     }
       .navigationViewStyle(DoubleColumnNavigationViewStyle())
       .sheet(isPresented: self.$showSearchView) {
-        MovieSearchView(viewModel: MovieSearchViewModel(omdb: self.app.omdb), showView: self.$showSearchView).environmentObject(self.app)
+        MovieSearchView(viewModel: MovieSearchViewModel(omdb: self.app.omdb), showView: self.$showSearchView)
+          .environmentObject(self.app)
+          .environment(\.managedObjectContext, self.context)
       }
   }
 }
 
 struct MovieListView: View {
+  @Environment(\.managedObjectContext) var context
   @EnvironmentObject var app: AppController
-  
+  @FetchRequest(
+    entity: SavedMovie.entity(),
+    sortDescriptors: [
+      NSSortDescriptor(keyPath: \SavedMovie.title, ascending: true)
+    ]
+  ) var savedMovies: FetchedResults<SavedMovie>
+
   var body: some View {
+//    List {
+//      ForEach(app.savedMovies, id: \.self.data.id) { movie in
+//        NavigationLink(destination: SavedMovieDetailView(savedMovie: movie)) {
+//          SavedMovieRow(movie: movie)
+//        }
+//      }
+//    }.onAppear {
+//      //UITableView.appearance().separatorStyle = .none
+//    }
     List {
-      ForEach(app.savedMovies, id: \.self.data.id) { movie in
+      ForEach(savedMovies) { movie in
         NavigationLink(destination: SavedMovieDetailView(savedMovie: movie)) {
           SavedMovieRow(movie: movie)
         }
-      }
-    }.onAppear {
-      //UITableView.appearance().separatorStyle = .none
+      }.onDelete(perform: deleteItem)
     }
+  }
+  
+  private func deleteItem(at offsets: IndexSet) {
+    for index in offsets {
+      let movie = savedMovies[index]
+      context.delete(movie)
+      (UIApplication.shared.delegate as! AppDelegate).saveContext()
+    }
+    
   }
 }
 
 struct SavedMovieDetailView: View {
   var savedMovie: SavedMovie
-  
+
   var body: some View {
     Group {
-      MovieDetailView(movie: savedMovie.data)
+      MovieDetailView(movie: MovieDetailed(savedMovie: savedMovie))
       SavedMovieButtonsView(savedMovie: savedMovie)
       Spacer()
     }
@@ -67,24 +94,22 @@ struct SavedMovieRow: View {
   @ObservedObject var movie: SavedMovie
   var body: some View {
     HStack(alignment: .center) {
-      MovieImage(imageUrl: movie.data.posterUrl, width: 80, radius: 5)
+      MovieImage(imageUrlString: movie.posterUrl, width: 80, radius: 5)
       VStack(alignment: .leading) {
-        Text(movie.data.title)
+        Text(movie.title)
           .font(.system(size: 20, weight: .semibold, design: .default))
-        if (movie.data.director != nil) {
-          Text(movie.data.director!)
+        if (movie.director != nil) {
+          Text(movie.director!)
             .font(.system(size: 16, weight: .medium, design: .default))
         }
-        if (movie.data.runtime != nil) {
-          Text(movie.data.runtime!)
+        if (movie.runtime != nil) {
+          Text(movie.runtime!)
             .font(.system(size: 14, weight: .regular, design: .default))
           . padding(.vertical, 4)
         }
-        HStack {
-          ForEach(movie.data.genres, id: \.self) { genre in
-            Text(genre)
-              .font(.system(size: 12, weight: .regular, design: .default))
-          }
+        if (movie.genres != nil) {
+          Text(movie.genres!)
+            .font(.system(size: 12, weight: .regular, design: .default))
         }
         HStack {
           Image(systemName: (self.movie.watched ? "checkmark.circle.fill" : "xmark.circle.fill"))
@@ -110,11 +135,12 @@ struct SavedMovieRow: View {
 
 struct SavedMovieButtonsView: View {
   @ObservedObject var savedMovie: SavedMovie
-  
+
   var body: some View {
     HStack {
       Button(action: {
         self.savedMovie.favorited.toggle()
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
       }) {
         Image(systemName: "heart.fill")
           .resizable()
@@ -131,9 +157,10 @@ struct SavedMovieButtonsView: View {
           .stroke(self.savedMovie.favorited ? Color.pink : Color.gray, lineWidth: 3)
       )
       .padding(5)
-      
+
       Button(action: {
         self.savedMovie.watched.toggle()
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
       }) {
         Image(systemName: self.savedMovie.watched ? "eye.fill" : "eye.slash.fill")
           .resizable()
