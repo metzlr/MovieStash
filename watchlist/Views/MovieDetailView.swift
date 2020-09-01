@@ -16,13 +16,14 @@ struct MovieDetailView: View {
     Group {
       if (movie == nil) {
         VStack {
-          
+          Spacer()
           Text("Loading movie details...")
-//            .font(.system(size: 25, weight: .bold, design: .default))
-//            .foregroundColor(.gray)
+            .font(.system(size: 25, weight: .bold, design: .default))
+            .foregroundColor(.gray).padding(.top, 20)
+          Spacer()
         }
       } else {
-        self.detail.onAppear { print("detail view appeared") }
+        self.detail
       }
     }
     .navigationBarTitle("Movie Details", displayMode: .inline)
