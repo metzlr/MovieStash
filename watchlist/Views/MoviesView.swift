@@ -216,56 +216,6 @@ struct SavedMovieButtonsNavbarView: View {
   }
 }
 
-struct SavedMovieButtonsView: View {
-  @ObservedObject var savedMovie: SavedMovie
-
-  var body: some View {
-    HStack {
-      Button(action: {
-        self.savedMovie.favorited.toggle()
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
-      }) {
-        Image(systemName: "heart.fill")
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .frame(width: 25)
-          .foregroundColor(self.savedMovie.favorited ? .pink : .gray)
-        Text(self.savedMovie.favorited ? "Favorited" : "Favorite")
-          .font(.system(size: 18, weight: .semibold, design: .default))
-          .fixedSize()
-          .foregroundColor(self.savedMovie.favorited ? .pink : .gray)
-      }
-      .frame(width: 175, height: 50)
-      .overlay(
-        RoundedRectangle(cornerRadius: 15)
-          .stroke(self.savedMovie.favorited ? Color.pink : Color.gray, lineWidth: 3)
-      )
-      .padding(5)
-
-      Button(action: {
-        self.savedMovie.watched.toggle()
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
-      }) {
-        Image(systemName: self.savedMovie.watched ? "eye.fill" : "eye.slash.fill")
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .frame(width: 28)
-          .foregroundColor(self.savedMovie.watched ? .green : .gray)
-        Text(self.savedMovie.watched ? "Watched" : "Not watched")
-          .font(.system(size: 18, weight: .semibold, design: .default))
-          .fixedSize()
-          .foregroundColor(self.savedMovie.watched ? .green : .gray)
-      }
-      .frame(width: 175, height: 50)
-      .overlay(
-        RoundedRectangle(cornerRadius: 15)
-          .stroke(self.savedMovie.watched ? Color.green : Color.gray, lineWidth: 3)
-      )
-      .padding(5)
-    }.padding()
-  }
-}
-
 //struct MoviesView_Previews: PreviewProvider {
 //  static let app: AppController = AppController.DEBUG
 //  static var previews: some View {
