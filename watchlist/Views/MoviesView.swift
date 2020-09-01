@@ -122,13 +122,25 @@ struct MovieListView: View {
 }
 
 struct SavedMovieDetailView: View {
-  var savedMovie: SavedMovie
+  @EnvironmentObject var app: AppController
+  @ObservedObject var savedMovie: SavedMovie
 
   var body: some View {
     Group {
       MovieDetailView(movie: MovieDetailed(savedMovie: savedMovie))
       Spacer()
       SavedMovieButtonsView(savedMovie: savedMovie)
+    }.onAppear {  // Try and fetch updated movie details from API. Only allow each movie to be refreshed once per app session
+      if (self.app.updatedMovieIds.insert(self.savedMovie.id).inserted) {
+        self.app.omdb.movieDetails(id: self.savedMovie.id) { response in
+          if let details = response {
+            self.savedMovie.update(details: details)
+            DispatchQueue.main.async {
+              (UIApplication.shared.delegate as! AppDelegate).saveContext()
+            }
+          }
+        }
+      }
     }
   }
 }

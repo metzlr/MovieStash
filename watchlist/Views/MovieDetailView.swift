@@ -22,7 +22,7 @@ struct MovieDetailView: View {
 //            .foregroundColor(.gray)
         }
       } else {
-        self.detail
+        self.detail.onAppear { print("detail view appeared") }
       }
     }
     .navigationBarTitle("Movie Details", displayMode: .inline)
