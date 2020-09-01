@@ -31,53 +31,86 @@ struct MovieDetailView: View {
   
   var detail: some View {
     ScrollView {
-      VStack(alignment: .center) {
+      VStack(alignment: .leading) {
+        HStack(alignment: .center, spacing: 20) {
+          MovieImage(imageUrl: movie!.posterUrl, width: 200, radius: 0)
+            .cornerRadius(10)
+            .shadow(radius: 10)
+          VStack(alignment: .leading, spacing: 10) {
+            if (movie!.director != nil) {
+              VStack(alignment: .leading, spacing: 3) {
+                Text("Director").font(.system(size: 14, weight: .semibold, design: .default))
+                Text(movie!.director!)
+                  .font(.system(size: 13, weight: .semibold, design: .default))
+                  .foregroundColor(.gray)
+                  .fixedSize(horizontal: false, vertical: true)
+              }
+            }
+            if (movie!.year != nil) {
+              VStack(alignment: .leading, spacing: 3) {
+                Text("Release Year").font(.system(size: 14, weight: .semibold, design: .default))
+                Text(movie!.year!)
+                  .font(.system(size: 13, weight: .semibold, design: .default))
+                  .foregroundColor(.gray)
+              }
+            }
+            if (movie!.runtime != nil) {
+              VStack(alignment: .leading, spacing: 3) {
+                Text("Runtime").font(.system(size: 14, weight: .semibold, design: .default))
+                Text(movie!.runtime!)
+                  .font(.system(size: 13, weight: .semibold, design: .default))
+                  .foregroundColor(.gray)
+              }
+            }
+            if (movie!.rated != nil) {
+              VStack(alignment: .leading, spacing: 3) {
+                Text("Rated").font(.system(size: 14, weight: .semibold, design: .default))
+                Text(movie!.rated!)
+                  .font(.system(size: 13, weight: .semibold, design: .default))
+                  .foregroundColor(.gray)
+              }
+            }
+            if (movie!.genres != nil) {
+              VStack(alignment: .leading, spacing: 3) {
+                Text("Genres").font(.system(size: 14, weight: .semibold, design: .default))
+                Text(movie!.genres!)
+                  .font(.system(size: 13, weight: .semibold, design: .default))
+                  .fontWeight(.semibold)
+                  .foregroundColor(.gray)
+                  .fixedSize(horizontal: false, vertical: true)
+              }
+            }
+          }
+          Spacer()
+        }
         Text(movie!.title)
           .font(.system(size: 27, weight: .bold, design: .default))
           .fixedSize(horizontal: false, vertical: true)
-          .multilineTextAlignment(.center)
-          .padding(.vertical, 8)
-        if (movie!.director != nil) {
-          Text("Directed by "+movie!.director!)
-            .font(.system(size: 18, weight: .semibold, design: .default))
-            .fixedSize(horizontal: false, vertical: true)
-        }
-        HStack(alignment: .center) {
-          Spacer()
-          MovieImage(imageUrl: movie!.posterUrl, width: 200, radius: 0).shadow(radius: 10)
-          VStack(alignment: .leading, spacing: 6) {
-            if (movie!.year != nil) {
-              Text("Released in "+movie!.year!)
-                .font(.system(size: 16, weight: .semibold, design: .default))
-                .padding(.top, 5)
-            }
-            if (movie!.runtime != nil) {
-              Text(movie!.runtime!)
-                .font(.system(size: 16, weight: .semibold, design: .default))
-            }
-            if (movie!.rated != nil) {
-              Text("Rated "+movie!.rated!)
-                .font(.system(size: 16, weight: .semibold, design: .default))
-            }
-            if (movie!.genres != nil) {
-              Text(movie!.genres!)
-                .font(.caption)
-                .fontWeight(.semibold)
-                .fixedSize(horizontal: false, vertical: true)
-            }
-            VStack(alignment: .leading, spacing: 10) {
+          .multilineTextAlignment(.leading)
+          .padding(.vertical, 5)
+        if (movie!.ratings.count > 0) {
+          Divider()
+          VStack(alignment: .leading) {
+            Text("Ratings").font(.headline)
+            HStack(alignment: .center, spacing: 10) {
               ForEach(movie!.ratings, id: \.self.source) { rating in
-                MovieRatingView(rating: rating)
+                MovieRatingView(rating: rating).padding(.trailing, 5)
               }
-            }.padding(.top, 15)
-          }.padding(.leading, 8)
-          Spacer()
+            }
+          }
         }
+        Spacer()
         if (movie!.plot != nil) {
-          Text(movie!.plot!)
-            .fixedSize(horizontal: false, vertical: true)
-            .multilineTextAlignment(.center)
-            .padding(.vertical, 15)
+          Divider().padding(5)
+          VStack(alignment: .leading) {
+            Text("Plot Summary").font(.headline)
+            Text(movie!.plot!)
+              .fixedSize(horizontal: false, vertical: true)
+              .multilineTextAlignment(.leading)
+              .foregroundColor(.gray)
+              .padding(.top, 7)
+          }
+          
         }
       }.padding()
     }
@@ -110,7 +143,9 @@ struct MovieRatingView: View {
       } else {
         Text(rating.source)
       }
-      Text(rating.value).font(.system(size: 17, weight: .semibold, design: .default))
+      Text(rating.value)
+        .foregroundColor(.gray)
+        .font(.system(size: 15, weight: .semibold, design: .default))
       //Spacer()
     }
   }
