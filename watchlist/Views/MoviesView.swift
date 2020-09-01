@@ -127,9 +127,7 @@ struct SavedMovieDetailView: View {
 
   var body: some View {
     Group {
-      MovieDetailView(movie: MovieDetailed(savedMovie: savedMovie))
-      Spacer()
-      SavedMovieButtonsView(savedMovie: savedMovie)
+      MovieDetailView(movie: MovieDetailed(savedMovie: savedMovie)).navigationBarItems(trailing: SavedMovieButtonsNavbarView(savedMovie: savedMovie))
     }.onAppear {  // Try and fetch updated movie details from API. Only allow each movie to be refreshed once per app session
       if (self.app.updatedMovieIds.insert(self.savedMovie.id).inserted) {
         self.app.omdb.movieDetails(id: self.savedMovie.id) { response in
@@ -186,6 +184,35 @@ struct SavedMovieRow: View {
       }
       .padding(.leading, 5)
     }.padding(5)
+  }
+}
+
+struct SavedMovieButtonsNavbarView: View {
+  @ObservedObject var savedMovie: SavedMovie
+  
+  var body: some View {
+    HStack(alignment: .center, spacing: 20) {
+      Button(action: {
+        self.savedMovie.favorited.toggle()
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+      }) {
+        Image(systemName: self.savedMovie.favorited ? "heart.fill" : "heart")
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+          .frame(width: 25)
+          .foregroundColor(self.savedMovie.favorited ? .pink : .gray)
+      }
+      Button(action: {
+        self.savedMovie.watched.toggle()
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+      }) {
+        Image(systemName: self.savedMovie.watched ? "eye.fill" : "eye")
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+          .frame(width: 35)
+          .foregroundColor(self.savedMovie.watched ? .green : .gray)
+      }
+    }
   }
 }
 
