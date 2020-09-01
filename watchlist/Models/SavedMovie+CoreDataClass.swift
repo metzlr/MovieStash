@@ -15,23 +15,30 @@ public class SavedMovie: NSManagedObject {
   
   convenience init(context: NSManagedObjectContext, movie: MovieDetailed) {
     self.init(context: context)
-    var flatRatings: [String] = [String]()
-    for rating in movie.ratings {
-      flatRatings.append(rating.source)
-      flatRatings.append(rating.value)
-    }
     self.id = movie.id
     self.title = movie.title
     self.director = movie.director
     self.posterUrl = movie.posterUrl?.absoluteString
     self.rated = movie.rated
-    self.ratings = flatRatings
+    self.ratings = movie.flatRatings()
     self.runtime = movie.runtime
     self.genres = movie.genres
     self.plot = movie.plot
     self.year = movie.year
     self.watched = false
     self.favorited = false
+  }
+  
+  func update(details: MovieDetailed) {
+    self.title = details.title
+    self.director = details.director
+    self.posterUrl = details.posterUrl?.absoluteString
+    self.rated = details.rated
+    self.ratings = details.flatRatings()
+    self.runtime = details.runtime
+    self.genres = details.genres
+    self.plot = details.plot
+    self.year = details.year
   }
 }
 

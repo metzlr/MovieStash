@@ -59,6 +59,15 @@ struct MovieDetailed: Identifiable, Codable {
   let director: String?
   let plot: String?
   let ratings: [MovieRating]
+  
+  func flatRatings() -> [String] {
+    var flatRatings: [String] = [String]()
+    for rating in self.ratings {
+      flatRatings.append(rating.source)
+      flatRatings.append(rating.value)
+    }
+    return flatRatings
+  }
 }
 
 extension OMDBMovieLookup {
@@ -90,8 +99,8 @@ extension OMDBMovieLookup {
 }
 
 extension OMDB {
-  func movieDetails(movie: Movie, completion: @escaping(MovieDetailed?) -> Void) {
-    self.movieLookup(id: movie.id) { response in
+  func movieDetails(id: String, completion: @escaping(MovieDetailed?) -> Void) {
+    self.movieLookup(id: id) { response in
       switch response {
       case .success(let data):
         completion(data.toMovieDetailed())

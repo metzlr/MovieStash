@@ -35,16 +35,6 @@ struct MoviesView: View {
         }
         .pickerStyle(SegmentedPickerStyle())
         .padding()
-//        HStack {
-//          Spacer()
-//          Button(action: {
-//            self.showSortMenu.toggle()
-//          }) {
-//            Text("Sort By:").bold()
-//            Text(sortMode.rawValue)
-//            //Image(systemName: "chevron.down.circle")
-//          }
-//        }.padding(.trailing, 30)
         MovieListView(sortMode: $sortMode)
           .navigationBarTitle(Text("Movies"))
           .navigationBarItems(
@@ -58,12 +48,6 @@ struct MoviesView: View {
           )
       }
         .navigationBarItems(
-//          leading: Button(action: {
-//            self.showSortMenu.toggle()
-//          }) {
-//            Text("Sort").bold()
-//            //Image(systemName: "chevron.down.circle")
-//          },
           trailing: Button(
             action: {
               self.showSearchView = true
@@ -72,21 +56,11 @@ struct MoviesView: View {
             Image(systemName: "plus.circle")
           }
         )
-        //.navigationViewStyle(DoubleColumnNavigationViewStyle())
         .sheet(isPresented: self.$showSearchView) {
           MovieSearchView(viewModel: MovieSearchViewModel(omdb: self.app.omdb), showView: self.$showSearchView)
             .environmentObject(self.app)
             .environment(\.managedObjectContext, self.context)
         }
-//        .actionSheet(isPresented: $showSortMenu) {
-//          ActionSheet(title: Text("Sort movies by:"), buttons: [
-//            .default(Text(MovieSortMode.title.rawValue)) { self.sortMode = .title },
-//            .default(Text(MovieSortMode.director.rawValue)) { self.sortMode = .director },
-//            .default(Text(MovieSortMode.notWatched.rawValue)) { self.sortMode = .notWatched },
-//            .default(Text(MovieSortMode.favorites.rawValue)) { self.sortMode = .favorites },
-//            //.cancel()
-//          ])
-//        }
     }
   }
 }
@@ -109,28 +83,10 @@ struct MovieListView: View {
     default:
       predicate = nil
     }
-//    switch sortMode.wrappedValue {
-//    case .director:
-//      sortDescriptor = NSSortDescriptor(keyPath: \SavedMovie.director, ascending: true)
-//    case .favorites:
-//      sortDescriptor = NSSortDescriptor(keyPath: \SavedMovie.favorited, ascending: false)
-//    case .notWatched:
-//      sortDescriptor = NSSortDescriptor(keyPath: \SavedMovie.watched, ascending: true)
-//    default:
-//      sortDescriptor = NSSortDescriptor(keyPath: \SavedMovie.title, ascending: true)
-//    }
     
     self._savedMovies = FetchRequest(entity: SavedMovie.entity(), sortDescriptors: [
       sortDescriptor
     ], predicate: predicate, animation: .default)
-//    let fetchRequest: NSFetchRequest<SavedMovie> = SavedMovie.fetchRequest()
-//    fetchRequest.sortDescriptors = [sortDescriptor]
-//    fetchRequest.predicate = predicate
-//    self._savedMovies = FetchRequest(fetchRequest: fetchRequest, animation: .default)
-    //print(self.savedMovies)
-    //let count: Int? = try? context.count(for: fetchRequest)
-//    if self.savedMovies.count == 0 { UITableView.appearance().separatorStyle = .none }
-    //UITableView.appearance().separatorStyle = .none
   }
 
   var body: some View {
@@ -187,11 +143,6 @@ struct SavedMovieRow: View {
         Spacer()
         Text(movie.title)
           .font(.system(size: 20, weight: .semibold, design: .default))
-//        if (movie.director != nil) {
-//          Text(movie.director!)
-//            .font(.system(size: 16, weight: .medium, design: .default))
-//            .foregroundColor(.gray)
-//        }
         if (movie.runtime != nil) {
           Text(movie.runtime!)
             .font(.system(size: 14, weight: .semibold, design: .default))

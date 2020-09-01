@@ -37,7 +37,7 @@ class MovieSearchViewModel: ObservableObject {
 
   func getMovieDetail(movie: Movie?) {
     guard let movie = movie else { return }
-    omdb.movieDetails(movie: movie) { response in
+    omdb.movieDetails(id: movie.id) { response in
       guard let details = response else { return }
       DispatchQueue.main.async {
         self.movieDetails = details
