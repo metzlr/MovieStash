@@ -20,7 +20,7 @@ class AppController: ObservableObject {
   private static let TMDB_API_KEY = "3dd96bb069818a8e62e3916c41de7c07"
   let tmdb: TMDB
   
-  var updatedMovieIds = Set<String>()
+  var movieCache: [String: MovieDetailed] = [:]
   
   init() {
     self.context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext

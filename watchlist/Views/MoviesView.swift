@@ -124,22 +124,37 @@ struct MovieListView: View {
 struct SavedMovieDetailView: View {
   @EnvironmentObject var app: AppController
   @ObservedObject var savedMovie: SavedMovie
+  @State var movieDetails: MovieDetailed
+  
+  init(savedMovie: SavedMovie) {
+    self.savedMovie = savedMovie
+    _movieDetails = State(initialValue: MovieDetailed(savedMovie: savedMovie))
+  }
 
   var body: some View {
     Group {
-      MovieDetailView(movie: MovieDetailed(savedMovie: savedMovie)).navigationBarItems(trailing: SavedMovieButtonsNavbarView(savedMovie: savedMovie))
-    }.onAppear {  // Try and fetch updated movie details from API. Only allow each movie to be refreshed once per app session
-      if (self.app.updatedMovieIds.insert(self.savedMovie.id).inserted) {
-        self.app.tmdb.normalizedMovieDetails(id: self.savedMovie.id) { response in
-          switch response {
-          case .success(let details):
-            DispatchQueue.main.async {
-              self.savedMovie.update(details: details)
-              (UIApplication.shared.delegate as! AppDelegate).saveContext()
-            }
-          case .failure:
-            print("Failed to update movie details for: ", self.savedMovie.title, self.savedMovie.id)
+      MovieDetailView(movie: movieDetails).navigationBarItems(trailing: SavedMovieButtonsNavbarView(savedMovie: savedMovie))
+    }.onAppear {
+      self.getMovieDetails()
+    }
+  }
+  
+  func getMovieDetails() {
+    // Try and fetch updated movie details from API. Then add them to movie cache
+    if let cachedDetails = self.app.movieCache[self.savedMovie.id] {
+      self.movieDetails = cachedDetails
+    } else {
+      self.app.tmdb.normalizedMovieDetails(id: self.savedMovie.id) { response in
+        switch response {
+        case .success(let details):
+          self.app.movieCache[self.savedMovie.id] = details
+          DispatchQueue.main.async {
+            self.movieDetails = details
+            self.savedMovie.update(details: details)
+            (UIApplication.shared.delegate as! AppDelegate).saveContext()
           }
+        case .failure:
+          print("Failed to update movie details for: ", self.savedMovie.title, self.savedMovie.id)
         }
       }
     }

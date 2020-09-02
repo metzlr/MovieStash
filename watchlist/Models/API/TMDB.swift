@@ -54,6 +54,7 @@ struct TMDBMovieSearchResult: Decodable, Identifiable {
   let title: String
   let releaseDate: String?
   let posterUrlPath: String?
+  var posterUrl: URL?
   
   enum CodingKeys: String, CodingKey {
     case id
@@ -65,7 +66,7 @@ struct TMDBMovieSearchResult: Decodable, Identifiable {
 
 struct TMDBMovieSearchWrapper: Decodable {
   let page: Int
-  let results: [TMDBMovieSearchResult]
+  var results: [TMDBMovieSearchResult]
   let totalResults: Int
   let totalPages: Int
   
@@ -103,13 +104,14 @@ struct TMDBCastMember: Decodable, Identifiable {
   let id: Int
   let character: String
   let name: String
-  let profilePath: String?
+  let profileUrlPath: String?
+  var profileUrl: URL?
   
   enum CodingKeys: String, CodingKey {
     case id
     case character
     case name
-    case profilePath = "profile_path"
+    case profileUrlPath = "profile_path"
   }
 }
 
@@ -117,19 +119,20 @@ struct TMDBCrewMember: Decodable, Identifiable {
   let id: Int
   let job: String
   let name: String
-  let profilePath: String?
+//  let profileUrlPath: String?
+//  var profileUrl: URL?
   
   enum CodingKeys: String, CodingKey {
     case id
     case job
     case name
-    case profilePath = "profile_path"
+    //case profileUrlPath = "profile_path"
   }
 }
 
 struct TMDBCreditsWrapper: Decodable {
-  let cast: [TMDBCastMember]
-  let crew: [TMDBCrewMember]
+  var cast: [TMDBCastMember]
+  var crew: [TMDBCrewMember]
 }
 
 struct TMDBReleaseDate: Decodable {
@@ -156,7 +159,8 @@ struct TMDBMovieDetail: Identifiable {
   let runtime: Int?
   let genres: [TMDBGenre]
   let posterUrlPath: String?
-  let credits: TMDBCreditsWrapper
+  var posterUrl: URL?
+  var credits: TMDBCreditsWrapper
   let releaseDateDetails: [TMDBReleaseDateWrapper]
   
   enum CodingKeys: String, CodingKey {
@@ -253,7 +257,7 @@ class TMDB {
     }
   }
   
-  func getPosterImageUrl(path: String?, sizeIndex: Int) -> URL? {
+  func getImgUrlFromPath(path: String?, sizeIndex: Int) -> URL? {
     guard let config = configuration else {
       print("Couldn't generate image URL, API config is nil")
       return nil
@@ -287,7 +291,11 @@ class TMDB {
     }.resume()
   }
   
-  func movieSearch(query: String, completion: @escaping(Result<TMDBMovieSearchWrapper, TMDBApiError>) -> Void) {
+  func movieSearch(query: String, imageSizeIndex: Int, completion: @escaping(Result<TMDBMovieSearchWrapper, TMDBApiError>) -> Void) {
+    guard query.count > 0 else {  // Empty search query
+      completion(.success(TMDBMovieSearchWrapper(page: 0, results: [TMDBMovieSearchResult](), totalResults: 0, totalPages: 0)))
+      return
+    }
     let resource = TMDBMovieSearchResource(apiKey: self.apiKey, query: query)
     guard let url = resource.url else {
       completion(.failure(.invalidUrlString))
@@ -300,7 +308,13 @@ class TMDB {
       }
       //print(String(data: data!, encoding: .utf8))
       do {
-        let result = try resource.makeModel(data: data!)
+        var result = try resource.makeModel(data: data!)
+        
+        // Create full URLs from path
+        for index in 0..<result.results.count {
+          result.results[index].posterUrl = self.getImgUrlFromPath(path: result.results[index].posterUrlPath, sizeIndex: imageSizeIndex)
+        }
+        
         completion(.success(result))
       } catch let error {
         //print(String(data: data!, encoding: .utf8))
@@ -310,7 +324,7 @@ class TMDB {
     }.resume()
   }
   
-  func movieDetail(id: Int, completion: @escaping(Result<TMDBMovieDetail, TMDBApiError>) -> Void) {
+  func movieDetail(id: Int, posterImageSizeIndex: Int, completion: @escaping(Result<TMDBMovieDetail, TMDBApiError>) -> Void) {
     let resource = TMDBMovieDetailResource(apiKey: self.apiKey, id: id)
     guard let url = resource.url else {
       completion(.failure(.invalidUrlString))
@@ -324,7 +338,15 @@ class TMDB {
       }
       //print(String(data: data!, encoding: .utf8))
       do {
-        let result = try resource.makeModel(data: data!)
+        var result = try resource.makeModel(data: data!)
+        
+        // Create full URLs from path
+        result.posterUrl = self.getImgUrlFromPath(path: result.posterUrlPath, sizeIndex: posterImageSizeIndex)
+        
+        for index in 0..<result.credits.cast.count {
+          result.credits.cast[index].profileUrl = self.getImgUrlFromPath(path: result.credits.cast[index].profileUrlPath, sizeIndex: 1)
+        }
+        
         completion(.success(result))
       } catch let error {
         //print(String(data: data!, encoding: .utf8))

@@ -40,14 +40,12 @@ struct MovieImage: View {
               .resizable()
               .cornerRadius(self.radius)
               .aspectRatio(2/3, contentMode: .fit)
-              //.fixedSize()
           },
           content: {
             $0.image
               .resizable()
               .cornerRadius(self.radius)
               .aspectRatio(2/3, contentMode: .fit)
-              //.fixedSize()
           }
         ).frame(width: width)
       } else {
@@ -56,7 +54,6 @@ struct MovieImage: View {
           .cornerRadius(radius)
           .aspectRatio(2/3, contentMode: .fit)
           .frame(width: width)
-          //.fixedSize()
       }
     }.fixedSize()
   }

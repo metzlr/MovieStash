@@ -16,22 +16,22 @@ struct Movie: Identifiable, Codable, Hashable {
 }
 
 extension TMDBMovieSearchResult {
-  func toMovie(posterUrl: URL?) -> Movie {
+  func toMovie() -> Movie {
     var year: String? = nil
     if let releaseDate = self.releaseDate {
       year = String(releaseDate.prefix(4))
     }
-    return Movie(id: self.id.description, title: self.title, year: year, posterUrl: posterUrl)
+    return Movie(id: self.id.description, title: self.title, year: year, posterUrl: self.posterUrl)
   }
 }
 
 extension TMDB {
   func normalizedMovieSearch(query: String, posterSizeIndex: Int, completion: @escaping(Result<[Movie], TMDBApiError>) -> Void) {
-    self.movieSearch(query: query) { response in
+    self.movieSearch(query: query, imageSizeIndex: 1) { response in
       switch response {
       case .success(let data):
         completion(.success(data.results.map { (result: TMDBMovieSearchResult) -> Movie in
-          return result.toMovie(posterUrl: self.getPosterImageUrl(path: result.posterUrlPath, sizeIndex: 1))
+          return result.toMovie()
         }))
       case .failure(let error):
         completion(.failure(error))
@@ -66,7 +66,14 @@ extension TMDB {
 //  let value: String
 //}
 
-struct MovieDetailed: Identifiable, Codable {
+struct MovieCastMember {
+  let id: Int
+  let character: String
+  let name: String
+  let imageUrl: URL?
+}
+
+struct MovieDetailed: Identifiable {
   let id: String
   let title: String
   let year: String?
@@ -75,22 +82,27 @@ struct MovieDetailed: Identifiable, Codable {
   let runtime: String?
   let genres: [String]
   let directors: [String]
+  let cast: [MovieCastMember]
   let plot: String?
-  //let ratings: [MovieRating]
   let imdbId: String?
   
-//  func flatRatings() -> [String] {
-//    var flatRatings: [String] = [String]()
-//    for rating in self.ratings {
-//      flatRatings.append(rating.source)
-//      flatRatings.append(rating.value)
-//    }
-//    return flatRatings
-//  }
+  init(id: String, title: String, year: String? = nil, posterUrl: URL? = nil, rated: String? = nil, runtime: String? = nil, genres: [String] = [String](), directors: [String] = [String](), plot: String? = nil, imdbId: String? = nil, cast: [MovieCastMember] = [MovieCastMember]()) {
+    self.id = id
+    self.title = title
+    self.year = year
+    self.posterUrl = posterUrl
+    self.rated = rated
+    self.runtime = runtime
+    self.genres = genres
+    self.directors = directors
+    self.plot = plot
+    self.imdbId = imdbId
+    self.cast = cast
+  }
 }
 
 extension TMDBMovieDetail {
-  func toMovieDetailed(posterUrl: URL?) -> MovieDetailed {
+  func toMovieDetailed() -> MovieDetailed {
     let year: String?
     if let releaseDate = self.releaseDate {
       year = String(releaseDate.prefix(4))
@@ -99,7 +111,6 @@ extension TMDBMovieDetail {
     }
     
     let genresArray: [String] = self.genres.map { $0.name }
-    //let genresString: String? = genresArray.count > 0 ? genresArray.joined(separator: ", ") : nil
     
     let runtimeString: String?
     if let runtime = self.runtime {
@@ -116,6 +127,10 @@ extension TMDBMovieDetail {
       }
     }
     
+    let cast = self.credits.cast.map {
+      MovieCastMember(id: $0.id, character: $0.character, name: $0.name, imageUrl: $0.profileUrl)
+    }
+    
     // Find movie rating from list of movie release dates
     var rated: String? = nil
     for dateDetail in self.releaseDateDetails {
@@ -128,17 +143,17 @@ extension TMDBMovieDetail {
       }
     }
     
-    return MovieDetailed(id: self.id.description, title: self.title, year: year, posterUrl: posterUrl, rated: rated, runtime: runtimeString, genres: genresArray, directors: directors, plot: self.overview, imdbId: self.imdbId)
+    return MovieDetailed(id: self.id.description, title: self.title, year: year, posterUrl: self.posterUrl, rated: rated, runtime: runtimeString, genres: genresArray, directors: directors, plot: self.overview, imdbId: self.imdbId, cast: cast)
   }
 }
 
 extension TMDB {
   func normalizedMovieDetails(id: String, completion: @escaping(Result<MovieDetailed, TMDBApiError>) -> Void) {
-    self.movieDetail(id: Int(id)!) { response in
+    self.movieDetail(id: Int(id)!, posterImageSizeIndex: 3) { response in
       switch response {
       case .success(let data):
         completion(.success(
-          data.toMovieDetailed(posterUrl: self.getPosterImageUrl(path: data.posterUrlPath, sizeIndex: 3))
+          data.toMovieDetailed()
           )
         )
       case .failure(let error):

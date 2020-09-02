@@ -33,8 +33,7 @@ struct MovieDetailView: View {
     ScrollView {
       VStack(alignment: .leading) {
         HStack(alignment: .center, spacing: 20) {
-          MovieImage(imageUrl: movie!.posterUrl, width: 200, radius: 0)
-            .cornerRadius(10)
+          MovieImage(imageUrl: movie!.posterUrl, width: 200, radius: 10)
             .shadow(radius: 10)
           VStack(alignment: .leading, spacing: 10) {
             if movie!.directors.count > 0 {
@@ -95,7 +94,7 @@ struct MovieDetailView: View {
                   Text("IMDB Page")
                     .font(.system(size: 13, weight: .semibold, design: .default))
                 }
-              }
+              }.padding(.top, 5)
             }
           }
           Spacer()
@@ -106,14 +105,23 @@ struct MovieDetailView: View {
           .multilineTextAlignment(.leading)
           .padding(.vertical, 5)
         if (movie!.plot != nil) {
-          Divider().padding(5)
-          VStack(alignment: .leading) {
-            Text("Plot Summary").font(.headline)
-            Text(movie!.plot!)
-              .fixedSize(horizontal: false, vertical: true)
-              .multilineTextAlignment(.leading)
-              .foregroundColor(.gray)
-              .padding(.top, 7)
+          Group {
+            Divider().padding(5)
+            VStack(alignment: .leading) {
+              Text("Plot Summary").font(.headline)
+              Text(movie!.plot!)
+                .fixedSize(horizontal: false, vertical: true)
+                .multilineTextAlignment(.leading)
+                .foregroundColor(.gray)
+                .padding(.top, 7)
+            }
+          }
+        }
+        if (movie!.cast.count > 0) {
+          Group {
+            Divider().padding(5)
+            Text("Cast").font(.headline)
+            MovieCastView(cast: movie!.cast)
           }
         }
       }.padding()
@@ -121,8 +129,42 @@ struct MovieDetailView: View {
   }
 }
 
-//struct MovieDetailView_Previews: PreviewProvider {
-//  static var previews: some View {
+struct MovieCastView: View {
+  let cast: [MovieCastMember]
+  
+  var body: some View {
+    ScrollView(.horizontal) {
+      HStack(alignment: .top, spacing: 20) {
+        ForEach(cast, id: \.self.id) { member in
+          VStack {
+            ProfileImage(imageUrl: member.imageUrl, size: 80).fixedSize()
+            Text(member.character)
+              .font(.caption)
+              .frame(maxWidth: 100)
+              .fixedSize(horizontal: false, vertical: true)
+              .multilineTextAlignment(.center)
+              .padding(.bottom, 2)
+            Text(member.name)
+              .font(.caption)
+              .foregroundColor(.gray)
+              .frame(maxWidth: 100)
+              .fixedSize(horizontal: false, vertical: true)
+              .multilineTextAlignment(.center)
+          }
+        }
+      }.frame(minHeight: 153) // Need this because setting fixed size on the text (to force it to wrap) messes up height of HStack
+    }
+  }
+}
+
+let DEBUG_MOVIE_DETAILED = MovieDetailed(id: "100000", title: "Movie Title", year: "2020", posterUrl: URL(string: "https://image.tmdb.org/t/p/w342/wCGRhVWpsfVLvYYLSdAs530I0P5.jpg"), rated: "PG-13", runtime: "112 min", genres: ["Action", "Adventure"], directors: ["John Smith", "Chris Nolan"], plot: "This is a plot overview. This is a plot overview. This is a plot overview.", imdbId: nil, cast: [MovieCastMember(id: 100, character: "Character 1", name: "Name One", imageUrl: URL(string: "https://image.tmdb.org/t/p/w154/f9WKorjfanW4PxTxhjRvHtCmfKf.jpg"))])
+
+
+struct MovieDetailView_Previews: PreviewProvider {
+  static var previews: some View {
+    NavigationView {
+      MovieDetailView(movie: DEBUG_MOVIE_DETAILED)
+    }
 //    VStack {
 //      Image("poster-placeholder")
 //        .resizable()
@@ -134,5 +176,5 @@ struct MovieDetailView: View {
 //    }
 //    .padding()
 //    .navigationBarTitle(Text("Details"))
-//  }
-//}
+  }
+}
