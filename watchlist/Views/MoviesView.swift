@@ -36,17 +36,8 @@ struct MoviesView: View {
         .pickerStyle(SegmentedPickerStyle())
         .padding()
         MovieListView(sortMode: $sortMode)
-          .navigationBarTitle(Text("Movies"))
-          .navigationBarItems(
-            trailing: Button(
-              action: {
-                self.showSearchView = true
-            }
-            ) {
-              Image(systemName: "plus.circle")
-            }
-          )
       }
+        .navigationBarTitle(Text("Movies"))
         .navigationBarItems(
           trailing: Button(
             action: {
@@ -54,6 +45,9 @@ struct MoviesView: View {
             }
           ) {
             Image(systemName: "plus.circle")
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .frame(width: 20)
           }
         )
         .sheet(isPresented: self.$showSearchView) {
@@ -217,7 +211,7 @@ struct SavedMovieButtonsNavbarView: View {
         Image(systemName: self.savedMovie.favorited ? "heart.fill" : "heart")
           .resizable()
           .aspectRatio(contentMode: .fit)
-          .frame(width: 22)
+          .frame(width: 25)
           .foregroundColor(self.savedMovie.favorited ? .pink : .gray)
       }
       Button(action: {
@@ -227,7 +221,7 @@ struct SavedMovieButtonsNavbarView: View {
         Image(systemName: self.savedMovie.watched ? "eye.fill" : "eye")
           .resizable()
           .aspectRatio(contentMode: .fit)
-          .frame(width: 28)
+          .frame(width: 32)
           .foregroundColor(self.savedMovie.watched ? .green : .gray)
       }
     }

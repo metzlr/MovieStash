@@ -134,25 +134,25 @@ struct MovieCastView: View {
   
   var body: some View {
     ScrollView(.horizontal) {
-      HStack(alignment: .top, spacing: 20) {
+      HStack(alignment: .top, spacing: 30) {
         ForEach(cast, id: \.self.id) { member in
           VStack {
             ProfileImage(imageUrl: member.imageUrl, size: 80).fixedSize()
             Text(member.character)
               .font(.caption)
-              .frame(maxWidth: 100)
-              .fixedSize(horizontal: false, vertical: true)
+              .frame(maxWidth: 110)
+              //.fixedSize(horizontal: false, vertical: true)
               .multilineTextAlignment(.center)
               .padding(.bottom, 2)
             Text(member.name)
               .font(.caption)
               .foregroundColor(.gray)
-              .frame(maxWidth: 100)
-              .fixedSize(horizontal: false, vertical: true)
+              .frame(maxWidth: 110)
+              //.fixedSize(horizontal: false, vertical: true)
               .multilineTextAlignment(.center)
           }
         }
-      }.frame(minHeight: 153) // Need this because setting fixed size on the text (to force it to wrap) messes up height of HStack
+      } 
     }
   }
 }
