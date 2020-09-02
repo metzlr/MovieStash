@@ -199,7 +199,7 @@ struct SavedMovieButtonsNavbarView: View {
         Image(systemName: self.savedMovie.favorited ? "heart.fill" : "heart")
           .resizable()
           .aspectRatio(contentMode: .fit)
-          .frame(width: 25)
+          .frame(width: 22)
           .foregroundColor(self.savedMovie.favorited ? .pink : .gray)
       }
       Button(action: {
@@ -209,7 +209,7 @@ struct SavedMovieButtonsNavbarView: View {
         Image(systemName: self.savedMovie.watched ? "eye.fill" : "eye")
           .resizable()
           .aspectRatio(contentMode: .fit)
-          .frame(width: 35)
+          .frame(width: 28)
           .foregroundColor(self.savedMovie.watched ? .green : .gray)
       }
     }

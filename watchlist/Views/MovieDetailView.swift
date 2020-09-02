@@ -39,7 +39,7 @@ struct MovieDetailView: View {
           VStack(alignment: .leading, spacing: 10) {
             if (movie!.director != nil) {
               VStack(alignment: .leading, spacing: 3) {
-                Text("Director").font(.system(size: 14, weight: .semibold, design: .default))
+                Text("Director").font(.system(size: 13, weight: .semibold, design: .default))
                 Text(movie!.director!)
                   .font(.system(size: 13, weight: .semibold, design: .default))
                   .foregroundColor(.gray)
@@ -48,7 +48,7 @@ struct MovieDetailView: View {
             }
             if (movie!.year != nil) {
               VStack(alignment: .leading, spacing: 3) {
-                Text("Release Year").font(.system(size: 14, weight: .semibold, design: .default))
+                Text("Release Year").font(.system(size: 13, weight: .semibold, design: .default))
                 Text(movie!.year!)
                   .font(.system(size: 13, weight: .semibold, design: .default))
                   .foregroundColor(.gray)
@@ -56,7 +56,7 @@ struct MovieDetailView: View {
             }
             if (movie!.runtime != nil) {
               VStack(alignment: .leading, spacing: 3) {
-                Text("Runtime").font(.system(size: 14, weight: .semibold, design: .default))
+                Text("Runtime").font(.system(size: 13, weight: .semibold, design: .default))
                 Text(movie!.runtime!)
                   .font(.system(size: 13, weight: .semibold, design: .default))
                   .foregroundColor(.gray)
@@ -64,7 +64,7 @@ struct MovieDetailView: View {
             }
             if (movie!.rated != nil) {
               VStack(alignment: .leading, spacing: 3) {
-                Text("Rated").font(.system(size: 14, weight: .semibold, design: .default))
+                Text("Rated").font(.system(size: 13, weight: .semibold, design: .default))
                 Text(movie!.rated!)
                   .font(.system(size: 13, weight: .semibold, design: .default))
                   .foregroundColor(.gray)
@@ -72,12 +72,28 @@ struct MovieDetailView: View {
             }
             if (movie!.genres != nil) {
               VStack(alignment: .leading, spacing: 3) {
-                Text("Genres").font(.system(size: 14, weight: .semibold, design: .default))
+                Text("Genres").font(.system(size: 13, weight: .semibold, design: .default))
                 Text(movie!.genres!)
                   .font(.system(size: 13, weight: .semibold, design: .default))
                   .fontWeight(.semibold)
                   .foregroundColor(.gray)
                   .fixedSize(horizontal: false, vertical: true)
+              }
+            }
+            Button(action: {
+              if let url = URL(string: "https://www.imdb.com/title/"+self.movie!.id) {
+                UIApplication.shared.open(url)
+              }
+              
+            }) {
+              HStack {
+                Image(systemName: "link")
+                  .resizable()
+                  .aspectRatio(contentMode: .fit)
+                  .frame(width: 20)
+                  .fixedSize()
+                Text("IMDB Page")
+                  .font(.system(size: 13, weight: .semibold, design: .default))
               }
             }
           }
@@ -99,7 +115,6 @@ struct MovieDetailView: View {
             }
           }
         }
-        Spacer()
         if (movie!.plot != nil) {
           Divider().padding(5)
           VStack(alignment: .leading) {
@@ -110,7 +125,6 @@ struct MovieDetailView: View {
               .foregroundColor(.gray)
               .padding(.top, 7)
           }
-          
         }
       }.padding()
     }

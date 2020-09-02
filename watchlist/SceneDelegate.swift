@@ -22,8 +22,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     // Get the managed object context from the shared persistent container.
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    // Set merge policy for duplicate objects
-    context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
     app = (UIApplication.shared.delegate as! AppDelegate).app
 
     // Create the SwiftUI view that provides the window contents.
