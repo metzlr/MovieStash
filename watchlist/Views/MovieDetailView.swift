@@ -37,7 +37,7 @@ struct MovieDetailView: View {
             .cornerRadius(10)
             .shadow(radius: 10)
           VStack(alignment: .leading, spacing: 10) {
-            if (movie!.directors.count > 0) {
+            if movie!.directors.count > 0 {
               VStack(alignment: .leading, spacing: 3) {
                 Text(movie!.directors.count > 0 ? "Directors" : "Director").font(.system(size: 13, weight: .semibold, design: .default))
                 Text(movie!.directors.joined(separator: ", "))
@@ -46,7 +46,7 @@ struct MovieDetailView: View {
                   .fixedSize(horizontal: false, vertical: true)
               }
             }
-            if (movie!.year != nil) {
+            if movie!.year != nil {
               VStack(alignment: .leading, spacing: 3) {
                 Text("Release Year").font(.system(size: 13, weight: .semibold, design: .default))
                 Text(movie!.year!)
@@ -54,7 +54,7 @@ struct MovieDetailView: View {
                   .foregroundColor(.gray)
               }
             }
-            if (movie!.runtime != nil) {
+            if movie!.runtime != nil {
               VStack(alignment: .leading, spacing: 3) {
                 Text("Runtime").font(.system(size: 13, weight: .semibold, design: .default))
                 Text(movie!.runtime!)
@@ -62,7 +62,7 @@ struct MovieDetailView: View {
                   .foregroundColor(.gray)
               }
             }
-            if (movie!.rated != nil) {
+            if movie!.rated != nil {
               VStack(alignment: .leading, spacing: 3) {
                 Text("Rated").font(.system(size: 13, weight: .semibold, design: .default))
                 Text(movie!.rated!)
@@ -70,7 +70,7 @@ struct MovieDetailView: View {
                   .foregroundColor(.gray)
               }
             }
-            if (movie!.genres.count > 0) {
+            if movie!.genres.count > 0 {
               VStack(alignment: .leading, spacing: 3) {
                 Text("Genres").font(.system(size: 13, weight: .semibold, design: .default))
                 Text(movie!.genres.joined(separator: ", "))
@@ -80,20 +80,21 @@ struct MovieDetailView: View {
                   .fixedSize(horizontal: false, vertical: true)
               }
             }
-            Button(action: {
-              if let imdbId = self.movie!.imdbId, let url = URL(string: "https://www.imdb.com/title/"+imdbId) {
-                UIApplication.shared.open(url)
-              }
-              
-            }) {
-              HStack {
-                Image(systemName: "link")
-                  .resizable()
-                  .aspectRatio(contentMode: .fit)
-                  .frame(width: 20)
-                  .fixedSize()
-                Text("IMDB Page")
-                  .font(.system(size: 13, weight: .semibold, design: .default))
+            if movie!.imdbId != nil {
+              Button(action: {
+                if let url = URL(string: "https://www.imdb.com/title/"+self.movie!.imdbId!) {
+                  UIApplication.shared.open(url)
+                }
+              }) {
+                HStack {
+                  Image(systemName: "link")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 20)
+                    .fixedSize()
+                  Text("IMDB Page")
+                    .font(.system(size: 13, weight: .semibold, design: .default))
+                }
               }
             }
           }

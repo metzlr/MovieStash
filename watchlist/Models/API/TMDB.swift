@@ -9,7 +9,7 @@
 import Foundation
 
 
-struct TMDBApiConfig: Codable {
+struct TMDBApiConfig: Decodable {
   let images: TMDBApiImageConfig
   let changeKeys: [String]
   
@@ -19,7 +19,7 @@ struct TMDBApiConfig: Codable {
   }
 }
 
-struct TMDBApiImageConfig: Codable {
+struct TMDBApiImageConfig: Decodable {
   let baseUrl: String
   let secureBaseUrl: String
   let posterSizes: [String]
@@ -49,7 +49,7 @@ struct TMDBApiConfigResource: ApiResource {
   }
 }
 
-struct TMDBMovieSearchResult: Codable, Identifiable {
+struct TMDBMovieSearchResult: Decodable, Identifiable {
   let id: Int
   let title: String
   let releaseDate: String?
@@ -63,7 +63,7 @@ struct TMDBMovieSearchResult: Codable, Identifiable {
   }
 }
 
-struct TMDBMovieSearchWrapper: Codable {
+struct TMDBMovieSearchWrapper: Decodable {
   let page: Int
   let results: [TMDBMovieSearchResult]
   let totalResults: Int
@@ -94,12 +94,12 @@ struct TMDBMovieSearchResource: ApiResource {
   }
 }
 
-struct TMDBGenre: Codable, Identifiable {
+struct TMDBGenre: Decodable, Identifiable {
   let id: Int
   let name: String
 }
 
-struct TMDBCastMember: Codable, Identifiable {
+struct TMDBCastMember: Decodable, Identifiable {
   let id: Int
   let character: String
   let name: String
@@ -113,7 +113,7 @@ struct TMDBCastMember: Codable, Identifiable {
   }
 }
 
-struct TMDBCrewMember: Codable, Identifiable {
+struct TMDBCrewMember: Decodable, Identifiable {
   let id: Int
   let job: String
   let name: String
@@ -127,12 +127,27 @@ struct TMDBCrewMember: Codable, Identifiable {
   }
 }
 
-struct TMDBCreditsWrapper: Codable {
+struct TMDBCreditsWrapper: Decodable {
   let cast: [TMDBCastMember]
   let crew: [TMDBCrewMember]
 }
 
-struct TMDBMovieDetail: Codable, Identifiable {
+struct TMDBReleaseDate: Decodable {
+  let certification: String
+  let type: Int
+}
+
+struct TMDBReleaseDateWrapper: Decodable {
+  let iso: String
+  let releaseDates: [TMDBReleaseDate]
+  
+  enum CodingKeys: String, CodingKey {
+    case iso = "iso_3166_1"
+    case releaseDates = "release_dates"
+  }
+}
+
+struct TMDBMovieDetail: Identifiable {
   let id: Int
   let title: String
   let imdbId: String?
@@ -142,17 +157,41 @@ struct TMDBMovieDetail: Codable, Identifiable {
   let genres: [TMDBGenre]
   let posterUrlPath: String?
   let credits: TMDBCreditsWrapper
+  let releaseDateDetails: [TMDBReleaseDateWrapper]
   
   enum CodingKeys: String, CodingKey {
     case id
     case title
     case releaseDate = "release_date"
-    case imdbId
+    case imdbId = "imdb_id"
     case overview
     case runtime
     case genres
     case posterUrlPath = "poster_path"
     case credits
+    case releaseDates = "release_dates"
+  }
+  
+  enum ReleaseDatesKeys: String, CodingKey {
+    case releaseDatesDetails = "results"
+  }
+}
+
+extension TMDBMovieDetail: Decodable {
+  init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
+    id = try values.decode(Int.self, forKey: .id)
+    imdbId = try? values.decode(String.self, forKey: .imdbId)
+    title = try values.decode(String.self, forKey: .title)
+    releaseDate = try? values.decode(String.self, forKey: .releaseDate)
+    overview = try? values.decode(String.self, forKey: .overview)
+    runtime = try? values.decode(Int.self, forKey: .runtime)
+    genres = try values.decode([TMDBGenre].self, forKey: .genres)
+    posterUrlPath = try? values.decode(String.self, forKey: .posterUrlPath)
+    credits = try values.decode(TMDBCreditsWrapper.self, forKey: .credits)
+    
+    let releaseDates = try values.nestedContainer(keyedBy: ReleaseDatesKeys.self, forKey: .releaseDates)
+    releaseDateDetails = try releaseDates.decode([TMDBReleaseDateWrapper].self, forKey: .releaseDatesDetails)
   }
 }
 

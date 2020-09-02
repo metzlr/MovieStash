@@ -108,6 +108,7 @@ extension TMDBMovieDetail {
       runtimeString = nil
     }
     
+    // Find movie directors from cast list
     var directors: [String] = [String]()
     for person in self.credits.crew {
       if person.job.lowercased() == "director" {
@@ -115,8 +116,19 @@ extension TMDBMovieDetail {
       }
     }
     
+    // Find movie rating from list of movie release dates
+    var rated: String? = nil
+    for dateDetail in self.releaseDateDetails {
+      if dateDetail.iso == "US" {
+        for date in dateDetail.releaseDates {
+          if date.type == 3  {
+            rated = date.certification
+          }
+        }
+      }
+    }
     
-    return MovieDetailed(id: self.id.description, title: self.title, year: year, posterUrl: posterUrl, rated: nil, runtime: runtimeString, genres: genresArray, directors: directors, plot: self.overview, imdbId: self.imdbId)
+    return MovieDetailed(id: self.id.description, title: self.title, year: year, posterUrl: posterUrl, rated: rated, runtime: runtimeString, genres: genresArray, directors: directors, plot: self.overview, imdbId: self.imdbId)
   }
 }
 
