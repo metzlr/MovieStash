@@ -20,7 +20,7 @@ public class SavedMovie: NSManagedObject {
     self.director = movie.director
     self.posterUrl = movie.posterUrl?.absoluteString
     self.rated = movie.rated
-    self.ratings = movie.flatRatings()
+    //self.ratings = movie.flatRatings()
     self.runtime = movie.runtime
     self.genres = movie.genres
     self.plot = movie.plot
@@ -34,11 +34,12 @@ public class SavedMovie: NSManagedObject {
     self.director = details.director
     self.posterUrl = details.posterUrl?.absoluteString
     self.rated = details.rated
-    self.ratings = details.flatRatings()
+    //self.ratings = details.flatRatings()
     self.runtime = details.runtime
     self.genres = details.genres
     self.plot = details.plot
     self.year = details.year
+    self.imdbId = details.imdbId
   }
 }
 
@@ -46,16 +47,16 @@ extension SavedMovie: Identifiable {}
 
 extension MovieDetailed {
   init(savedMovie: SavedMovie) {
-    var ratings: [MovieRating] = [MovieRating]()
-    var rating: MovieRating
-    for i in stride(from: 0, to: savedMovie.ratings.count-1, by: 2) {
-      rating = MovieRating(source: savedMovie.ratings[i], value: savedMovie.ratings[i+1])
-      ratings.append(rating)
-    }
+//    var ratings: [MovieRating] = [MovieRating]()
+//    var rating: MovieRating
+//    for i in stride(from: 0, to: savedMovie.ratings.count-1, by: 2) {
+//      rating = MovieRating(source: savedMovie.ratings[i], value: savedMovie.ratings[i+1])
+//      ratings.append(rating)
+//    }
     var url: URL? = nil
     if let savedUrl = savedMovie.posterUrl {
       url = URL(string: savedUrl)
     }
-    self.init(id: savedMovie.id, title: savedMovie.title, year: savedMovie.year, posterUrl: url, rated: savedMovie.rated, runtime: savedMovie.runtime, genres: savedMovie.genres, director: savedMovie.director, plot: savedMovie.plot, ratings: ratings)
+    self.init(id: savedMovie.id, title: savedMovie.title, year: savedMovie.year, posterUrl: url, rated: savedMovie.rated, runtime: savedMovie.runtime, genres: savedMovie.genres, director: savedMovie.director, plot: savedMovie.plot, imdbId: savedMovie.imdbId)
   }
 }

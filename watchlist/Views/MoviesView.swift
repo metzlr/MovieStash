@@ -57,7 +57,7 @@ struct MoviesView: View {
           }
         )
         .sheet(isPresented: self.$showSearchView) {
-          MovieSearchView(viewModel: MovieSearchViewModel(omdb: self.app.omdb), showView: self.$showSearchView)
+          MovieSearchView(viewModel: MovieSearchViewModel(tmdb: self.app.tmdb), showView: self.$showSearchView)
             .environmentObject(self.app)
             .environment(\.managedObjectContext, self.context)
         }
@@ -130,12 +130,16 @@ struct SavedMovieDetailView: View {
       MovieDetailView(movie: MovieDetailed(savedMovie: savedMovie)).navigationBarItems(trailing: SavedMovieButtonsNavbarView(savedMovie: savedMovie))
     }.onAppear {  // Try and fetch updated movie details from API. Only allow each movie to be refreshed once per app session
       if (self.app.updatedMovieIds.insert(self.savedMovie.id).inserted) {
-        self.app.omdb.movieDetails(id: self.savedMovie.id) { response in
-          if let details = response {
-            self.savedMovie.update(details: details)
+        self.app.tmdb.normalizedMovieDetails(id: self.savedMovie.id) { response in
+          switch response {
+          case .success(let details):
+            print("Update success")
             DispatchQueue.main.async {
+              self.savedMovie.update(details: details)
               (UIApplication.shared.delegate as! AppDelegate).saveContext()
             }
+          case .failure:
+            print("Failed to update movie details for: ", self.savedMovie.title, self.savedMovie.id)
           }
         }
       }

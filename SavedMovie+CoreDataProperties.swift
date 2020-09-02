@@ -28,6 +28,5 @@ extension SavedMovie {
     @NSManaged public var genres: String?
     @NSManaged public var plot: String?
     @NSManaged public var year: String?
-    @NSManaged public var ratings: [String]
-
+    @NSManaged public var imdbId: String?
 }

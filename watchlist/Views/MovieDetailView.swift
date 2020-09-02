@@ -81,7 +81,7 @@ struct MovieDetailView: View {
               }
             }
             Button(action: {
-              if let url = URL(string: "https://www.imdb.com/title/"+self.movie!.id) {
+              if let imdbId = self.movie!.imdbId, let url = URL(string: "https://www.imdb.com/title/"+imdbId) {
                 UIApplication.shared.open(url)
               }
               
@@ -104,17 +104,6 @@ struct MovieDetailView: View {
           .fixedSize(horizontal: false, vertical: true)
           .multilineTextAlignment(.leading)
           .padding(.vertical, 5)
-        if (movie!.ratings.count > 0) {
-          Divider()
-          VStack(alignment: .leading) {
-            Text("Ratings").font(.headline)
-            HStack(alignment: .center, spacing: 10) {
-              ForEach(movie!.ratings, id: \.self.source) { rating in
-                MovieRatingView(rating: rating).padding(.trailing, 5)
-              }
-            }
-          }
-        }
         if (movie!.plot != nil) {
           Divider().padding(5)
           VStack(alignment: .leading) {
@@ -127,40 +116,6 @@ struct MovieDetailView: View {
           }
         }
       }.padding()
-    }
-  }
-}
-
-struct MovieRatingView: View {
-  var rating: MovieRating
-  
-  var body: some View {
-    HStack {
-      if rating.source == "rottenTomatoes" {
-        Image("rt-icon")
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .frame(width: 29)
-          .fixedSize()
-      } else if rating.source == "metacritic" {
-        Image("metacritic-icon")
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .frame(width: 30)
-          .fixedSize()
-      } else if rating.source == "imdb" {
-        Image("imdb-icon")
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .frame(width: 45)
-          .fixedSize()
-      } else {
-        Text(rating.source)
-      }
-      Text(rating.value)
-        .foregroundColor(.gray)
-        .font(.system(size: 15, weight: .semibold, design: .default))
-      //Spacer()
     }
   }
 }

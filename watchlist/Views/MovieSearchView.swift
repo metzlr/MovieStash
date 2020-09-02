@@ -9,16 +9,18 @@
 import SwiftUI
 
 class MovieSearchViewModel: ObservableObject {
-  let omdb: OMDB
+  let tmdb: TMDB
   @Published var movieDetails: MovieDetailed? = nil
   @Published var searchText: String = "" {
     willSet {
-      self.omdb.movieSearch(query: newValue) { [unowned self] response in
-        guard let movies = response else {
+      self.tmdb.normalizedMovieSearch(query: newValue, posterSizeIndex: 2) { response in
+        switch response {
+        case .success(let movies):
+          DispatchQueue.main.async {
+            self.searchResults = movies
+          }
+        case .failure:
           return
-        }
-        DispatchQueue.main.async {
-          self.searchResults = movies
         }
       }
     }
@@ -31,16 +33,20 @@ class MovieSearchViewModel: ObservableObject {
     }
   }
 
-  init(omdb: OMDB) {
-    self.omdb = omdb;
+  init(tmdb: TMDB) {
+    self.tmdb = tmdb
   }
 
   func getMovieDetail(movie: Movie?) {
     guard let movie = movie else { return }
-    omdb.movieDetails(id: movie.id) { response in
-      guard let details = response else { return }
-      DispatchQueue.main.async {
-        self.movieDetails = details
+    tmdb.normalizedMovieDetails(id: movie.id) { response in
+      switch response {
+      case .success(let details):
+        DispatchQueue.main.async {
+          self.movieDetails = details
+        }
+      case .failure:
+        return
       }
     }
   }
@@ -92,9 +98,11 @@ struct MovieSearchRow: View {
       VStack(alignment: .leading) {
         Text(movie.title)
           .font(.headline)
-        Text(movie.year)
-          .font(.subheadline)
-          .foregroundColor(.gray)
+        if movie.year != nil {
+          Text(movie.year!)
+            .font(.subheadline)
+            .foregroundColor(.gray)
+        }
       }
     }
   }
