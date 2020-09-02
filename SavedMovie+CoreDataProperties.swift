@@ -17,7 +17,7 @@ extension SavedMovie {
         return NSFetchRequest<SavedMovie>(entityName: "SavedMovie")
     }
 
-    @NSManaged public var director: String?
+    @NSManaged public var directors: [String]
     @NSManaged public var favorited: Bool
     @NSManaged public var id: String
     @NSManaged public var title: String
@@ -25,7 +25,7 @@ extension SavedMovie {
     @NSManaged public var posterUrl: String?
     @NSManaged public var rated: String?
     @NSManaged public var runtime: String?
-    @NSManaged public var genres: String?
+    @NSManaged public var genres: [String]
     @NSManaged public var plot: String?
     @NSManaged public var year: String?
     @NSManaged public var imdbId: String?

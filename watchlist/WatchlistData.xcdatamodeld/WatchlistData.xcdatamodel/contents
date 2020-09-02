@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19G2021" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="SavedMovie" representedClassName="SavedMovie" syncable="YES">
-        <attribute name="director" optional="YES" attributeType="String"/>
+        <attribute name="directors" attributeType="Transformable" valueTransformerName="" customClassName="NSSecureUnarchiveFromData"/>
         <attribute name="favorited" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="genres" optional="YES" attributeType="String"/>
+        <attribute name="genres" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData"/>
         <attribute name="id" attributeType="String"/>
         <attribute name="imdbId" optional="YES" attributeType="String"/>
         <attribute name="plot" optional="YES" attributeType="String"/>

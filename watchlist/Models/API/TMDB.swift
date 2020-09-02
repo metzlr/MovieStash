@@ -99,6 +99,39 @@ struct TMDBGenre: Codable, Identifiable {
   let name: String
 }
 
+struct TMDBCastMember: Codable, Identifiable {
+  let id: Int
+  let character: String
+  let name: String
+  let profilePath: String?
+  
+  enum CodingKeys: String, CodingKey {
+    case id
+    case character
+    case name
+    case profilePath = "profile_path"
+  }
+}
+
+struct TMDBCrewMember: Codable, Identifiable {
+  let id: Int
+  let job: String
+  let name: String
+  let profilePath: String?
+  
+  enum CodingKeys: String, CodingKey {
+    case id
+    case job
+    case name
+    case profilePath = "profile_path"
+  }
+}
+
+struct TMDBCreditsWrapper: Codable {
+  let cast: [TMDBCastMember]
+  let crew: [TMDBCrewMember]
+}
+
 struct TMDBMovieDetail: Codable, Identifiable {
   let id: Int
   let title: String
@@ -108,6 +141,7 @@ struct TMDBMovieDetail: Codable, Identifiable {
   let runtime: Int?
   let genres: [TMDBGenre]
   let posterUrlPath: String?
+  let credits: TMDBCreditsWrapper
   
   enum CodingKeys: String, CodingKey {
     case id
@@ -118,6 +152,7 @@ struct TMDBMovieDetail: Codable, Identifiable {
     case runtime
     case genres
     case posterUrlPath = "poster_path"
+    case credits
   }
 }
 
@@ -125,7 +160,7 @@ struct TMDBMovieDetailResource: ApiResource {
   let baseUrl = "https://api.themoviedb.org/3"
   let methodPath: String
   let httpMethod = "GET"
-  var parameters = ["language=en-US"]
+  var parameters = ["language=en-US", "append_to_response=credits,release_dates"]
 
   init(apiKey: String, id: Int) {
     parameters.append("api_key=\(apiKey)")
@@ -196,7 +231,6 @@ class TMDB {
       completion(.failure(.invalidUrlString))
       return
     }
-    print(url)
     URLSession.shared.dataTask(with: url) { (data, resp, err) in
       if let error = err {
         print(error.localizedDescription)
@@ -243,6 +277,7 @@ class TMDB {
       completion(.failure(.invalidUrlString))
       return
     }
+    //print(url)
     URLSession.shared.dataTask(with: url) { (data, resp, err) in
       if let error = err {
         print(error.localizedDescription)

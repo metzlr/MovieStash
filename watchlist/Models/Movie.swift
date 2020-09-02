@@ -73,8 +73,8 @@ struct MovieDetailed: Identifiable, Codable {
   let posterUrl: URL?
   let rated: String?
   let runtime: String?
-  let genres: String?
-  let director: String?
+  let genres: [String]
+  let directors: [String]
   let plot: String?
   //let ratings: [MovieRating]
   let imdbId: String?
@@ -99,7 +99,7 @@ extension TMDBMovieDetail {
     }
     
     let genresArray: [String] = self.genres.map { $0.name }
-    let genresString: String? = genresArray.count > 0 ? genresArray.joined(separator: ", ") : nil
+    //let genresString: String? = genresArray.count > 0 ? genresArray.joined(separator: ", ") : nil
     
     let runtimeString: String?
     if let runtime = self.runtime {
@@ -108,7 +108,15 @@ extension TMDBMovieDetail {
       runtimeString = nil
     }
     
-    return MovieDetailed(id: self.id.description, title: self.title, year: year, posterUrl: posterUrl, rated: nil, runtime: runtimeString, genres: genresString, director: nil, plot: self.overview, imdbId: self.imdbId)
+    var directors: [String] = [String]()
+    for person in self.credits.crew {
+      if person.job.lowercased() == "director" {
+        directors.append(person.name)
+      }
+    }
+    
+    
+    return MovieDetailed(id: self.id.description, title: self.title, year: year, posterUrl: posterUrl, rated: nil, runtime: runtimeString, genres: genresArray, directors: directors, plot: self.overview, imdbId: self.imdbId)
   }
 }
 

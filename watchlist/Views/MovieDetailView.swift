@@ -37,10 +37,10 @@ struct MovieDetailView: View {
             .cornerRadius(10)
             .shadow(radius: 10)
           VStack(alignment: .leading, spacing: 10) {
-            if (movie!.director != nil) {
+            if (movie!.directors.count > 0) {
               VStack(alignment: .leading, spacing: 3) {
-                Text("Director").font(.system(size: 13, weight: .semibold, design: .default))
-                Text(movie!.director!)
+                Text(movie!.directors.count > 0 ? "Directors" : "Director").font(.system(size: 13, weight: .semibold, design: .default))
+                Text(movie!.directors.joined(separator: ", "))
                   .font(.system(size: 13, weight: .semibold, design: .default))
                   .foregroundColor(.gray)
                   .fixedSize(horizontal: false, vertical: true)
@@ -70,10 +70,10 @@ struct MovieDetailView: View {
                   .foregroundColor(.gray)
               }
             }
-            if (movie!.genres != nil) {
+            if (movie!.genres.count > 0) {
               VStack(alignment: .leading, spacing: 3) {
                 Text("Genres").font(.system(size: 13, weight: .semibold, design: .default))
-                Text(movie!.genres!)
+                Text(movie!.genres.joined(separator: ", "))
                   .font(.system(size: 13, weight: .semibold, design: .default))
                   .fontWeight(.semibold)
                   .foregroundColor(.gray)

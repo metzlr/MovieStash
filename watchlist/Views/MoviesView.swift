@@ -133,7 +133,6 @@ struct SavedMovieDetailView: View {
         self.app.tmdb.normalizedMovieDetails(id: self.savedMovie.id) { response in
           switch response {
           case .success(let details):
-            print("Update success")
             DispatchQueue.main.async {
               self.savedMovie.update(details: details)
               (UIApplication.shared.delegate as! AppDelegate).saveContext()
@@ -163,8 +162,8 @@ struct SavedMovieRow: View {
             .foregroundColor(.gray)
             .padding(.top, 6)
         }
-        if (movie.genres != nil) {
-          Text(movie.genres!)
+        if (movie.genres.count > 0) {
+          Text(movie.genres.joined(separator: ", "))
             .font(.system(size: 12, weight: .semibold, design: .default))
             .foregroundColor(.gray)
         }

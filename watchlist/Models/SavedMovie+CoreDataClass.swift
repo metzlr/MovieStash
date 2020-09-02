@@ -17,7 +17,7 @@ public class SavedMovie: NSManagedObject {
     self.init(context: context)
     self.id = movie.id
     self.title = movie.title
-    self.director = movie.director
+    self.directors = movie.directors
     self.posterUrl = movie.posterUrl?.absoluteString
     self.rated = movie.rated
     //self.ratings = movie.flatRatings()
@@ -31,7 +31,7 @@ public class SavedMovie: NSManagedObject {
   
   func update(details: MovieDetailed) {
     self.title = details.title
-    self.director = details.director
+    self.directors = details.directors
     self.posterUrl = details.posterUrl?.absoluteString
     self.rated = details.rated
     //self.ratings = details.flatRatings()
@@ -57,6 +57,6 @@ extension MovieDetailed {
     if let savedUrl = savedMovie.posterUrl {
       url = URL(string: savedUrl)
     }
-    self.init(id: savedMovie.id, title: savedMovie.title, year: savedMovie.year, posterUrl: url, rated: savedMovie.rated, runtime: savedMovie.runtime, genres: savedMovie.genres, director: savedMovie.director, plot: savedMovie.plot, imdbId: savedMovie.imdbId)
+    self.init(id: savedMovie.id, title: savedMovie.title, year: savedMovie.year, posterUrl: url, rated: savedMovie.rated, runtime: savedMovie.runtime, genres: savedMovie.genres, directors: savedMovie.directors, plot: savedMovie.plot, imdbId: savedMovie.imdbId)
   }
 }
