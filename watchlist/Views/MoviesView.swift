@@ -18,11 +18,15 @@ enum MovieSortMode: String {
 }
 
 struct MoviesView: View {
+  enum ActiveSheet {
+    case search, randomMovie
+  }
   @Environment(\.managedObjectContext) var context
   @EnvironmentObject var app: AppController
-  @State private var showSearchView: Bool = false
-  @State private var showRandomMovie: Bool = false
-  @State private var showSortMenu: Bool = false
+
+  @State private var showSheet: Bool = false
+  @State private var activeSheet: ActiveSheet = .search
+  
   @State private var sortMode: MovieSortMode = .title
   @State var randomSavedMovie: SavedMovie? = nil
   
@@ -44,7 +48,8 @@ struct MoviesView: View {
             action: {
               if let savedMovie = self.getRandomSavedMovie() {
                 self.randomSavedMovie = savedMovie
-                self.showRandomMovie = true
+                self.activeSheet = .randomMovie
+                self.showSheet = true
               } else {
                 print("Couldn't get random saved movie")
               }
@@ -57,7 +62,8 @@ struct MoviesView: View {
           },
           trailing: Button(
             action: {
-              self.showSearchView = true
+              self.activeSheet = .search
+              self.showSheet = true
             }
           ) {
             Image(systemName: "plus")
@@ -66,26 +72,50 @@ struct MoviesView: View {
               .frame(width: 23)
           }
         )
-        .sheet(isPresented: self.$showSearchView) {
-          MovieSearchView(viewModel: MovieSearchViewModel(tmdb: self.app.tmdb), showView: self.$showSearchView)
-            .environmentObject(self.app)
-            .environment(\.managedObjectContext, self.app.context)
-        }
-        .sheet(isPresented: self.$showRandomMovie) {
+        .sheet(isPresented: self.$showSheet) {
           NavigationView {
-            SavedMovieDetailView(savedMovie: self.randomSavedMovie!)
-              .navigationBarTitle("Random Movie", displayMode: .inline)
-              .navigationBarItems(leading:
-                Button(action: {
-                  self.showRandomMovie.toggle()
-                }) {
-                  Text("Cancel")
-                }
-              )
-              .environmentObject(self.app)
-              .environment(\.managedObjectContext, self.app.context)
+            if self.activeSheet == .search {
+              MovieSearchView(viewModel: MovieSearchViewModel(tmdb: self.app.tmdb), showView: self.$showSheet)
+                .navigationBarTitle("Search", displayMode: .inline)
+                .navigationBarItems(leading:
+                  Button(action: {
+                    self.showSheet.toggle()
+                  }) {
+                    Text("Cancel")
+                  }
+                )
+                .environmentObject(self.app)
+                .environment(\.managedObjectContext, self.app.context)
+            } else if self.activeSheet == .randomMovie {
+              SavedMovieDetailView(savedMovie: self.randomSavedMovie!)
+                .navigationBarTitle("Random Movie", displayMode: .inline)
+                .navigationBarItems(leading:
+                  Button(action: {
+                    self.showSheet.toggle()
+                  }) {
+                    Text("Cancel")
+                  }
+                )
+                .environmentObject(self.app)
+                .environment(\.managedObjectContext, self.app.context)
+            }
           }
         }
+//        .sheet(isPresented: self.$showRandomMovie) {
+//          NavigationView {
+//            SavedMovieDetailView(savedMovie: self.randomSavedMovie!)
+//              .navigationBarTitle("Random Movie", displayMode: .inline)
+//              .navigationBarItems(leading:
+//                Button(action: {
+//                  self.showRandomMovie.toggle()
+//                }) {
+//                  Text("Cancel")
+//                }
+//              )
+//              .environmentObject(self.app)
+//              .environment(\.managedObjectContext, self.app.context)
+//          }
+//        }
     }
   }
   

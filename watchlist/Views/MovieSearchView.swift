@@ -59,19 +59,15 @@ struct MovieSearchView: View {
   @Binding var showView: Bool
 
   var body: some View {
-    NavigationView {
-      VStack(spacing: 0) {
-        SearchBar(placeHolder: "Enter a movie name", text: $viewModel.searchText)
-        List {
-          ForEach(viewModel.searchResults) { movie in
-            NavigationLink(destination: self.detail, tag: movie, selection: self.$viewModel.selectedMovie) {
-              MovieSearchRow(movie: movie)
-            }
+    VStack(spacing: 0) {
+      SearchBar(placeHolder: "Enter a movie name", text: $viewModel.searchText)
+      List {
+        ForEach(viewModel.searchResults) { movie in
+          NavigationLink(destination: self.detail, tag: movie, selection: self.$viewModel.selectedMovie) {
+            MovieSearchRow(movie: movie)
           }
         }
-
       }
-      .navigationBarTitle("Search")
     }
   }
 
