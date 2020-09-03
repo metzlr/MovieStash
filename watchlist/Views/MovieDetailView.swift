@@ -106,13 +106,34 @@ struct MovieDetailView: View {
         if (movie!.plot != nil) {
           Group {
             Divider().padding(5)
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 7) {
               Text("Plot Summary").font(.headline)
               Text(movie!.plot!)
                 .fixedSize(horizontal: false, vertical: true)
                 .multilineTextAlignment(.leading)
                 .foregroundColor(.gray)
-                .padding(.top, 7)
+            }
+          }
+        }
+        if (movie!.youtubeKey != nil) {
+          Group {
+            Divider().padding(5)
+            VStack(alignment: .leading, spacing: 7) {
+              Text("Trailer").font(.headline)
+              Button(action: {
+                if let url = URL(string: "http://www.youtube.com/watch?v="+self.movie!.youtubeKey!) {
+                  UIApplication.shared.open(url)
+                }
+              }) {
+                Image("youtube-icon")
+                  .renderingMode(.original)
+                  .resizable()
+                  .aspectRatio(contentMode: .fit)
+                  .frame(width: 25)
+                  .fixedSize()
+                Text("Watch on YouTube")
+                  .font(.system(size: 16, weight: .semibold, design: .default))
+              }
             }
           }
         }

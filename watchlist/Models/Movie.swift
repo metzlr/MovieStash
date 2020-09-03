@@ -85,8 +85,9 @@ struct MovieDetailed: Identifiable {
   let cast: [MovieCastMember]
   let plot: String?
   let imdbId: String?
+  let youtubeKey: String?
   
-  init(id: String, title: String, year: String? = nil, posterUrl: URL? = nil, rated: String? = nil, runtime: String? = nil, genres: [String] = [String](), directors: [String] = [String](), plot: String? = nil, imdbId: String? = nil, cast: [MovieCastMember] = [MovieCastMember]()) {
+  init(id: String, title: String, year: String? = nil, posterUrl: URL? = nil, rated: String? = nil, runtime: String? = nil, genres: [String] = [String](), directors: [String] = [String](), plot: String? = nil, imdbId: String? = nil, cast: [MovieCastMember] = [MovieCastMember](), youtubeKey: String? = nil) {
     self.id = id
     self.title = title
     self.year = year
@@ -98,6 +99,7 @@ struct MovieDetailed: Identifiable {
     self.plot = plot
     self.imdbId = imdbId
     self.cast = cast
+    self.youtubeKey = youtubeKey
   }
 }
 
@@ -143,7 +145,15 @@ extension TMDBMovieDetail {
       }
     }
     
-    return MovieDetailed(id: self.id.description, title: self.title, year: year, posterUrl: self.posterUrl, rated: rated, runtime: runtimeString, genres: genresArray, directors: directors, plot: self.overview, imdbId: self.imdbId, cast: cast)
+    // Find youtube video key from list of videos
+    var youtubeKey: String? = nil
+    for video in self.videos {
+      if video.iso == "US" && video.site.lowercased() == "youtube" && video.type.lowercased() == "trailer" {
+        youtubeKey = video.key
+      }
+    }
+    
+    return MovieDetailed(id: self.id.description, title: self.title, year: year, posterUrl: self.posterUrl, rated: rated, runtime: runtimeString, genres: genresArray, directors: directors, plot: self.overview, imdbId: self.imdbId, cast: cast, youtubeKey: youtubeKey)
   }
 }
 

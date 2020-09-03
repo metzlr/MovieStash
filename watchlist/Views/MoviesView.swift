@@ -53,7 +53,7 @@ struct MoviesView: View {
             Image("dice-icon")
               .resizable()
               .aspectRatio(contentMode: .fit)
-              .frame(width: 20)
+              .frame(width: 25)
           },
           trailing: Button(
             action: {
@@ -63,7 +63,7 @@ struct MoviesView: View {
             Image(systemName: "plus")
               .resizable()
               .aspectRatio(contentMode: .fit)
-              .frame(width: 20)
+              .frame(width: 23)
           }
         )
         .sheet(isPresented: self.$showSearchView) {
@@ -104,7 +104,7 @@ struct MoviesView: View {
     // find out how many items are there
     let totalresults = try! self.context.count(for: req)
     if totalresults > 0 {
-      // randomlize offset
+      // random offset
       req.fetchOffset = Int.random(in: 0..<totalresults)
       req.fetchLimit = 1
       
@@ -217,21 +217,23 @@ struct SavedMovieRow: View {
     HStack(alignment: .center, spacing: 10) {
       MovieImage(imageUrlString: movie.posterUrl, width: 90, radius: 5)
         .shadow(radius: 6)
-      VStack(alignment: .leading, spacing: 3) {
+      VStack(alignment: .leading, spacing: 0) {
         Spacer()
         Text(movie.title)
           .font(.system(size: 20, weight: .semibold, design: .default))
+          .padding(.bottom, 2)
+        
         if (movie.runtime != nil) {
           Text(movie.runtime!)
             .font(.system(size: 14, weight: .semibold, design: .default))
             .foregroundColor(.gray)
-            .padding(.top, 6)
         }
         if (movie.genres.count > 0) {
           Text(movie.genres.joined(separator: ", "))
             .font(.system(size: 12, weight: .semibold, design: .default))
             .foregroundColor(.gray)
         }
+        
         HStack {
           Image(systemName: (self.movie.watched ? "checkmark.circle.fill" : "xmark.circle.fill"))
             .resizable()
@@ -239,16 +241,17 @@ struct SavedMovieRow: View {
             .frame(width: 16)
             .foregroundColor(self.movie.watched ? .green : .gray)
           Text("Watched").font(.system(size: 14, weight: .regular, design: .default))
-          if (self.movie.favorited) {
-            Image(systemName: "heart.fill")
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .frame(width: 16)
-              .foregroundColor(.pink)
-            Text("Favorite").font(.system(size: 14, weight: .regular, design: .default))
-          }
-        }.padding(.top, 5)
+        }.padding(.top, 10)
         Spacer()
+      }
+      Spacer()
+      if (self.movie.favorited) {
+        Image(systemName: "star.fill")
+          .resizable()
+          .aspectRatio(contentMode: .fit)
+          .frame(width: 22)
+          .padding(0)
+          .foregroundColor(.yellow)
       }
     }.padding(5)
   }
@@ -263,11 +266,11 @@ struct SavedMovieButtonsNavbarView: View {
         self.savedMovie.favorited.toggle()
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
       }) {
-        Image(systemName: self.savedMovie.favorited ? "heart.fill" : "heart")
+        Image(systemName: self.savedMovie.favorited ? "star.fill" : "star")
           .resizable()
           .aspectRatio(contentMode: .fit)
           .frame(width: 25)
-          .foregroundColor(self.savedMovie.favorited ? .pink : .gray)
+          .foregroundColor(self.savedMovie.favorited ? .yellow : .gray)
       }
       Button(action: {
         self.savedMovie.watched.toggle()

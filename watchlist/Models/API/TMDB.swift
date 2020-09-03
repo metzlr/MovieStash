@@ -150,6 +150,20 @@ struct TMDBReleaseDateWrapper: Decodable {
   }
 }
 
+struct TMDBVideo: Decodable {
+  let iso: String
+  let type: String
+  let site: String
+  let key: String
+  
+  enum CodingKeys: String, CodingKey {
+    case iso = "iso_3166_1"
+    case key
+    case site
+    case type
+  }
+}
+
 struct TMDBMovieDetail: Identifiable {
   let id: Int
   let title: String
@@ -162,6 +176,7 @@ struct TMDBMovieDetail: Identifiable {
   var posterUrl: URL?
   var credits: TMDBCreditsWrapper
   let releaseDateDetails: [TMDBReleaseDateWrapper]
+  let videos: [TMDBVideo]
   
   enum CodingKeys: String, CodingKey {
     case id
@@ -174,10 +189,15 @@ struct TMDBMovieDetail: Identifiable {
     case posterUrlPath = "poster_path"
     case credits
     case releaseDates = "release_dates"
+    case videoResults = "videos"
   }
   
   enum ReleaseDatesKeys: String, CodingKey {
     case releaseDatesDetails = "results"
+  }
+  
+  enum VideosKeys: String, CodingKey {
+    case videos = "results"
   }
 }
 
@@ -196,6 +216,9 @@ extension TMDBMovieDetail: Decodable {
     
     let releaseDates = try values.nestedContainer(keyedBy: ReleaseDatesKeys.self, forKey: .releaseDates)
     releaseDateDetails = try releaseDates.decode([TMDBReleaseDateWrapper].self, forKey: .releaseDatesDetails)
+    
+    let videoResults = try values.nestedContainer(keyedBy: VideosKeys.self, forKey: .videoResults)
+    videos = try videoResults.decode([TMDBVideo].self, forKey: .videos)
   }
 }
 
@@ -203,7 +226,7 @@ struct TMDBMovieDetailResource: ApiResource {
   let baseUrl = "https://api.themoviedb.org/3"
   let methodPath: String
   let httpMethod = "GET"
-  var parameters = ["language=en-US", "append_to_response=credits,release_dates"]
+  var parameters = ["language=en-US", "append_to_response=credits,release_dates,videos"]
 
   init(apiKey: String, id: Int) {
     parameters.append("api_key=\(apiKey)")
