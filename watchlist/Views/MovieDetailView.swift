@@ -30,7 +30,7 @@ struct MovieDetailView: View {
   
   var detail: some View {
     ScrollView {
-      VStack(alignment: .leading) {
+      VStack(alignment: .leading, spacing: 15) {
         HStack(alignment: .center, spacing: 20) {
           MovieImage(imageUrl: movie!.posterUrl, width: 200, radius: 10)
             .shadow(radius: 10)
@@ -102,11 +102,10 @@ struct MovieDetailView: View {
           .font(.system(size: 27, weight: .bold, design: .default))
           .fixedSize(horizontal: false, vertical: true)
           .multilineTextAlignment(.leading)
-          .padding(.vertical, 5)
         if (movie!.plot != nil) {
           Group {
-            Divider().padding(5)
-            VStack(alignment: .leading, spacing: 7) {
+            Divider()
+            VStack(alignment: .leading, spacing: 10) {
               Text("Plot Summary").font(.headline)
               Text(movie!.plot!)
                 .fixedSize(horizontal: false, vertical: true)
@@ -117,8 +116,8 @@ struct MovieDetailView: View {
         }
         if (movie!.youtubeKey != nil) {
           Group {
-            Divider().padding(5)
-            VStack(alignment: .leading, spacing: 7) {
+            Divider()
+            VStack(alignment: .leading, spacing: 10) {
               Text("Trailer").font(.headline)
               Button(action: {
                 if let url = URL(string: "http://www.youtube.com/watch?v="+self.movie!.youtubeKey!) {
@@ -137,11 +136,13 @@ struct MovieDetailView: View {
             }
           }
         }
-        if (movie!.cast.count > 0) {
+        if (movie!.cast.count > 10) {
           Group {
-            Divider().padding(5)
-            Text("Cast").font(.headline)
-            MovieCastView(cast: movie!.cast)
+            Divider()
+            VStack(alignment: .leading, spacing: 7) {
+              Text("Cast").font(.headline)
+              MovieCastView(cast: movie!.cast)
+            }
           }
         }
       }.padding()
@@ -157,7 +158,7 @@ struct MovieCastView: View {
       HStack(alignment: .top, spacing: 30) {
         ForEach(0..<(cast.count < 15 ? cast.count : 15)) { index in
           VStack {
-            ProfileImage(imageUrl: self.cast[index].imageUrl, size: 80).fixedSize()
+            ProfileImage(imageUrl: self.cast[index].imageUrl, size: 80)
             Text(self.cast[index].character)
               .font(.caption)
               .frame(maxWidth: 110)

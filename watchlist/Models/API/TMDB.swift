@@ -347,7 +347,7 @@ class TMDB {
     }.resume()
   }
   
-  func movieDetail(id: Int, posterImageSizeIndex: Int, completion: @escaping(Result<TMDBMovieDetail, TMDBApiError>) -> Void) {
+  func movieDetail(id: Int, posterImageSizeIndex: Int, profileImageSizeIndex: Int, completion: @escaping(Result<TMDBMovieDetail, TMDBApiError>) -> Void) {
     let resource = TMDBMovieDetailResource(apiKey: self.apiKey, id: id)
     guard let url = resource.url else {
       completion(.failure(.invalidUrlString))
@@ -367,7 +367,7 @@ class TMDB {
         result.posterUrl = self.getImgUrlFromPath(path: result.posterUrlPath, sizeIndex: posterImageSizeIndex)
         
         for index in 0..<result.credits.cast.count {
-          result.credits.cast[index].profileUrl = self.getImgUrlFromPath(path: result.credits.cast[index].profileUrlPath, sizeIndex: 1)
+          result.credits.cast[index].profileUrl = self.getImgUrlFromPath(path: result.credits.cast[index].profileUrlPath, sizeIndex: profileImageSizeIndex)
         }
         
         completion(.success(result))

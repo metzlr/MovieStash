@@ -159,7 +159,7 @@ extension TMDBMovieDetail {
 
 extension TMDB {
   func normalizedMovieDetails(id: String, completion: @escaping(Result<MovieDetailed, TMDBApiError>) -> Void) {
-    self.movieDetail(id: Int(id)!, posterImageSizeIndex: 3) { response in
+    self.movieDetail(id: Int(id)!, posterImageSizeIndex: 3, profileImageSizeIndex: 1) { response in
       switch response {
       case .success(let data):
         completion(.success(
