@@ -26,7 +26,6 @@ struct MovieDetailView: View {
         self.detail
       }
     }
-    .navigationBarTitle("Movie Details", displayMode: .inline)
   }
   
   var detail: some View {
@@ -135,16 +134,16 @@ struct MovieCastView: View {
   var body: some View {
     ScrollView(.horizontal) {
       HStack(alignment: .top, spacing: 30) {
-        ForEach(cast, id: \.self.id) { member in
+        ForEach(0..<(cast.count < 15 ? cast.count : 15)) { index in
           VStack {
-            ProfileImage(imageUrl: member.imageUrl, size: 80).fixedSize()
-            Text(member.character)
+            ProfileImage(imageUrl: self.cast[index].imageUrl, size: 80).fixedSize()
+            Text(self.cast[index].character)
               .font(.caption)
               .frame(maxWidth: 110)
               //.fixedSize(horizontal: false, vertical: true)
               .multilineTextAlignment(.center)
               .padding(.bottom, 2)
-            Text(member.name)
+            Text(self.cast[index].name)
               .font(.caption)
               .foregroundColor(.gray)
               .frame(maxWidth: 110)
@@ -152,7 +151,7 @@ struct MovieCastView: View {
               .multilineTextAlignment(.center)
           }
         }
-      } 
+      }
     }
   }
 }

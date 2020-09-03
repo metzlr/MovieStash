@@ -18,12 +18,13 @@ enum MovieSortMode: String {
 }
 
 struct MoviesView: View {
-  
   @Environment(\.managedObjectContext) var context
   @EnvironmentObject var app: AppController
   @State private var showSearchView: Bool = false
+  @State private var showRandomMovie: Bool = false
   @State private var showSortMenu: Bool = false
   @State private var sortMode: MovieSortMode = .title
+  @State var randomSavedMovie: SavedMovie? = nil
   
   var body: some View {
     NavigationView {
@@ -39,12 +40,27 @@ struct MoviesView: View {
       }
         .navigationBarTitle(Text("Movies"))
         .navigationBarItems(
+          leading: Button(
+            action: {
+              if let savedMovie = self.getRandomSavedMovie() {
+                self.randomSavedMovie = savedMovie
+                self.showRandomMovie = true
+              } else {
+                print("Couldn't get random saved movie")
+              }
+          }
+          ) {
+            Image("dice-icon")
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .frame(width: 20)
+          },
           trailing: Button(
             action: {
               self.showSearchView = true
             }
           ) {
-            Image(systemName: "plus.circle")
+            Image(systemName: "plus")
               .resizable()
               .aspectRatio(contentMode: .fit)
               .frame(width: 20)
@@ -53,15 +69,55 @@ struct MoviesView: View {
         .sheet(isPresented: self.$showSearchView) {
           MovieSearchView(viewModel: MovieSearchViewModel(tmdb: self.app.tmdb), showView: self.$showSearchView)
             .environmentObject(self.app)
-            .environment(\.managedObjectContext, self.context)
+            .environment(\.managedObjectContext, self.app.context)
+        }
+        .sheet(isPresented: self.$showRandomMovie) {
+          NavigationView {
+            SavedMovieDetailView(savedMovie: self.randomSavedMovie!)
+              .navigationBarTitle("Random Movie", displayMode: .inline)
+              .navigationBarItems(leading:
+                Button(action: {
+                  self.showRandomMovie.toggle()
+                }) {
+                  Text("Cancel")
+                }
+              )
+              .environmentObject(self.app)
+              .environment(\.managedObjectContext, self.app.context)
+          }
         }
     }
+  }
+  
+  func getRandomSavedMovie() -> SavedMovie? {
+    let req = NSFetchRequest<SavedMovie>(entityName: "SavedMovie")
+    let predicate: NSPredicate?
+    switch self.sortMode {
+    case .favorites:
+      predicate = NSPredicate(format: "favorited == true")
+    case .notWatched:
+      predicate = NSPredicate(format: "watched == false")
+    default:
+      predicate = nil
+    }
+    req.predicate = predicate
+    // find out how many items are there
+    let totalresults = try! self.context.count(for: req)
+    if totalresults > 0 {
+      // randomlize offset
+      req.fetchOffset = Int.random(in: 0..<totalresults)
+      req.fetchLimit = 1
+      
+      let res = try! context.fetch(req)
+      return res.first
+    }
+    return nil
   }
 }
 
 struct MovieListView: View {
   @Environment(\.managedObjectContext) var context
-  @EnvironmentObject var app: AppController
+  //@EnvironmentObject var app: AppController
   @Binding var sortMode: MovieSortMode
   @FetchRequest var savedMovies: FetchedResults<SavedMovie>
   
@@ -130,7 +186,7 @@ struct SavedMovieDetailView: View {
       MovieDetailView(movie: movieDetails).navigationBarItems(trailing: SavedMovieButtonsNavbarView(savedMovie: savedMovie))
     }.onAppear {
       self.getMovieDetails()
-    }
+    }.navigationBarTitle("Movie Details", displayMode: .inline)
   }
   
   func getMovieDetails() {
@@ -158,7 +214,7 @@ struct SavedMovieDetailView: View {
 struct SavedMovieRow: View {
   @ObservedObject var movie: SavedMovie
   var body: some View {
-    HStack() {
+    HStack(alignment: .center, spacing: 10) {
       MovieImage(imageUrlString: movie.posterUrl, width: 90, radius: 5)
         .shadow(radius: 6)
       VStack(alignment: .leading, spacing: 3) {
@@ -194,7 +250,6 @@ struct SavedMovieRow: View {
         }.padding(.top, 5)
         Spacer()
       }
-      .padding(.leading, 5)
     }.padding(5)
   }
 }
