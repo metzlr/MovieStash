@@ -153,10 +153,17 @@ struct MovieDetailView: View {
         if (movie!.cast.count > 10) {
           Group {
             Divider()
-            VStack(alignment: .leading, spacing: 7) {
-              Text("Cast").font(.headline)
-              MovieCastView(cast: movie!.cast)
-            }
+            NavigationLink(destination: MovieCastDetailView(cast: self.movie!.cast)) {
+              VStack(alignment: .leading, spacing: 7) {
+                HStack {
+                  Text("Cast").font(.headline)
+                  Spacer()
+                  Text("Details").foregroundColor(Color(UIColor.mainColor))
+                  Image(systemName: "chevron.right").foregroundColor(Color(UIColor.mainColor))
+                }
+                MovieCastView(cast: movie!.cast)
+              }
+            }.buttonStyle(PlainButtonStyle())
           }
         }
       }.padding()
@@ -176,19 +183,36 @@ struct MovieCastView: View {
             Text(self.cast[index].character)
               .font(.caption)
               .frame(maxWidth: 80)
-              //.fixedSize(horizontal: false, vertical: true)
               .multilineTextAlignment(.center)
               .padding(.bottom, 2)
             Text(self.cast[index].name)
               .font(.caption)
               .foregroundColor(.gray)
               .frame(maxWidth: 110)
-              //.fixedSize(horizontal: false, vertical: true)
               .multilineTextAlignment(.center)
           }
         }
       }
     }
+  }
+}
+
+struct MovieCastDetailView: View {
+  let cast: [MovieCastMember]
+  
+  var body: some View {
+    List {
+      ForEach(0..<cast.count) { index in
+        HStack(spacing: 5) {
+          ProfileImage(imageUrl: self.cast[index].imageUrl, size: 80)
+          VStack(alignment: .leading, spacing: 3) {
+            Text(self.cast[index].character)
+            Text(self.cast[index].name)
+              .foregroundColor(.gray)
+          }
+        }.padding(.vertical, 5)
+      }
+    }.navigationBarTitle("Cast")
   }
 }
 
@@ -200,16 +224,5 @@ struct MovieDetailView_Previews: PreviewProvider {
     NavigationView {
       MovieDetailView(movie: DEBUG_MOVIE_DETAILED)
     }
-//    VStack {
-//      Image("poster-placeholder")
-//        .resizable()
-//        .aspectRatio(2/3, contentMode: .fit)
-//        .frame(height: 400)
-//      Text("Movie title").font(.title).padding()
-//      Text("This is a movie description. It is not a real description but it is significantly long to maybe look like one.")
-//      Spacer()
-//    }
-//    .padding()
-//    .navigationBarTitle(Text("Details"))
   }
 }

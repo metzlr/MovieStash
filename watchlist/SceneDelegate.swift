@@ -36,7 +36,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       self.window = window
       
       //set the tintColor to be applied globally
-      self.window?.tintColor = UIColor(red: 255, green: 59, blue: 59)
+      self.window?.tintColor = UIColor.mainColor
   
       window.makeKeyAndVisible()
     }
