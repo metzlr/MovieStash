@@ -9,6 +9,19 @@
 import SwiftUI
 import URLImage
 
+struct ActivityIndicator: UIViewRepresentable {
+  
+  typealias UIView = UIActivityIndicatorView
+  var isAnimating: Bool
+  fileprivate var configuration = { (indicator: UIView) in }
+  
+  func makeUIView(context: UIViewRepresentableContext<Self>) -> UIView { UIView(style: .large) }
+  func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<Self>) {
+    isAnimating ? uiView.startAnimating() : uiView.stopAnimating()
+    configuration(uiView)
+  }
+}
+
 struct MovieDetailView: View {
   var movie: MovieDetailed?
   
@@ -17,9 +30,10 @@ struct MovieDetailView: View {
       if (movie == nil) {
         VStack {
           Spacer()
-          Text("Loading movie details...")
-            .font(.system(size: 25, weight: .bold, design: .default))
+          Text("Loading movie details")
+            .font(.system(size: 25, weight: .semibold, design: .default))
             .foregroundColor(.gray).padding(.top, 20)
+          ActivityIndicator(isAnimating: true)
           Spacer()
         }
       } else {
@@ -155,13 +169,13 @@ struct MovieCastView: View {
   
   var body: some View {
     ScrollView(.horizontal) {
-      HStack(alignment: .top, spacing: 30) {
+      HStack(alignment: .top, spacing: 15) {
         ForEach(0..<(cast.count < 15 ? cast.count : 15)) { index in
           VStack {
             ProfileImage(imageUrl: self.cast[index].imageUrl, size: 80)
             Text(self.cast[index].character)
               .font(.caption)
-              .frame(maxWidth: 110)
+              .frame(maxWidth: 80)
               //.fixedSize(horizontal: false, vertical: true)
               .multilineTextAlignment(.center)
               .padding(.bottom, 2)

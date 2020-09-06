@@ -55,10 +55,10 @@ struct MoviesView: View {
               }
           }
           ) {
-            Image("dice-icon")
+            Image(systemName: "shuffle")
               .resizable()
               .aspectRatio(contentMode: .fit)
-              .frame(width: 25)
+              .frame(width: 22)
           },
           trailing: Button(
             action: {
@@ -69,7 +69,7 @@ struct MoviesView: View {
             Image(systemName: "plus")
               .resizable()
               .aspectRatio(contentMode: .fit)
-              .frame(width: 23)
+              .frame(width: 22)
           }
         )
         .sheet(isPresented: self.$showSheet) {
@@ -289,7 +289,7 @@ struct SavedMovieButtonsNavbarView: View {
         Image(systemName: self.savedMovie.favorited ? "star.fill" : "star")
           .resizable()
           .aspectRatio(contentMode: .fit)
-          .frame(width: 25)
+          .frame(width: 28)
           .foregroundColor(self.savedMovie.favorited ? .yellow : .gray)
       }
       Button(action: {
@@ -299,7 +299,7 @@ struct SavedMovieButtonsNavbarView: View {
         Image(systemName: self.savedMovie.watched ? "eye.fill" : "eye")
           .resizable()
           .aspectRatio(contentMode: .fit)
-          .frame(width: 32)
+          .frame(width: 30)
           .foregroundColor(self.savedMovie.watched ? .green : .gray)
       }
     }
