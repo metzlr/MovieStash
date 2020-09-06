@@ -12,24 +12,7 @@ struct ContentView: View {
   @State private var selection = 0
 
   var body: some View {
-    TabView(selection: $selection){
-      MoviesView()
-        .tabItem {
-          VStack {
-            Image(systemName: "film")
-            Text("Movies")
-          }
-        }
-      .tag(0)
-      Text("Settings").font(.title).bold().foregroundColor(.gray)
-        .tabItem {
-          VStack {
-            Image(systemName: "ellipsis")
-            Text("More")
-          }
-        }
-      .tag(1)
-    }
+    MoviesView()
   }
 }
 
