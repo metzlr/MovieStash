@@ -17,7 +17,7 @@ extension SavedMovie {
         return NSFetchRequest<SavedMovie>(entityName: "SavedMovie")
     }
   
-    @NSManaged public var id: UUID
+    @NSManaged public var id: UUID?
     @NSManaged public var directors: [String]
     @NSManaged public var favorited: Bool
     @NSManaged public var tmdbId: String?

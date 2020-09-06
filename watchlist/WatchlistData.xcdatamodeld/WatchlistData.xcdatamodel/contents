@@ -4,7 +4,7 @@
         <attribute name="directors" attributeType="Transformable" valueTransformerName="" customClassName="NSSecureUnarchiveFromData"/>
         <attribute name="favorited" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="genres" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData"/>
-        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="imdbId" optional="YES" attributeType="String"/>
         <attribute name="plot" optional="YES" attributeType="String"/>
         <attribute name="posterUrl" optional="YES" attributeType="String"/>
