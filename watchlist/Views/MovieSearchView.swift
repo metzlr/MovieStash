@@ -60,21 +60,28 @@ struct MovieSearchView: View {
 
   var body: some View {
     VStack(spacing: 0) {
-      SearchBar(placeHolder: "Enter a movie name", text: $viewModel.searchText)
-      List {
-        ForEach(viewModel.searchResults) { movie in
-          NavigationLink(destination: self.detail, tag: movie, selection: self.$viewModel.selectedMovie) {
-            MovieSearchRow(movie: movie)
+      SearchBar(placeHolder: "Enter a movie name", text: $viewModel.searchText).padding(.top, 5)
+      if (viewModel.searchResults.count > 0) {
+        List {
+          ForEach(viewModel.searchResults) { movie in
+            NavigationLink(destination: self.detail, tag: movie, selection: self.$viewModel.selectedMovie) {
+              MovieSearchRow(movie: movie)
+            }
           }
         }
+      } else {
+        Text("No results")
+          .font(.system(size: 25, weight: .semibold, design: .default))
+          .foregroundColor(.gray).padding(.top, 20)
       }
+      Spacer()
     }
   }
 
   var detail: some View {
     Group {
       MovieDetailView(movie: self.viewModel.movieDetails).navigationBarItems(trailing:
-        Button("Add") {
+        Button("Save") {
           _ = SavedMovie(context: self.context, movie: self.viewModel.movieDetails!)
           (UIApplication.shared.delegate as! AppDelegate).saveContext()
           

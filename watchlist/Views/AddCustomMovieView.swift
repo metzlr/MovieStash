@@ -46,7 +46,7 @@ struct AddCustomMovieView: View {
           Text(String(self.years[index]))
         }
       }
-    }.navigationBarItems(trailing: Button("Add") {
+    }.navigationBarItems(trailing: Button("Save") {
       _ = SavedMovie(context: self.context, movie: MovieDetailed(title: self.titleTextManager.text, year: String(self.years[self.releaseYearIndex]), rated: self.ratedTextManager.text, runtime: self.runtimeTextManager.text + " min"))
       
       (UIApplication.shared.delegate as! AppDelegate).saveContext()

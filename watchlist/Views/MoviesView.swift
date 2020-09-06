@@ -169,7 +169,7 @@ struct MovieListView: View {
           }.onDelete(perform: deleteItem)
         }
       } else {
-        Text("No movies")
+        Text("Empty")
           .font(.system(size: 25, weight: .semibold, design: .default))
           .foregroundColor(.gray)
           .padding(.top, 30)

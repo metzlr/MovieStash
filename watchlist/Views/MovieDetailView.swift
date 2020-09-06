@@ -203,7 +203,7 @@ struct MovieCastDetailView: View {
   var body: some View {
     List {
       ForEach(0..<cast.count) { index in
-        HStack(spacing: 5) {
+        HStack(spacing: 10) {
           ProfileImage(imageUrl: self.cast[index].imageUrl, size: 80)
           VStack(alignment: .leading, spacing: 3) {
             Text(self.cast[index].character)
