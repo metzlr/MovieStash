@@ -34,6 +34,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       let window = UIWindow(windowScene: windowScene)
       window.rootViewController = UIHostingController(rootView: contentView)
       self.window = window
+      
+      //set the tintColor to be applied globally
+      self.window?.tintColor = UIColor(red: 255, green: 59, blue: 59)
+  
       window.makeKeyAndVisible()
     }
   }
