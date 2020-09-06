@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8800FBF2250472CE00E192D8 /* AddCustomMovieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8800FBF1250472CE00E192D8 /* AddCustomMovieView.swift */; };
+		8800FBF4250494F900E192D8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8800FBF3250494F900E192D8 /* Constants.swift */; };
 		881D528A24FB7F66004F2C7E /* SavedMovie+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881D528824FB7F66004F2C7E /* SavedMovie+CoreDataProperties.swift */; };
 		88267D5F24F6A33000F7C76F /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88267D5E24F6A33000F7C76F /* SearchBar.swift */; };
 		88267D6124F6A70800F7C76F /* MovieDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88267D6024F6A70800F7C76F /* MovieDetailView.swift */; };
@@ -34,6 +35,7 @@
 
 /* Begin PBXFileReference section */
 		8800FBF1250472CE00E192D8 /* AddCustomMovieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomMovieView.swift; sourceTree = "<group>"; };
+		8800FBF3250494F900E192D8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		881D528824FB7F66004F2C7E /* SavedMovie+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SavedMovie+CoreDataProperties.swift"; path = "../../SavedMovie+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		88267D5E24F6A33000F7C76F /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		88267D6024F6A70800F7C76F /* MovieDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailView.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				887F51C524F5FF8800064B5A /* Info.plist */,
 				885D165224FA8A0500FDA968 /* WatchlistData.xcdatamodeld */,
 				887F51BF24F5FF8800064B5A /* Preview Content */,
+				8800FBF3250494F900E192D8 /* Constants.swift */,
 			);
 			path = watchlist;
 			sourceTree = "<group>";
@@ -241,6 +244,7 @@
 				882E5A6F25002A6B004DE4C7 /* ProfileImage.swift in Sources */,
 				887F51BC24F5FF8700064B5A /* ContentView.swift in Sources */,
 				887F51D224F618F100064B5A /* TMDB.swift in Sources */,
+				8800FBF4250494F900E192D8 /* Constants.swift in Sources */,
 				88267D5F24F6A33000F7C76F /* SearchBar.swift in Sources */,
 				887F51D824F6755100064B5A /* AppController.swift in Sources */,
 				88267D7424F80C1D00F7C76F /* ApiResource.swift in Sources */,

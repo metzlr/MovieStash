@@ -14,10 +14,7 @@ import UIKit
 class AppController: ObservableObject {
   
   let context: NSManagedObjectContext
-  
-  //private static let OMDB_API_KEY = "c28b587b"
-    
-  private static let TMDB_API_KEY = "3dd96bb069818a8e62e3916c41de7c07"
+      
   let tmdb: TMDB
   
   var movieCache: [String: MovieDetailed] = [:]
@@ -28,7 +25,7 @@ class AppController: ObservableObject {
     URLImageService.shared.cleanFileCache()
     
     // Initalize TMDB API manager
-    self.tmdb = TMDB(apiKey: AppController.TMDB_API_KEY)
+    self.tmdb = TMDB(apiKey: TMDB_API_KEY)
   }
   
 }
