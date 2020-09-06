@@ -51,7 +51,9 @@ struct MoviesView: View {
                 self.activeSheet = .randomMovie
                 self.showSheet = true
               } else {
-                print("Couldn't get random saved movie")
+                #if DEBUG
+                  print("Couldn't get random saved movie")
+                #endif
               }
           }
           ) {
@@ -224,7 +226,9 @@ struct SavedMovieDetailView: View {
             (UIApplication.shared.delegate as! AppDelegate).saveContext()
           }
         case .failure:
-          print("Failed to update movie details for: ", self.savedMovie.title, tmdbId)
+          #if DEBUG
+            print("Failed to update movie details for: ", self.savedMovie.title, tmdbId)
+          #endif
         }
       }
     }

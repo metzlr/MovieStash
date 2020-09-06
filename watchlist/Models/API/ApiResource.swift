@@ -31,7 +31,9 @@ extension ApiResource {
     }
     urlString = urlString.replacingOccurrences(of: " ", with: "+", options: .literal, range: nil)
     guard let url = URL(string: urlString) else {
-      print("Invalid URL: ", urlString)
+      #if DEBUG
+        print("Invalid URL: ", urlString)
+      #endif
       return nil
     }
     return url;

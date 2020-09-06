@@ -275,14 +275,18 @@ class TMDB {
           self.configuration = result
         }
       case .failure(let error):
-        print("Failed to fetch TMDB API configuration:", error.localizedDescription)
+        #if DEBUG
+          print("Failed to fetch TMDB API configuration:", error.localizedDescription)
+        #endif
       }
     }
   }
   
   func getImgUrlFromPath(path: String?, sizeIndex: Int) -> URL? {
     guard let config = configuration else {
-      print("Couldn't generate image URL, API config is nil")
+      #if DEBUG
+        print("Couldn't generate image URL, API config is nil")
+      #endif
       return nil
     }
     guard let path = path else {
@@ -299,16 +303,21 @@ class TMDB {
     }
     URLSession.shared.dataTask(with: url) { (data, resp, err) in
       if let error = err {
-        print(error.localizedDescription)
+        #if DEBUG
+          print(String(data: data!, encoding: .utf8) as Any)
+          print(error.localizedDescription)
+        #endif
         completion(.failure(.requestFailure))
       }
-      //print(String(data: data!, encoding: .utf8))
+      
       do {
         let result = try resource.makeModel(data: data!)
         completion(.success(result))
       } catch let error {
-        //print(String(data: data!, encoding: .utf8))
-        print(error)
+        #if DEBUG
+          print(String(data: data!, encoding: .utf8) as Any)
+          print(error)
+        #endif
         completion(.failure(.decodeFailure))
       }
     }.resume()
@@ -326,10 +335,12 @@ class TMDB {
     }
     URLSession.shared.dataTask(with: url) { (data, resp, err) in
       if let error = err {
-        print(error.localizedDescription)
+        #if DEBUG
+          print(String(data: data!, encoding: .utf8) as Any)
+          print(error.localizedDescription)
+        #endif
         completion(.failure(.requestFailure))
       }
-      //print(String(data: data!, encoding: .utf8))
       do {
         var result = try resource.makeModel(data: data!)
         
@@ -340,8 +351,10 @@ class TMDB {
         
         completion(.success(result))
       } catch let error {
-        //print(String(data: data!, encoding: .utf8))
-        print(error)
+        #if DEBUG
+          print(String(data: data!, encoding: .utf8) as Any)
+          print(error.localizedDescription)
+        #endif
         completion(.failure(.decodeFailure))
       }
     }.resume()
@@ -353,13 +366,14 @@ class TMDB {
       completion(.failure(.invalidUrlString))
       return
     }
-    //print(url)
     URLSession.shared.dataTask(with: url) { (data, resp, err) in
       if let error = err {
-        print(error.localizedDescription)
+        #if DEBUG
+          print(String(data: data!, encoding: .utf8) as Any)
+          print(error.localizedDescription)
+        #endif
         completion(.failure(.requestFailure))
       }
-      //print(String(data: data!, encoding: .utf8))
       do {
         var result = try resource.makeModel(data: data!)
         
@@ -372,8 +386,10 @@ class TMDB {
         
         completion(.success(result))
       } catch let error {
-        //print(String(data: data!, encoding: .utf8))
-        print(error)
+        #if DEBUG
+          print(String(data: data!, encoding: .utf8) as Any)
+          print(error.localizedDescription)
+        #endif
         completion(.failure(.decodeFailure))
       }
     }.resume()
