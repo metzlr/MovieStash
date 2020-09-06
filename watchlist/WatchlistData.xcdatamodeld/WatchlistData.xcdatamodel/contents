@@ -4,22 +4,23 @@
         <attribute name="directors" attributeType="Transformable" valueTransformerName="" customClassName="NSSecureUnarchiveFromData"/>
         <attribute name="favorited" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="genres" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData"/>
-        <attribute name="id" attributeType="String"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="imdbId" optional="YES" attributeType="String"/>
         <attribute name="plot" optional="YES" attributeType="String"/>
         <attribute name="posterUrl" optional="YES" attributeType="String"/>
         <attribute name="rated" optional="YES" attributeType="String"/>
         <attribute name="runtime" optional="YES" attributeType="String"/>
         <attribute name="title" attributeType="String"/>
+        <attribute name="tmdbId" optional="YES" attributeType="String"/>
         <attribute name="watched" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="year" optional="YES" attributeType="String"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
-                <constraint value="id"/>
+                <constraint value="tmdbId"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="SavedMovie" positionX="-36" positionY="9" width="128" height="223"/>
+        <element name="SavedMovie" positionX="-36" positionY="9" width="128" height="238"/>
     </elements>
 </model>

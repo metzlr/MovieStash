@@ -178,7 +178,7 @@ struct MovieCastView: View {
   }
 }
 
-let DEBUG_MOVIE_DETAILED = MovieDetailed(id: "100000", title: "Movie Title", year: "2020", posterUrl: URL(string: "https://image.tmdb.org/t/p/w342/wCGRhVWpsfVLvYYLSdAs530I0P5.jpg"), rated: "PG-13", runtime: "112 min", genres: ["Action", "Adventure"], directors: ["John Smith", "Chris Nolan"], plot: "This is a plot overview. This is a plot overview. This is a plot overview.", imdbId: nil, cast: [MovieCastMember(id: 100, character: "Character 1", name: "Name One", imageUrl: URL(string: "https://image.tmdb.org/t/p/w154/f9WKorjfanW4PxTxhjRvHtCmfKf.jpg"))])
+let DEBUG_MOVIE_DETAILED = MovieDetailed(title: "Movie Title", year: "2020", posterUrl: URL(string: "https://image.tmdb.org/t/p/w342/wCGRhVWpsfVLvYYLSdAs530I0P5.jpg"), rated: "PG-13", runtime: "112 min", genres: ["Action", "Adventure"], directors: ["John Smith", "Chris Nolan"], plot: "This is a plot overview. This is a plot overview. This is a plot overview.", imdbId: nil, cast: [MovieCastMember(id: 100, character: "Character 1", name: "Name One", imageUrl: URL(string: "https://image.tmdb.org/t/p/w154/f9WKorjfanW4PxTxhjRvHtCmfKf.jpg"))])
 
 
 struct MovieDetailView_Previews: PreviewProvider {

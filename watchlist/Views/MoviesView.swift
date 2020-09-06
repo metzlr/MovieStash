@@ -82,6 +82,10 @@ struct MoviesView: View {
                     self.showSheet.toggle()
                   }) {
                     Text("Cancel")
+                  },
+                  trailing:
+                  NavigationLink(destination: AddCustomMovieView(showView: self.$showSheet)) {
+                    Text("Custom")
                   }
                 )
                 .environmentObject(self.app)
@@ -101,21 +105,6 @@ struct MoviesView: View {
             }
           }
         }
-//        .sheet(isPresented: self.$showRandomMovie) {
-//          NavigationView {
-//            SavedMovieDetailView(savedMovie: self.randomSavedMovie!)
-//              .navigationBarTitle("Random Movie", displayMode: .inline)
-//              .navigationBarItems(leading:
-//                Button(action: {
-//                  self.showRandomMovie.toggle()
-//                }) {
-//                  Text("Cancel")
-//                }
-//              )
-//              .environmentObject(self.app)
-//              .environment(\.managedObjectContext, self.app.context)
-//          }
-//        }
     }
   }
   
@@ -173,7 +162,7 @@ struct MovieListView: View {
     Group {
       if (savedMovies.count > 0) {
         List {
-          ForEach(savedMovies) { movie in
+          ForEach(savedMovies, id: \.self.id) { movie in
             NavigationLink(destination: SavedMovieDetailView(savedMovie: movie)) {
               SavedMovieRow(movie: movie)
             }
@@ -221,20 +210,21 @@ struct SavedMovieDetailView: View {
   
   func getMovieDetails() {
     // Try and fetch updated movie details from API. Then add them to movie cache
-    if let cachedDetails = self.app.movieCache[self.savedMovie.id] {
+    guard let tmdbId = self.savedMovie.tmdbId else { return }
+    if let cachedDetails = self.app.movieCache[tmdbId] {
       self.movieDetails = cachedDetails
     } else {
-      self.app.tmdb.normalizedMovieDetails(id: self.savedMovie.id) { response in
+      self.app.tmdb.normalizedMovieDetails(id: tmdbId) { response in
         switch response {
         case .success(let details):
-          self.app.movieCache[self.savedMovie.id] = details
+          self.app.movieCache[tmdbId] = details
           DispatchQueue.main.async {
             self.movieDetails = details
             self.savedMovie.update(details: details)
             (UIApplication.shared.delegate as! AppDelegate).saveContext()
           }
         case .failure:
-          print("Failed to update movie details for: ", self.savedMovie.title, self.savedMovie.id)
+          print("Failed to update movie details for: ", self.savedMovie.title, tmdbId)
         }
       }
     }

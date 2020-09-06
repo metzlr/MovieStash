@@ -16,10 +16,11 @@ extension SavedMovie {
     @nonobjc public class func fetchRequest() -> NSFetchRequest<SavedMovie> {
         return NSFetchRequest<SavedMovie>(entityName: "SavedMovie")
     }
-
+  
+    @NSManaged public var id: UUID
     @NSManaged public var directors: [String]
     @NSManaged public var favorited: Bool
-    @NSManaged public var id: String
+    @NSManaged public var tmdbId: String?
     @NSManaged public var title: String
     @NSManaged public var watched: Bool
     @NSManaged public var posterUrl: String?
