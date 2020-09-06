@@ -10,19 +10,27 @@ import SwiftUI
 
 class MovieSearchViewModel: ObservableObject {
   let tmdb: TMDB
+  var searchTask: DispatchWorkItem?
   @Published var movieDetails: MovieDetailed? = nil
   @Published var searchText: String = "" {
     willSet {
-      self.tmdb.normalizedMovieSearch(query: newValue, posterSizeIndex: 2) { response in
-        switch response {
-        case .success(let movies):
-          DispatchQueue.main.async {
-            self.searchResults = movies
+      // Cancel previous task
+      self.searchTask?.cancel()
+      let task = DispatchWorkItem {
+        self.tmdb.normalizedMovieSearch(query: newValue, posterSizeIndex: 2) { response in
+          switch response {
+          case .success(let movies):
+            DispatchQueue.main.async {
+              self.searchResults = movies
+            }
+          case .failure:
+            return
           }
-        case .failure:
-          return
         }
       }
+      self.searchTask = task
+      // Delay execution of task so that if the user is still typing it will be cancelled before running
+      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.25, execute: task)
     }
   }
   @Published var searchResults: [Movie] = [Movie]()
