@@ -154,7 +154,7 @@ struct MovieDetailView: View {
           .font(.system(size: 27, weight: .bold, design: .default))
           .fixedSize(horizontal: false, vertical: true)
           .multilineTextAlignment(.leading)
-        if (movie!.tmdbUserScore != nil) {
+        if (movie!.tmdbUserScore != nil && movie!.tmdbUserScore!.count > 0) {
           Group {
             Divider()
             VStack(alignment: .leading, spacing: 10) {
@@ -171,7 +171,7 @@ struct MovieDetailView: View {
                   Text(String(movie!.tmdbUserScore!.average)).font(.system(size: 20, weight: .bold, design: .default))
                 }
                 VStack(alignment: .leading) {
-                  Text("Based on "+String(movie!.tmdbUserScore!.count) + " \(movie!.tmdbUserScore!.count == 0 ? "vote" : "votes")")
+                  Text("Based on "+String(movie!.tmdbUserScore!.count) + " \(movie!.tmdbUserScore!.count == 1 ? "vote" : "votes")")
                     .font(.system(size: 16, weight: .semibold, design: .default))
                     .foregroundColor(.gray)
                 }
