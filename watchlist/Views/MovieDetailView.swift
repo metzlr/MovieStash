@@ -50,29 +50,6 @@ struct MovieDetailView: View {
           MovieImage(imageUrl: movie!.posterUrl, width: 200, radius: 10)
             .shadow(radius: 10)
           VStack(alignment: .leading, spacing: 10) {
-//            if (movie!.tmdbUserScore != nil) {
-//              VStack(alignment: .leading, spacing: 6) {
-//                //Text("Score").font(.system(size: 13, weight: .semibold, design: .default))
-//                HStack(spacing: 12) {
-//                  ZStack {
-//                    ArcShape(angle: Double((movie!.tmdbUserScore!.average/10) * 360), radius: 25)
-//                      .frame(width: 40, height: 40)
-//                      .foregroundColor(
-//                        movie!.tmdbUserScore!.average < 6.0 ? (movie!.tmdbUserScore!.average < 3.0 ? .red : .yellow) : .green
-//                    )
-//                    Text(String(movie!.tmdbUserScore!.average)).font(.system(size: 15, weight: .bold, design: .default))
-//                  }
-//                  VStack(alignment: .leading) {
-//                    Text("Based on")//.font(.system(size: 13, weight: .semibold, design: .default))
-//                    Text(String(movie!.tmdbUserScore!.count) + " \(movie!.tmdbUserScore!.count == 0 ? "vote" : "votes")")
-//
-//                  }
-//                  .font(.system(size: 12, weight: .semibold, design: .default))
-//                  .foregroundColor(.gray)
-//                  .fixedSize(horizontal: false, vertical: true)
-//                }
-//              }
-//            }
             if movie!.directors.count > 0 {
               VStack(alignment: .leading, spacing: 3) {
                 Text(movie!.directors.count > 0 ? "Directors" : "Director").font(.system(size: 13, weight: .semibold, design: .default))
@@ -141,6 +118,23 @@ struct MovieDetailView: View {
           .font(.system(size: 27, weight: .bold, design: .default))
           .fixedSize(horizontal: false, vertical: true)
           .multilineTextAlignment(.leading)
+        if (movie!.youtubeKey != nil) {
+          Group {
+            //Divider()
+              Button(action: {
+                if let url = URL(string: "http://www.youtube.com/watch?v="+self.movie!.youtubeKey!) {
+                  UIApplication.shared.open(url)
+                }
+              }) {
+                Text("Watch Trailer")
+                  .font(.system(size: 16, weight: .semibold, design: .default))
+                Image(systemName: "play.circle")
+                  .resizable()
+                  .frame(width: 23, height: 23)
+              }
+            
+          }
+        }
         if (movie!.tmdbUserScore != nil && movie!.tmdbUserScore!.count > 0) {
           Group {
             Divider()
@@ -170,33 +164,11 @@ struct MovieDetailView: View {
           Group {
             Divider()
             VStack(alignment: .leading, spacing: 10) {
-              Text("Plot Summary").font(.headline)
+              Text("Plot").font(.headline)
               Text(movie!.plot!)
                 .fixedSize(horizontal: false, vertical: true)
                 .multilineTextAlignment(.leading)
                 .foregroundColor(.gray)
-            }
-          }
-        }
-        if (movie!.youtubeKey != nil) {
-          Group {
-            Divider()
-            VStack(alignment: .leading, spacing: 10) {
-              Text("Trailer").font(.headline)
-              Button(action: {
-                if let url = URL(string: "http://www.youtube.com/watch?v="+self.movie!.youtubeKey!) {
-                  UIApplication.shared.open(url)
-                }
-              }) {
-                Image("youtube-icon")
-                  .renderingMode(.original)
-                  .resizable()
-                  .aspectRatio(contentMode: .fit)
-                  .frame(width: 25)
-                  .fixedSize()
-                Text("Watch on YouTube")
-                  .font(.system(size: 16, weight: .semibold, design: .default))
-              }
             }
           }
         }
@@ -230,12 +202,12 @@ struct MovieCastView: View {
         ForEach(0..<(cast.count < 15 ? cast.count : 15)) { index in
           VStack {
             ProfileImage(imageUrl: self.cast[index].imageUrl, size: 80)
-            Text(self.cast[index].character)
+            Text(self.cast[index].name)
               .font(.caption)
               .frame(maxWidth: 80)
               .multilineTextAlignment(.center)
               .padding(.bottom, 2)
-            Text(self.cast[index].name)
+            Text(self.cast[index].character)
               .font(.caption)
               .foregroundColor(.gray)
               .frame(maxWidth: 110)

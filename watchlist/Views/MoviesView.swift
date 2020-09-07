@@ -33,7 +33,7 @@ struct MoviesView: View {
   var body: some View {
     NavigationView {
       VStack {
-        Picker(selection: $sortMode, label: Text("What is your favorite color?")) {
+        Picker(selection: $sortMode, label: Text("Sort mode")) {
           Text("All").tag(MovieSortMode.title)
           Text("Not Watched").tag(MovieSortMode.notWatched)
           Text("Favorites").tag(MovieSortMode.favorites)
@@ -208,12 +208,12 @@ struct MovieListView: View {
           }
         }
       } else {
-        Text("Empty")
+        Text("No movies")
           .font(.system(size: 22, weight: .semibold, design: .default))
           .foregroundColor(.gray)
           .padding(.top, 30)
-        Spacer()
       }
+      Spacer()
     }
   }
   
