@@ -18,7 +18,6 @@ struct SavedMoviesView: View {
   @Environment(\.managedObjectContext) var context
   @EnvironmentObject var app: AppController
   
-
   @State private var showSheet: Bool = false
   @State private var activeSheet: ActiveSheet = .search
   @State private var searchText: String = ""
@@ -121,6 +120,8 @@ struct SavedMovieList: View {
   @EnvironmentObject var partialSheetManager: PartialSheetManager
   @FetchRequest var savedMovies: FetchedResults<SavedMovie>
   @Binding var sortMode: MovieSortMode
+  @State private var showDeleteAlert: Bool = false
+  @State private var toBeDeleted: IndexSet?
   var searchText: String
 
   init(sortMode: Binding<MovieSortMode>, searchText: String) {
@@ -198,7 +199,24 @@ struct SavedMovieList: View {
                   }
                 }
               }
-            }.onDelete(perform: deleteItem)
+            }.onDelete { indexSet in
+              self.toBeDeleted = indexSet
+              self.showDeleteAlert = true
+            }
+          }.alert(isPresented: $showDeleteAlert) {
+            Alert(title: Text("Delete Movie"), message: Text("Are you sure you want to delete this movie?"), primaryButton: .destructive(Text("Delete")) {
+              if let indexSet = self.toBeDeleted {
+                withAnimation {
+                  for index in indexSet {
+                    let movie = self.savedMovies[index]
+                    self.context.delete(movie)
+                    (UIApplication.shared.delegate as! AppDelegate).saveContext()
+                  }
+                }
+                self.toBeDeleted = nil
+              }
+              }, secondaryButton: .cancel()
+            )
           }
         }
       } else {
@@ -222,16 +240,6 @@ struct SavedMovieList: View {
       if genre.lowercased().contains(query) { return true }
     }
     return false
-  }
-
-  private func deleteItem(at offsets: IndexSet) {
-    withAnimation {
-      for index in offsets {
-        let movie = savedMovies[index]
-        context.delete(movie)
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
-      }
-    }
   }
 }
 
@@ -308,7 +316,6 @@ struct SavedMovieSortView: View {
 }
 
 struct SavedMovieSortRow: View {
-  //let imageName: String
   let text: String
   let active: Bool
   
@@ -317,9 +324,6 @@ struct SavedMovieSortRow: View {
   var body: some View {
     Button(action: onSelect) {
       HStack {
-  //      Image(imageName)
-  //        .resizable()
-  //        .frame(width: 23, height: 23)
         Text(text).foregroundColor(.black)
         Spacer()
         if active {
