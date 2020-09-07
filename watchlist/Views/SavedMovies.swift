@@ -1,5 +1,5 @@
 //
-//  MovieList.swift
+//  SavedMovies.swift
 //  watchlist
 //
 //  Created by Reed Metzler-Gilbertz on 8/25/20.
@@ -324,7 +324,7 @@ struct SavedMovieSortRow: View {
   var body: some View {
     Button(action: onSelect) {
       HStack {
-        Text(text).foregroundColor(.black)
+        Text(text)
         Spacer()
         if active {
           Image(systemName: "checkmark")

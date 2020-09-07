@@ -310,12 +310,11 @@ class TMDB {
     URLSession.shared.dataTask(with: url) { (data, resp, err) in
       if let error = err {
         #if DEBUG
-          print(String(data: data!, encoding: .utf8) as Any)
           print(error.localizedDescription)
         #endif
         completion(.failure(.requestFailure))
+        return
       }
-      
       do {
         let result = try resource.makeModel(data: data!)
         completion(.success(result))
@@ -342,10 +341,10 @@ class TMDB {
     URLSession.shared.dataTask(with: url) { (data, resp, err) in
       if let error = err {
         #if DEBUG
-          print(String(data: data!, encoding: .utf8) as Any)
           print(error.localizedDescription)
         #endif
         completion(.failure(.requestFailure))
+        return
       }
       do {
         var result = try resource.makeModel(data: data!)
@@ -375,10 +374,10 @@ class TMDB {
     URLSession.shared.dataTask(with: url) { (data, resp, err) in
       if let error = err {
         #if DEBUG
-          print(String(data: data!, encoding: .utf8) as Any)
           print(error.localizedDescription)
         #endif
         completion(.failure(.requestFailure))
+        return
       }
       do {
         var result = try resource.makeModel(data: data!)
