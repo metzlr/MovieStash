@@ -9,6 +9,7 @@
 import UIKit
 import SwiftUI
 import CoreData
+import PartialSheet
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -23,11 +24,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // Get the managed object context from the shared persistent container.
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     app = (UIApplication.shared.delegate as! AppDelegate).app
-
+    
+    // Create PartialSheet manager
+    let sheetManager: PartialSheetManager = PartialSheetManager()
+    
     // Create the SwiftUI view that provides the window contents.
     let contentView = ContentView()
       .environment(\.managedObjectContext, context)
       .environmentObject(app)
+      .environmentObject(sheetManager)
+      
 
     // Use a UIHostingController as window root view controller.
     if let windowScene = scene as? UIWindowScene {

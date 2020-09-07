@@ -9,38 +9,27 @@
 import SwiftUI
 import URLImage
 import CoreData
+import PartialSheet
 
-enum MovieSortMode: String {
-  case notWatched = "Not watched"
-  case favorites = "Favorites"
-  case title = "Title"
-  case director = "Director"
-}
-
-struct MoviesView: View {
+struct SavedMoviesView: View {
   enum ActiveSheet {
     case search, randomMovie
   }
   @Environment(\.managedObjectContext) var context
   @EnvironmentObject var app: AppController
+  
 
   @State private var showSheet: Bool = false
   @State private var activeSheet: ActiveSheet = .search
-  
+  @State private var searchText: String = ""
   @State private var sortMode: MovieSortMode = .title
-  @State var randomSavedMovie: SavedMovie? = nil
+  @State private var randomSavedMovie: SavedMovie? = nil
   
   var body: some View {
     NavigationView {
       VStack {
-        Picker(selection: $sortMode, label: Text("Sort mode")) {
-          Text("All").tag(MovieSortMode.title)
-          Text("Not Watched").tag(MovieSortMode.notWatched)
-          Text("Favorites").tag(MovieSortMode.favorites)
-        }
-        .pickerStyle(SegmentedPickerStyle())
-        .padding()
-        MovieListView(sortMode: $sortMode)
+        SearchBar(placeHolder: "Search...", text: $searchText)
+        SavedMovieList(sortMode: self.$sortMode, searchText: self.searchText)
       }
         .navigationBarTitle(Text("Movies"))
         .navigationBarItems(
@@ -112,16 +101,6 @@ struct MoviesView: View {
   
   func getRandomSavedMovie() -> SavedMovie? {
     let req = NSFetchRequest<SavedMovie>(entityName: "SavedMovie")
-    let predicate: NSPredicate?
-    switch self.sortMode {
-    case .favorites:
-      predicate = NSPredicate(format: "favorited == true")
-    case .notWatched:
-      predicate = NSPredicate(format: "watched == false")
-    default:
-      predicate = nil
-    }
-    req.predicate = predicate
     // find out how many items are there
     let totalresults = try! self.context.count(for: req)
     if totalresults > 0 {
@@ -134,44 +113,57 @@ struct MoviesView: View {
     }
     return nil
   }
+  
 }
 
-struct MovieListView: View {
+struct SavedMovieList: View {
   @Environment(\.managedObjectContext) var context
-  //@EnvironmentObject var app: AppController
-  @Binding var sortMode: MovieSortMode
+  @EnvironmentObject var partialSheetManager: PartialSheetManager
   @FetchRequest var savedMovies: FetchedResults<SavedMovie>
-  @State var searchText: String = ""
-  
-  init(sortMode: Binding<MovieSortMode>) {
+  @Binding var sortMode: MovieSortMode
+  var searchText: String
+
+  init(sortMode: Binding<MovieSortMode>, searchText: String) {
+    self.searchText = searchText
     self._sortMode = sortMode
-    let sortDescriptor: NSSortDescriptor = NSSortDescriptor(keyPath: \SavedMovie.title, ascending: true)
-    let predicate: NSPredicate?
+    let sortDescriptor: NSSortDescriptor
     switch sortMode.wrappedValue {
+    case .watchStatus:
+      sortDescriptor = NSSortDescriptor(keyPath: \SavedMovie.watched, ascending: true)
     case .favorites:
-      predicate = NSPredicate(format: "favorited == true")
-    case .notWatched:
-      predicate = NSPredicate(format: "watched == false")
+      sortDescriptor = NSSortDescriptor(keyPath: \SavedMovie.favorited, ascending: false)
     default:
-      predicate = nil
+      sortDescriptor = NSSortDescriptor(keyPath: \SavedMovie.title, ascending: true)
     }
-    
     self._savedMovies = FetchRequest(entity: SavedMovie.entity(), sortDescriptors: [
       sortDescriptor
-    ], predicate: predicate, animation: .none)
+    ], predicate: nil, animation: .none)
   }
 
   var body: some View {
-    Group {
-      SearchBar(placeHolder: "Search...", text: $searchText)
-      if (savedMovies.count > 0) {
+    let filteredMovies = savedMovies.filter({ self.searchText.isEmpty ? true : self.searchFilter(movie: $0, query: self.searchText) })
+    
+    return Group {
+      if (filteredMovies.count > 0) {
         VStack(alignment: .leading, spacing: 3) {
-          Text(String(savedMovies.count) + " \(savedMovies.count == 1 ? "movie" : "movies")")
-            .font(.system(size: 15, weight: .semibold, design: .default))
-            .foregroundColor(.gray)
-            .padding(.leading, 30)
+          HStack {
+            Text("\(filteredMovies.count) " + (filteredMovies.count == 1 ? "movie" : "movies"))
+              .font(.system(size: 18, weight: .semibold, design: .default))
+              .foregroundColor(.gray)
+            Spacer()
+            Button(action: {
+              self.partialSheetManager.showPartialSheet({
+                print("Partial sheet dismissed")
+              }) {
+                SavedMovieSortView(sortMode: self.$sortMode)
+              }
+            }) {
+              Text("Sort by").font(.system(size: 18, weight: .semibold, design: .default))
+              Image(systemName: "chevron.down")
+            }
+          }.padding(.horizontal, 15)
           List {
-            ForEach(savedMovies.filter({ self.searchText.isEmpty ? true : $0.title.contains(self.searchText) }), id: \.self.id) { movie in
+            ForEach(filteredMovies, id: \.self.id) { movie in
               NavigationLink(destination: SavedMovieDetailView(savedMovie: movie)) {
                 SavedMovieRow(movie: movie).contextMenu {
                   Button(action: {
@@ -218,7 +210,20 @@ struct MovieListView: View {
       Spacer()
     }
   }
-  
+
+  // Determines if a movie should be listed under a search query
+  func searchFilter(movie: SavedMovie, query: String) -> Bool {
+    let query = query.lowercased()
+    if movie.title.lowercased().contains(query) { return true }
+    for director in movie.directors {
+      if director.lowercased().contains(query) { return true }
+    }
+    for genre in movie.genres {
+      if genre.lowercased().contains(query) { return true }
+    }
+    return false
+  }
+
   private func deleteItem(at offsets: IndexSet) {
     withAnimation {
       for index in offsets {
@@ -228,7 +233,6 @@ struct MovieListView: View {
       }
     }
   }
-
 }
 
 struct SavedMovieDetailView: View {
@@ -268,6 +272,61 @@ struct SavedMovieDetailView: View {
           #if DEBUG
             print("Failed to update movie details for: ", self.savedMovie.title, tmdbId)
           #endif
+        }
+      }
+    }
+  }
+}
+
+enum MovieSortMode: String {
+  case watchStatus = "Watch Status"
+  case favorites = "Favorites"
+  case title = "Title"
+  case director = "Director"
+}
+
+struct SavedMovieSortView: View {
+  @Binding var sortMode: MovieSortMode
+  var body: some View {
+    VStack(alignment: .leading, spacing: 10) {
+      Text("Sort Mode").foregroundColor(.gray).bold()
+      SavedMovieSortRow(text: MovieSortMode.title.rawValue, active: self.sortMode == .title) {
+        self.sortMode = .title
+      }
+      Divider()
+      SavedMovieSortRow(text: MovieSortMode.watchStatus.rawValue, active: self.sortMode == .watchStatus) {
+        self.sortMode = .watchStatus
+      }
+      Divider()
+      SavedMovieSortRow(text: MovieSortMode.favorites.rawValue, active: self.sortMode == .favorites) {
+        self.sortMode = .favorites
+      }
+      Divider()
+    }.padding()
+    
+  }
+}
+
+struct SavedMovieSortRow: View {
+  //let imageName: String
+  let text: String
+  let active: Bool
+  
+  let onSelect: () -> Void
+  
+  var body: some View {
+    Button(action: onSelect) {
+      HStack {
+  //      Image(imageName)
+  //        .resizable()
+  //        .frame(width: 23, height: 23)
+        Text(text).foregroundColor(.black)
+        Spacer()
+        if active {
+          Image(systemName: "checkmark")
+            .resizable()
+            .frame(width: 15, height: 15)
+            .foregroundColor(Color(UIColor.mainColor))
         }
       }
     }

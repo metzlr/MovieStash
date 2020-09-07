@@ -10,6 +10,7 @@
 		8800FBF2250472CE00E192D8 /* AddCustomMovieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8800FBF1250472CE00E192D8 /* AddCustomMovieView.swift */; };
 		8800FBF4250494F900E192D8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8800FBF3250494F900E192D8 /* Constants.swift */; };
 		8800FBF82505B89800E192D8 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8800FBF72505B89800E192D8 /* ActivityIndicator.swift */; };
+		8800FBFB2506CC4400E192D8 /* PartialSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 8800FBFA2506CC4400E192D8 /* PartialSheet */; };
 		881D528A24FB7F66004F2C7E /* SavedMovie+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881D528824FB7F66004F2C7E /* SavedMovie+CoreDataProperties.swift */; };
 		88267D5F24F6A33000F7C76F /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88267D5E24F6A33000F7C76F /* SearchBar.swift */; };
 		88267D6124F6A70800F7C76F /* MovieDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88267D6024F6A70800F7C76F /* MovieDetailView.swift */; };
@@ -68,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8800FBFB2506CC4400E192D8 /* PartialSheet in Frameworks */,
 				88267D6A24F77A0C00F7C76F /* URLImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -173,6 +175,7 @@
 			name = watchlist;
 			packageProductDependencies = (
 				88267D6924F77A0C00F7C76F /* URLImage */,
+				8800FBFA2506CC4400E192D8 /* PartialSheet */,
 			);
 			productName = watchlist;
 			productReference = 887F51B424F5FF8700064B5A /* watchlist.app */;
@@ -204,6 +207,7 @@
 			mainGroup = 887F51AB24F5FF8700064B5A;
 			packageReferences = (
 				88267D6824F77A0C00F7C76F /* XCRemoteSwiftPackageReference "url-image" */,
+				8800FBF92506CC4400E192D8 /* XCRemoteSwiftPackageReference "PartialSheet" */,
 			);
 			productRefGroup = 887F51B524F5FF8700064B5A /* Products */;
 			projectDirPath = "";
@@ -454,6 +458,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8800FBF92506CC4400E192D8 /* XCRemoteSwiftPackageReference "PartialSheet" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AndreaMiotto/PartialSheet.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.9;
+			};
+		};
 		88267D6824F77A0C00F7C76F /* XCRemoteSwiftPackageReference "url-image" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/dmytro-anokhin/url-image.git";
@@ -465,6 +477,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8800FBFA2506CC4400E192D8 /* PartialSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8800FBF92506CC4400E192D8 /* XCRemoteSwiftPackageReference "PartialSheet" */;
+			productName = PartialSheet;
+		};
 		88267D6924F77A0C00F7C76F /* URLImage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 88267D6824F77A0C00F7C76F /* XCRemoteSwiftPackageReference "url-image" */;
