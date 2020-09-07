@@ -141,6 +141,7 @@ struct MovieListView: View {
   //@EnvironmentObject var app: AppController
   @Binding var sortMode: MovieSortMode
   @FetchRequest var savedMovies: FetchedResults<SavedMovie>
+  @State var searchText: String = ""
   
   init(sortMode: Binding<MovieSortMode>) {
     self._sortMode = sortMode
@@ -162,6 +163,7 @@ struct MovieListView: View {
 
   var body: some View {
     Group {
+      SearchBar(placeHolder: "Search...", text: $searchText)
       if (savedMovies.count > 0) {
         VStack(alignment: .leading, spacing: 3) {
           Text(String(savedMovies.count) + " \(savedMovies.count == 1 ? "movie" : "movies")")
@@ -169,7 +171,7 @@ struct MovieListView: View {
             .foregroundColor(.gray)
             .padding(.leading, 30)
           List {
-            ForEach(savedMovies, id: \.self.id) { movie in
+            ForEach(savedMovies.filter({ self.searchText.isEmpty ? true : $0.title.contains(self.searchText) }), id: \.self.id) { movie in
               NavigationLink(destination: SavedMovieDetailView(savedMovie: movie)) {
                 SavedMovieRow(movie: movie).contextMenu {
                   Button(action: {
