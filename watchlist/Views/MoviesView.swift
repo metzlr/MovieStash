@@ -157,45 +157,58 @@ struct MovieListView: View {
     
     self._savedMovies = FetchRequest(entity: SavedMovie.entity(), sortDescriptors: [
       sortDescriptor
-    ], predicate: predicate, animation: .default)
+    ], predicate: predicate, animation: .none)
   }
 
   var body: some View {
     Group {
       if (savedMovies.count > 0) {
-        List {
-          ForEach(savedMovies, id: \.self.id) { movie in
-            NavigationLink(destination: SavedMovieDetailView(savedMovie: movie)) {
-              SavedMovieRow(movie: movie).contextMenu {
-                Button(action: {
-                  movie.watched.toggle()
-                }) {
-                  if !movie.watched {
-                    Text("Mark as watched")
-                    Image(systemName: "eye.fill")
-                  } else {
-                    Text("Unwatch")
-                    Image(systemName: "eye.slash.fill")
+        VStack(alignment: .leading, spacing: 3) {
+          Text(String(savedMovies.count) + " \(savedMovies.count == 1 ? "movie" : "movies")")
+            .font(.system(size: 15, weight: .semibold, design: .default))
+            .foregroundColor(.gray)
+            .padding(.leading, 30)
+          List {
+            ForEach(savedMovies, id: \.self.id) { movie in
+              NavigationLink(destination: SavedMovieDetailView(savedMovie: movie)) {
+                SavedMovieRow(movie: movie).contextMenu {
+                  Button(action: {
+                    // This delay is necessary because of problem with SwiftUI that causes an animation glitch
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.7){
+                      movie.watched.toggle()
+                      (UIApplication.shared.delegate as! AppDelegate).saveContext()
+                    }
+                  }) {
+                    if !movie.watched {
+                      Text("Mark as watched")
+                      Image(systemName: "eye.fill")
+                    } else {
+                      Text("Unwatch")
+                      Image(systemName: "eye.slash.fill")
+                    }
                   }
-                }
-                
-                Button(action: {
-                  movie.favorited.toggle()
-                }) {
-                  if !movie.favorited {
-                    Text("Favorite")
-                    Image(systemName: "star.fill")
-                  } else {
-                    Text("Unfavorite")
-                    Image(systemName: "star.slash.fill")
+                  
+                  Button(action: {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.7){
+                      movie.favorited.toggle()
+                      (UIApplication.shared.delegate as! AppDelegate).saveContext()
+                    }
+                  }) {
+                    if !movie.favorited {
+                      Text("Favorite")
+                      Image(systemName: "star.fill")
+                    } else {
+                      Text("Unfavorite")
+                      Image(systemName: "star.slash.fill")
+                    }
                   }
                 }
               }
-            }
-          }.onDelete(perform: deleteItem)
+            }.onDelete(perform: deleteItem)
+          }
         }
       } else {
-        Text("There's nothing here yet")
+        Text("Empty")
           .font(.system(size: 22, weight: .semibold, design: .default))
           .foregroundColor(.gray)
           .padding(.top, 30)
