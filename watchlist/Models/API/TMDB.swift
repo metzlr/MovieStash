@@ -177,6 +177,8 @@ struct TMDBMovieDetail: Identifiable {
   var credits: TMDBCreditsWrapper
   let releaseDateDetails: [TMDBReleaseDateWrapper]
   let videos: [TMDBVideo]
+  let voteAverage: Float?
+  let voteCount: Int?
   
   enum CodingKeys: String, CodingKey {
     case id
@@ -190,6 +192,8 @@ struct TMDBMovieDetail: Identifiable {
     case credits
     case releaseDates = "release_dates"
     case videoResults = "videos"
+    case voteAverage = "vote_average"
+    case voteCount = "vote_count"
   }
   
   enum ReleaseDatesKeys: String, CodingKey {
@@ -213,6 +217,8 @@ extension TMDBMovieDetail: Decodable {
     genres = try values.decode([TMDBGenre].self, forKey: .genres)
     posterUrlPath = try? values.decode(String.self, forKey: .posterUrlPath)
     credits = try values.decode(TMDBCreditsWrapper.self, forKey: .credits)
+    voteAverage = try values.decode(Float.self, forKey: .voteAverage)
+    voteCount = try values.decode(Int.self, forKey: .voteCount)
     
     let releaseDates = try values.nestedContainer(keyedBy: ReleaseDatesKeys.self, forKey: .releaseDates)
     releaseDateDetails = try releaseDates.decode([TMDBReleaseDateWrapper].self, forKey: .releaseDatesDetails)

@@ -47,6 +47,11 @@ struct MovieCastMember {
   let imageUrl: URL?
 }
 
+struct MovieUserScore {
+  let average: Float
+  let count: Int
+}
+
 struct MovieDetailed {
   let id: UUID
   let title: String
@@ -61,8 +66,9 @@ struct MovieDetailed {
   let imdbId: String?
   let tmdbId: String?
   let youtubeKey: String?
+  let tmdbUserScore: MovieUserScore?
   
-  init(title: String, year: String? = nil, posterUrl: URL? = nil, rated: String? = nil, runtime: String? = nil, genres: [String] = [String](), directors: [String] = [String](), plot: String? = nil, imdbId: String? = nil, tmdbId: String? = nil, cast: [MovieCastMember] = [MovieCastMember](), youtubeKey: String? = nil) {
+  init(title: String, year: String? = nil, posterUrl: URL? = nil, rated: String? = nil, runtime: String? = nil, genres: [String] = [String](), directors: [String] = [String](), plot: String? = nil, imdbId: String? = nil, tmdbId: String? = nil, cast: [MovieCastMember] = [MovieCastMember](), youtubeKey: String? = nil, tmdbUserScore: MovieUserScore? = nil) {
     self.id = UUID()
     self.tmdbId = tmdbId
     self.title = title
@@ -76,6 +82,7 @@ struct MovieDetailed {
     self.imdbId = imdbId
     self.cast = cast
     self.youtubeKey = youtubeKey
+    self.tmdbUserScore = tmdbUserScore
   }
 }
 
@@ -129,7 +136,12 @@ extension TMDBMovieDetail {
       }
     }
     
-    return MovieDetailed(title: self.title, year: year, posterUrl: self.posterUrl, rated: rated, runtime: runtimeString, genres: genresArray, directors: directors, plot: self.overview, imdbId: self.imdbId, tmdbId: self.id.description, cast: cast, youtubeKey: youtubeKey)
+    var userScore: MovieUserScore? = nil
+    if let avg = self.voteAverage, let count = self.voteCount {
+      userScore = MovieUserScore(average: avg, count: count)
+    }
+    
+    return MovieDetailed(title: self.title, year: year, posterUrl: self.posterUrl, rated: rated, runtime: runtimeString, genres: genresArray, directors: directors, plot: self.overview, imdbId: self.imdbId, tmdbId: self.id.description, cast: cast, youtubeKey: youtubeKey, tmdbUserScore: userScore)
   }
 }
 
