@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		8800FBF2250472CE00E192D8 /* AddCustomMovieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8800FBF1250472CE00E192D8 /* AddCustomMovieView.swift */; };
 		8800FBF4250494F900E192D8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8800FBF3250494F900E192D8 /* Constants.swift */; };
-		8800FBF625049E6C00E192D8 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8800FBF525049E6C00E192D8 /* ActivityIndicator.swift */; };
+		8800FBF82505B89800E192D8 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8800FBF72505B89800E192D8 /* ActivityIndicator.swift */; };
 		881D528A24FB7F66004F2C7E /* SavedMovie+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881D528824FB7F66004F2C7E /* SavedMovie+CoreDataProperties.swift */; };
 		88267D5F24F6A33000F7C76F /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88267D5E24F6A33000F7C76F /* SearchBar.swift */; };
 		88267D6124F6A70800F7C76F /* MovieDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88267D6024F6A70800F7C76F /* MovieDetailView.swift */; };
@@ -37,7 +37,7 @@
 /* Begin PBXFileReference section */
 		8800FBF1250472CE00E192D8 /* AddCustomMovieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomMovieView.swift; sourceTree = "<group>"; };
 		8800FBF3250494F900E192D8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		8800FBF525049E6C00E192D8 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
+		8800FBF72505B89800E192D8 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		881D528824FB7F66004F2C7E /* SavedMovie+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "SavedMovie+CoreDataProperties.swift"; path = "../../SavedMovie+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		88267D5E24F6A33000F7C76F /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		88267D6024F6A70800F7C76F /* MovieDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailView.swift; sourceTree = "<group>"; };
@@ -135,8 +135,8 @@
 				887F51D324F62D8000064B5A /* MovieSearchView.swift */,
 				8800FBF1250472CE00E192D8 /* AddCustomMovieView.swift */,
 				88267D6024F6A70800F7C76F /* MovieDetailView.swift */,
+				8800FBF72505B89800E192D8 /* ActivityIndicator.swift */,
 				882E5A6E25002A6B004DE4C7 /* ProfileImage.swift */,
-				8800FBF525049E6C00E192D8 /* ActivityIndicator.swift */,
 				885D162A24F9C03500FDA968 /* MovieImage.swift */,
 				88267D5E24F6A33000F7C76F /* SearchBar.swift */,
 			);
@@ -236,7 +236,7 @@
 				887F51B824F5FF8700064B5A /* AppDelegate.swift in Sources */,
 				8800FBF2250472CE00E192D8 /* AddCustomMovieView.swift in Sources */,
 				88267D6C24F7D5F400F7C76F /* Colors.swift in Sources */,
-				8800FBF625049E6C00E192D8 /* ActivityIndicator.swift in Sources */,
+				8800FBF82505B89800E192D8 /* ActivityIndicator.swift in Sources */,
 				881D528A24FB7F66004F2C7E /* SavedMovie+CoreDataProperties.swift in Sources */,
 				88267D7724F81AE500F7C76F /* Movie.swift in Sources */,
 				88267D6324F6AE6100F7C76F /* EnvironmentValues.swift in Sources */,

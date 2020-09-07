@@ -9,19 +9,6 @@
 import SwiftUI
 import URLImage
 
-struct ActivityIndicator: UIViewRepresentable {
-  
-  typealias UIView = UIActivityIndicatorView
-  var isAnimating: Bool
-  fileprivate var configuration = { (indicator: UIView) in }
-  
-  func makeUIView(context: UIViewRepresentableContext<Self>) -> UIView { UIView(style: .large) }
-  func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<Self>) {
-    isAnimating ? uiView.startAnimating() : uiView.stopAnimating()
-    configuration(uiView)
-  }
-}
-
 fileprivate struct ArcShape : Shape {
   let angle: Double
   let radius: CGFloat

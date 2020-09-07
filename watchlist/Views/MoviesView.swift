@@ -166,13 +166,37 @@ struct MovieListView: View {
         List {
           ForEach(savedMovies, id: \.self.id) { movie in
             NavigationLink(destination: SavedMovieDetailView(savedMovie: movie)) {
-              SavedMovieRow(movie: movie)
+              SavedMovieRow(movie: movie).contextMenu {
+                Button(action: {
+                  movie.watched.toggle()
+                }) {
+                  if !movie.watched {
+                    Text("Mark as watched")
+                    Image(systemName: "eye.fill")
+                  } else {
+                    Text("Unwatch")
+                    Image(systemName: "eye.slash.fill")
+                  }
+                }
+                
+                Button(action: {
+                  movie.favorited.toggle()
+                }) {
+                  if !movie.favorited {
+                    Text("Favorite")
+                    Image(systemName: "star.fill")
+                  } else {
+                    Text("Unfavorite")
+                    Image(systemName: "star.slash.fill")
+                  }
+                }
+              }
             }
           }.onDelete(perform: deleteItem)
         }
       } else {
-        Text("Empty")
-          .font(.system(size: 25, weight: .semibold, design: .default))
+        Text("There's nothing here yet")
+          .font(.system(size: 22, weight: .semibold, design: .default))
           .foregroundColor(.gray)
           .padding(.top, 30)
         Spacer()
@@ -263,7 +287,7 @@ struct SavedMovieRow: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 16)
-            .foregroundColor(self.movie.watched ? .green : .gray)
+            .foregroundColor(self.movie.watched ? Color(UIColor.mainColor) : .gray)
           Text("Watched").font(.system(size: 14, weight: .regular, design: .default))
         }.padding(.top, 10)
         Spacer()
@@ -273,7 +297,7 @@ struct SavedMovieRow: View {
         Image(systemName: "star.fill")
           .resizable()
           .aspectRatio(contentMode: .fit)
-          .frame(width: 22)
+          .frame(width: 28)
           .padding(0)
           .foregroundColor(.yellow)
       }
