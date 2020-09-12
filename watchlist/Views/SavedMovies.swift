@@ -287,7 +287,7 @@ struct SavedMovieDetailView: View {
 }
 
 enum MovieSortMode: String {
-  case watchStatus = "Watch Status"
+  case watchStatus = "Haven't watched"
   case favorites = "Favorites"
   case title = "Title"
   case director = "Director"
@@ -341,14 +341,22 @@ struct SavedMovieRow: View {
   @ObservedObject var movie: SavedMovie
   var body: some View {
     HStack(alignment: .center, spacing: 10) {
-      MovieImage(imageUrlString: movie.posterUrl, width: 90, radius: 5)
-        .shadow(radius: 6)
+      ZStack {
+        MovieImage(imageUrlString: movie.posterUrl, width: 90, radius: 5)
+          .shadow(radius: 6)
+        if self.movie.watched {
+          Image(systemName: ("checkmark.circle.fill"))
+            .font(.system(size: 23))
+            .background(Color.white.mask(Circle()))
+            .foregroundColor(.green)
+            .offset(x: 45, y: 65)
+        }
+      }
       VStack(alignment: .leading, spacing: 0) {
         Spacer()
         Text(movie.title)
           .font(.system(size: 20, weight: .semibold, design: .default))
-          .padding(.bottom, 2)
-        
+          .padding(.bottom, 4)
         if (movie.runtime != nil) {
           Text(movie.runtime!)
             .font(.system(size: 14, weight: .semibold, design: .default))
@@ -356,28 +364,17 @@ struct SavedMovieRow: View {
         }
         if (movie.genres.count > 0) {
           Text(movie.genres.joined(separator: ", "))
-            .font(.system(size: 12, weight: .semibold, design: .default))
+            .font(.system(size: 14, weight: .semibold, design: .default))
             .foregroundColor(.gray)
         }
-        
-        HStack {
-          Image(systemName: (self.movie.watched ? "checkmark.circle.fill" : "xmark.circle.fill"))
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 16)
-            .foregroundColor(self.movie.watched ? Color(UIColor.mainColor) : .gray)
-          Text("Watched").font(.system(size: 14, weight: .regular, design: .default))
-        }.padding(.top, 10)
         Spacer()
       }
       Spacer()
       if (self.movie.favorited) {
-        Image(systemName: "star.fill")
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .frame(width: 28)
+        Image(systemName: "heart.fill")
+          .font(.system(size: 23))
           .padding(0)
-          .foregroundColor(.yellow)
+          .foregroundColor(Color(UIColor.mainColor))
       }
     }.padding(5)
   }
@@ -392,11 +389,11 @@ struct SavedMovieButtonsNavbarView: View {
         self.savedMovie.favorited.toggle()
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
       }) {
-        Image(systemName: self.savedMovie.favorited ? "star.fill" : "star")
+        Image(systemName: self.savedMovie.favorited ? "heart.fill" : "heart")
           .resizable()
           .aspectRatio(contentMode: .fit)
-          .frame(width: 28)
-          .foregroundColor(self.savedMovie.favorited ? .yellow : .gray)
+          .frame(width: 25)
+          .foregroundColor(self.savedMovie.favorited ? Color(UIColor.mainColor) : .gray)
       }
       Button(action: {
         self.savedMovie.watched.toggle()
@@ -405,7 +402,7 @@ struct SavedMovieButtonsNavbarView: View {
         Image(systemName: self.savedMovie.watched ? "eye.fill" : "eye")
           .resizable()
           .aspectRatio(contentMode: .fit)
-          .frame(width: 30)
+          .frame(width: 33)
           .foregroundColor(self.savedMovie.watched ? .green : .gray)
       }
     }
