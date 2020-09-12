@@ -294,20 +294,24 @@ enum MovieSortMode: String {
 }
 
 struct SavedMovieSortView: View {
+  @EnvironmentObject var partialSheetManager: PartialSheetManager
   @Binding var sortMode: MovieSortMode
   var body: some View {
     VStack(alignment: .leading, spacing: 10) {
       Text("Sort Mode").foregroundColor(.gray).bold()
       SavedMovieSortRow(text: MovieSortMode.title.rawValue, active: self.sortMode == .title) {
         self.sortMode = .title
+        self.partialSheetManager.closePartialSheet()
       }
       Divider()
       SavedMovieSortRow(text: MovieSortMode.watchStatus.rawValue, active: self.sortMode == .watchStatus) {
         self.sortMode = .watchStatus
+        self.partialSheetManager.closePartialSheet()
       }
       Divider()
       SavedMovieSortRow(text: MovieSortMode.favorites.rawValue, active: self.sortMode == .favorites) {
         self.sortMode = .favorites
+        self.partialSheetManager.closePartialSheet()
       }
       Divider()
     }.padding()

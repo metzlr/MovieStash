@@ -50,7 +50,7 @@
 		885D162A24F9C03500FDA968 /* MovieImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieImage.swift; sourceTree = "<group>"; };
 		885D165324FA8A0500FDA968 /* WatchlistData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WatchlistData.xcdatamodel; sourceTree = "<group>"; };
 		885F96CC24FADA6500FD5F74 /* SavedMovie+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SavedMovie+CoreDataClass.swift"; sourceTree = "<group>"; };
-		887F51B424F5FF8700064B5A /* watchlist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = watchlist.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		887F51B424F5FF8700064B5A /* FilmCache.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FilmCache.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		887F51B724F5FF8700064B5A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		887F51B924F5FF8700064B5A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		887F51BB24F5FF8700064B5A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -97,7 +97,7 @@
 		887F51B524F5FF8700064B5A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				887F51B424F5FF8700064B5A /* watchlist.app */,
+				887F51B424F5FF8700064B5A /* FilmCache.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -178,7 +178,7 @@
 				8800FBFA2506CC4400E192D8 /* PartialSheet */,
 			);
 			productName = watchlist;
-			productReference = 887F51B424F5FF8700064B5A /* watchlist.app */;
+			productReference = 887F51B424F5FF8700064B5A /* FilmCache.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -403,8 +403,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.spasdesign.watchlist;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.metzlr.watchlist;
+				PRODUCT_NAME = FilmCache;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -426,8 +426,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.spasdesign.watchlist;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.metzlr.watchlist;
+				PRODUCT_NAME = FilmCache;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

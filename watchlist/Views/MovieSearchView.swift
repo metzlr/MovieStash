@@ -68,7 +68,8 @@ struct MovieSearchView: View {
 
   var body: some View {
     VStack(spacing: 0) {
-      SearchBar(placeHolder: "Enter a movie name", text: $viewModel.searchText).padding(.top, 5)
+      SearchBar(placeHolder: "Enter a movie name", backgroundColor: Color(.systemGray5), text: $viewModel.searchText)
+        .padding(.top, 0)
       if (viewModel.searchResults.count > 0) {
         List {
           ForEach(viewModel.searchResults) { movie in
