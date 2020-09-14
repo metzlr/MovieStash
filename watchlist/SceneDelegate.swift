@@ -46,6 +46,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
       window.makeKeyAndVisible()
     }
+    
+    // Create tap gesture recognizer (for keyboard dismissal)
+    let tapGesture = AnyGestureRecognizer(target: window, action:#selector(UIView.endEditing))
+    tapGesture.requiresExclusiveTouchType = false
+    tapGesture.cancelsTouchesInView = false
+    tapGesture.delegate = self
+    self.window?.addGestureRecognizer(tapGesture)
   }
 
   func sceneDidDisconnect(_ scene: UIScene) {

@@ -226,9 +226,7 @@ struct SavedMovieList: View {
           .padding(.top, 30)
       }
       Spacer()
-    }.gesture(DragGesture().onChanged { _ in
-      UIApplication.shared.windows.forEach { $0.endEditing(false) }
-    })
+    }
   }
 
   // Determines if a movie should be listed under a search query
