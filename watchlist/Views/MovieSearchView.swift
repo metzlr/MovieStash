@@ -77,7 +77,9 @@ struct MovieSearchView: View {
               MovieSearchRow(movie: movie)
             }
           }
-        }
+        }.gesture(DragGesture().onChanged { _ in
+          UIApplication.shared.windows.forEach { $0.endEditing(false) }
+        })
       } else {
         Text("No results")
           .font(.system(size: 25, weight: .semibold, design: .default))

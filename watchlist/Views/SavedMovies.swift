@@ -191,10 +191,10 @@ struct SavedMovieList: View {
                   }) {
                     if !movie.favorited {
                       Text("Favorite")
-                      Image(systemName: "star.fill")
+                      Image(systemName: "heart.fill")
                     } else {
                       Text("Unfavorite")
-                      Image(systemName: "star.slash.fill")
+                      Image(systemName: "heart.slash.fill")
                     }
                   }
                 }
@@ -226,7 +226,9 @@ struct SavedMovieList: View {
           .padding(.top, 30)
       }
       Spacer()
-    }
+    }.gesture(DragGesture().onChanged { _ in
+      UIApplication.shared.windows.forEach { $0.endEditing(false) }
+    })
   }
 
   // Determines if a movie should be listed under a search query
