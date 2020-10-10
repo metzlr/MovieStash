@@ -52,6 +52,7 @@ class MovieSearchViewModel: ObservableObject {
       case .success(let details):
         DispatchQueue.main.async {
           self.movieDetails = details
+//          print(details)
         }
       case .failure:
         return

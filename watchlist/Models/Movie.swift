@@ -122,7 +122,7 @@ extension TMDBMovieDetail {
       if dateDetail.iso == "US" {
         for date in dateDetail.releaseDates {
           if date.type == 3  {
-            rated = date.certification
+            rated = date.certification.count > 0 ? date.certification : nil
           }
         }
       }
