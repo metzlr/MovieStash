@@ -59,8 +59,8 @@ struct MovieDetailed {
   let posterUrl: URL?
   let rated: String?
   let runtime: String?
-  let genres: [String]
-  let directors: [String]
+  let genres: [String]?
+  let directors: [String]?
   let cast: [MovieCastMember]
   let plot: String?
   let imdbId: String?
@@ -68,7 +68,7 @@ struct MovieDetailed {
   let youtubeKey: String?
   let tmdbUserScore: MovieUserScore?
   
-  init(title: String, year: String? = nil, posterUrl: URL? = nil, rated: String? = nil, runtime: String? = nil, genres: [String] = [String](), directors: [String] = [String](), plot: String? = nil, imdbId: String? = nil, tmdbId: String? = nil, cast: [MovieCastMember] = [MovieCastMember](), youtubeKey: String? = nil, tmdbUserScore: MovieUserScore? = nil) {
+  init(title: String, year: String? = nil, posterUrl: URL? = nil, rated: String? = nil, runtime: String? = nil, genres: [String]? = nil, directors: [String]? = nil, plot: String? = nil, imdbId: String? = nil, tmdbId: String? = nil, cast: [MovieCastMember] = [MovieCastMember](), youtubeKey: String? = nil, tmdbUserScore: MovieUserScore? = nil) {
     self.id = UUID()
     self.tmdbId = tmdbId
     self.title = title
@@ -94,8 +94,9 @@ extension TMDBMovieDetail {
     } else {
       year = nil
     }
+
+    let genresArray: [String]? = self.genres.count > 0 ? self.genres.map { $0.name } : nil
     
-    let genresArray: [String] = self.genres.map { $0.name }
     
     let runtimeString: String?
     if let runtime = self.runtime {
@@ -105,10 +106,13 @@ extension TMDBMovieDetail {
     }
     
     // Find movie directors from cast list
-    var directors: [String] = [String]()
+    var directors: [String]? = nil
     for person in self.credits.crew {
       if person.job.lowercased() == "director" {
-        directors.append(person.name)
+        if directors == nil {
+          directors = [String]()
+        }
+        directors!.append(person.name)
       }
     }
     

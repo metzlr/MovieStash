@@ -22,7 +22,7 @@
 		88267D7724F81AE500F7C76F /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88267D7624F81AE500F7C76F /* Movie.swift */; };
 		882E5A6F25002A6B004DE4C7 /* ProfileImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882E5A6E25002A6B004DE4C7 /* ProfileImage.swift */; };
 		885D162B24F9C03500FDA968 /* MovieImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885D162A24F9C03500FDA968 /* MovieImage.swift */; };
-		885D165424FA8A0500FDA968 /* WatchlistData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 885D165224FA8A0500FDA968 /* WatchlistData.xcdatamodeld */; };
+		885D165424FA8A0500FDA968 /* MovieStashData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 885D165224FA8A0500FDA968 /* MovieStashData.xcdatamodeld */; };
 		885F96CE24FADA6500FD5F74 /* SavedMovie+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885F96CC24FADA6500FD5F74 /* SavedMovie+CoreDataClass.swift */; };
 		887F51B824F5FF8700064B5A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887F51B724F5FF8700064B5A /* AppDelegate.swift */; };
 		887F51BA24F5FF8700064B5A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887F51B924F5FF8700064B5A /* SceneDelegate.swift */; };
@@ -34,6 +34,7 @@
 		887F51D224F618F100064B5A /* TMDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887F51D124F618F100064B5A /* TMDB.swift */; };
 		887F51D424F62D8000064B5A /* MovieSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887F51D324F62D8000064B5A /* MovieSearchView.swift */; };
 		887F51D824F6755100064B5A /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887F51D724F6755100064B5A /* AppController.swift */; };
+		88812DB4253280FC004C6BC6 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88812DB3253280FC004C6BC6 /* CloudKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +65,8 @@
 		887F51D124F618F100064B5A /* TMDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDB.swift; sourceTree = "<group>"; };
 		887F51D324F62D8000064B5A /* MovieSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieSearchView.swift; sourceTree = "<group>"; };
 		887F51D724F6755100064B5A /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
+		88812DB3253280FC004C6BC6 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		88812DBF2533F8DA004C6BC6 /* MovieStash.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = MovieStash.entitlements; path = watchlist/MovieStash.entitlements; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88812DB4253280FC004C6BC6 /* CloudKit.framework in Frameworks */,
 				8800FBFB2506CC4400E192D8 /* PartialSheet in Frameworks */,
 				88267D6A24F77A0C00F7C76F /* URLImage in Frameworks */,
 			);
@@ -93,6 +97,7 @@
 			children = (
 				887F51B624F5FF8700064B5A /* watchlist */,
 				887F51B524F5FF8700064B5A /* Products */,
+				88812DB2253280FC004C6BC6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -109,6 +114,7 @@
 			children = (
 				88267D6B24F7D5F400F7C76F /* Colors.swift */,
 				88267D6224F6AE6100F7C76F /* EnvironmentValues.swift */,
+				88812DBF2533F8DA004C6BC6 /* MovieStash.entitlements */,
 				887F51CC24F600D700064B5A /* Models */,
 				887F51CB24F600CC00064B5A /* Views */,
 				887F51B724F5FF8700064B5A /* AppDelegate.swift */,
@@ -116,7 +122,7 @@
 				887F51BD24F5FF8800064B5A /* Assets.xcassets */,
 				887F51C224F5FF8800064B5A /* LaunchScreen.storyboard */,
 				887F51C524F5FF8800064B5A /* Info.plist */,
-				885D165224FA8A0500FDA968 /* WatchlistData.xcdatamodeld */,
+				885D165224FA8A0500FDA968 /* MovieStashData.xcdatamodeld */,
 				887F51BF24F5FF8800064B5A /* Preview Content */,
 				8800FBF3250494F900E192D8 /* Constants.swift */,
 			);
@@ -160,12 +166,20 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		88812DB2253280FC004C6BC6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				88812DB3253280FC004C6BC6 /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		887F51B324F5FF8700064B5A /* watchlist */ = {
+		887F51B324F5FF8700064B5A /* MovieStash */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 887F51C824F5FF8800064B5A /* Build configuration list for PBXNativeTarget "watchlist" */;
+			buildConfigurationList = 887F51C824F5FF8800064B5A /* Build configuration list for PBXNativeTarget "MovieStash" */;
 			buildPhases = (
 				887F51B024F5FF8700064B5A /* Sources */,
 				887F51B124F5FF8700064B5A /* Frameworks */,
@@ -175,7 +189,7 @@
 			);
 			dependencies = (
 			);
-			name = watchlist;
+			name = MovieStash;
 			packageProductDependencies = (
 				88267D6924F77A0C00F7C76F /* URLImage */,
 				8800FBFA2506CC4400E192D8 /* PartialSheet */,
@@ -191,7 +205,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1160;
-				LastUpgradeCheck = 1160;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Reed Metzler-Gilbertz";
 				TargetAttributes = {
 					887F51B324F5FF8700064B5A = {
@@ -199,7 +213,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 887F51AF24F5FF8700064B5A /* Build configuration list for PBXProject "watchlist" */;
+			buildConfigurationList = 887F51AF24F5FF8700064B5A /* Build configuration list for PBXProject "MovieStash" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -216,7 +230,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				887F51B324F5FF8700064B5A /* watchlist */,
+				887F51B324F5FF8700064B5A /* MovieStash */,
 			);
 		};
 /* End PBXProject section */
@@ -252,7 +266,7 @@
 				887F51D424F62D8000064B5A /* MovieSearchView.swift in Sources */,
 				887F51BA24F5FF8700064B5A /* SceneDelegate.swift in Sources */,
 				887F51CE24F6016F00064B5A /* SavedMovies.swift in Sources */,
-				885D165424FA8A0500FDA968 /* WatchlistData.xcdatamodeld in Sources */,
+				885D165424FA8A0500FDA968 /* MovieStashData.xcdatamodeld in Sources */,
 				882E5A6F25002A6B004DE4C7 /* ProfileImage.swift in Sources */,
 				887F51BC24F5FF8700064B5A /* ContentView.swift in Sources */,
 				887F51D224F618F100064B5A /* TMDB.swift in Sources */,
@@ -304,6 +318,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -364,6 +379,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -396,6 +412,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = watchlist/MovieStash.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"watchlist/Preview Content\"";
@@ -407,7 +424,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.metzlr.watchlist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.metzlr.moviestash;
 				PRODUCT_NAME = MovieCache;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -419,6 +436,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = watchlist/MovieStash.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"watchlist/Preview Content\"";
@@ -430,7 +448,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.metzlr.watchlist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.metzlr.moviestash;
 				PRODUCT_NAME = MovieCache;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -441,7 +459,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		887F51AF24F5FF8700064B5A /* Build configuration list for PBXProject "watchlist" */ = {
+		887F51AF24F5FF8700064B5A /* Build configuration list for PBXProject "MovieStash" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				887F51C624F5FF8800064B5A /* Debug */,
@@ -450,7 +468,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		887F51C824F5FF8800064B5A /* Build configuration list for PBXNativeTarget "watchlist" */ = {
+		887F51C824F5FF8800064B5A /* Build configuration list for PBXNativeTarget "MovieStash" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				887F51C924F5FF8800064B5A /* Debug */,
@@ -494,13 +512,13 @@
 /* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
-		885D165224FA8A0500FDA968 /* WatchlistData.xcdatamodeld */ = {
+		885D165224FA8A0500FDA968 /* MovieStashData.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				885D165324FA8A0500FDA968 /* WatchlistData.xcdatamodel */,
 			);
 			currentVersion = 885D165324FA8A0500FDA968 /* WatchlistData.xcdatamodel */;
-			path = WatchlistData.xcdatamodeld;
+			path = MovieStashData.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

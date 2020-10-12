@@ -146,7 +146,7 @@ struct SavedMovieList: View {
     
     return Group {
       if (filteredMovies.count > 0) {
-        VStack(alignment: .leading, spacing: 3) {
+        VStack(alignment: .leading, spacing: 5) {
           HStack {
             Text("\(filteredMovies.count) " + (filteredMovies.count == 1 ? "movie" : "movies"))
               .font(.system(size: 18, weight: .semibold, design: .default))
@@ -162,7 +162,8 @@ struct SavedMovieList: View {
               Text("Sort by").font(.system(size: 18, weight: .semibold, design: .default))
               Image(systemName: "chevron.down")
             }
-          }.padding(.horizontal, 15)
+          }
+          .padding(.horizontal, 15)
           List {
             ForEach(filteredMovies, id: \.self.id) { movie in
               NavigationLink(destination: SavedMovieDetailView(savedMovie: movie)) {
@@ -203,7 +204,9 @@ struct SavedMovieList: View {
               self.toBeDeleted = indexSet
               self.showDeleteAlert = true
             }
-          }.alert(isPresented: $showDeleteAlert) {
+          }
+          .listStyle(PlainListStyle())
+          .alert(isPresented: $showDeleteAlert) {
             Alert(title: Text("Delete Movie"), message: Text("Are you sure you want to delete this movie?"), primaryButton: .destructive(Text("Delete")) {
               if let indexSet = self.toBeDeleted {
                 withAnimation {
@@ -233,11 +236,15 @@ struct SavedMovieList: View {
   func searchFilter(movie: SavedMovie, query: String) -> Bool {
     let query = query.lowercased()
     if movie.title.lowercased().contains(query) { return true }
-    for director in movie.directors {
-      if director.lowercased().contains(query) { return true }
+    if let directors = movie.directors {
+      for director in directors {
+        if director.lowercased().contains(query) { return true }
+      }
     }
-    for genre in movie.genres {
-      if genre.lowercased().contains(query) { return true }
+    if let genres = movie.genres {
+      for genre in genres {
+        if genre.lowercased().contains(query) { return true }
+      }
     }
     return false
   }
@@ -366,8 +373,8 @@ struct SavedMovieRow: View {
             .font(.system(size: 14, weight: .semibold, design: .default))
             .foregroundColor(.gray)
         }
-        if (movie.genres.count > 0) {
-          Text(movie.genres.joined(separator: ", "))
+        if movie.genres != nil {
+          Text(movie.genres!.joined(separator: ", "))
             .font(.system(size: 14, weight: .semibold, design: .default))
             .foregroundColor(.gray)
         }

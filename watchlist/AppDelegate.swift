@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      application to it. This property is optional since there are legitimate
      error conditions that could cause the creation of the store to fail.
      */
-    let container = NSPersistentContainer(name: "WatchlistData")
+    let container = NSPersistentCloudKitContainer(name: "MovieStashData")
     
     container.loadPersistentStores(completionHandler: { (storeDescription, error) in
       if let error = error as NSError? {
@@ -61,8 +61,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         fatalError("Unresolved error \(error), \(error.userInfo)")
       }
     })
+    
+    // Enable automatic updates from cloud data
+    container.viewContext.automaticallyMergesChangesFromParent = true
+    
     // Set merge policy for duplicate objects
-    container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
+    container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     
     return container
   }()

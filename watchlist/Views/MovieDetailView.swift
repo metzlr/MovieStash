@@ -50,10 +50,10 @@ struct MovieDetailView: View {
           MovieImage(imageUrl: movie!.posterUrl, width: 200, radius: 10)
             .shadow(radius: 10)
           VStack(alignment: .leading, spacing: 10) {
-            if movie!.directors.count > 0 {
+            if movie!.directors != nil {
               VStack(alignment: .leading, spacing: 3) {
-                Text(movie!.directors.count > 0 ? "Directors" : "Director").font(.system(size: 13, weight: .semibold, design: .default))
-                Text(movie!.directors.joined(separator: ", "))
+                Text(movie!.directors!.count > 0 ? "Directors" : "Director").font(.system(size: 13, weight: .semibold, design: .default))
+                Text(movie!.directors!.joined(separator: ", "))
                   .font(.system(size: 13, weight: .semibold, design: .default))
                   .foregroundColor(.gray)
                   .fixedSize(horizontal: false, vertical: true)
@@ -83,10 +83,10 @@ struct MovieDetailView: View {
                   .foregroundColor(.gray)
               }
             }
-            if movie!.genres.count > 0 {
+            if movie!.genres != nil {
               VStack(alignment: .leading, spacing: 3) {
                 Text("Genres").font(.system(size: 13, weight: .semibold, design: .default))
-                Text(movie!.genres.joined(separator: ", "))
+                Text(movie!.genres!.joined(separator: ", "))
                   .font(.system(size: 13, weight: .semibold, design: .default))
                   .fontWeight(.semibold)
                   .foregroundColor(.gray)
@@ -205,13 +205,10 @@ struct MovieCastView: View {
             Text(self.cast[index].name)
               .font(.caption)
               .frame(maxWidth: 80)
-              .multilineTextAlignment(.center)
-              .padding(.bottom, 2)
             Text(self.cast[index].character)
               .font(.caption)
               .foregroundColor(.gray)
               .frame(maxWidth: 110)
-              .multilineTextAlignment(.center)
           }
         }
       }
