@@ -1,4 +1,4 @@
-# watchlist
+# MovieStash
 
 ## An IOS app for finding and keeping track of movies
 
