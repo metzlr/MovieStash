@@ -10,7 +10,7 @@ Features:
 Uses the TMDB API to 
 
 <p>
-  <img src="/screenshots/screenshot1.png" alt="App screenshot 1" width="300"/>
-  <img src="/screenshots/screenshot2.png" alt="App screenshot 2" width="300"/>
-  <img src="/screenshots/screenshot3.png" alt="App screenshot 3" width="300"/>
+  <img src="/screenshots/screenshot1.png" alt="App screenshot 1" width="250"/>
+  <img src="/screenshots/screenshot2.png" alt="App screenshot 2" width="250"/>
+  <img src="/screenshots/screenshot3.png" alt="App screenshot 3" width="250"/>
 </p>
