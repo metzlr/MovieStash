@@ -3,8 +3,8 @@
 ## An IOS app for finding and keeping track of movies
 
 Features:
-- Find information on almost any movie, including a plot summary, ratings, cast members, and more. Uses TMDB for movie data
-- Save movies to your library, which is backed and synced with iCloud
+- Find information about a movie, including a plot summary, ratings and cast members. Uses TMDB for movie data
+- Save movies to your library, which is backed up and synced with iCloud
 - Keep track of movies you've watched and favorite movies you like
 
 <p>
