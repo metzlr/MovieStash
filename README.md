@@ -7,8 +7,6 @@ Features:
 - Save movies to your library, which is backed and synced with iCloud
 - Keep track of movies you've watched and favorite movies you like
 
-Uses the TMDB API to 
-
 <p>
   <img src="/screenshots/screenshot1.png" alt="App screenshot 1" width="250"/>
   <img src="/screenshots/screenshot2.png" alt="App screenshot 2" width="250"/>
