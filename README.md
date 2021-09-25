@@ -5,7 +5,7 @@
 Features:
 - Find information about a movie, including a plot summary, ratings and cast members. Uses TMDB for movie data
 - Save movies to your library, which is backed up and synced with iCloud
-- Keep track of movies and favorites
+- Keep track of watched movies and favorites
 
 <p>
   <img src="/screenshots/screenshot1.png" alt="App screenshot 1" width="250"/>
