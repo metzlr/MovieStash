@@ -1,11 +1,11 @@
 # MovieStash
 
-## An IOS app for finding and keeping track of movies
+A minimalist movie library app on IOS
 
-Features:
-- Find information about a movie, including a plot summary, ratings and cast members. Uses TMDB for movie data
-- Save movies to your library, which is backed up and synced with iCloud
-- Keep track of watched movies and favorites
+## Features:
+- Search for movies and view movie info from the TMDB database
+- Save movies to an offline library that's backed up and synced across devices using iCloud
+- Track favorite movies and movie watch status
 
 <p>
   <img src="/screenshots/screenshot1.png" alt="App screenshot 1" width="250"/>
